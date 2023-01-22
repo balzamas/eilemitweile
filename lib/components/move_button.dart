@@ -12,7 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'field.dart';
 import 'movement.dart';
 
-class MoveButton extends PositionComponent with TapCallbacks, HasGameRef<EilemitweileGame> {
+class MoveButton extends PositionComponent
+    with TapCallbacks, HasPaint, HasGameRef<EilemitweileGame> {
   int button_number = 0;
 
   @override
@@ -23,37 +24,31 @@ class MoveButton extends PositionComponent with TapCallbacks, HasGameRef<Eilemit
   static late final Sprite movebuttonSprite3 = emwSprite(700, 300, 350, 350);
   static late final Sprite movebuttonSprite4 = emwSprite(1050, 300, 350, 350);
 
-
   @override
   void render(Canvas canvas) {
-    if (button_number == 0)
-    {
-      movebuttonSprite1.render(canvas, position: Vector2(0, 0), anchor: Anchor.topLeft);
-    }
-    else if (button_number == 1)
-    {
-      movebuttonSprite2.render(canvas, position: Vector2(0, 0), anchor: Anchor.topLeft);
-    }
-    else if (button_number == 2)
-    {
-      movebuttonSprite3.render(canvas, position: Vector2(0, 0), anchor: Anchor.topLeft);
-    }
-    else if (button_number == 3)
-    {
-      movebuttonSprite4.render(canvas, position: Vector2(0, 0), anchor: Anchor.topLeft);
+    if (button_number == 0) {
+      movebuttonSprite1.render(canvas,
+          position: Vector2(0, 0), anchor: Anchor.topLeft);
+    } else if (button_number == 1) {
+      movebuttonSprite2.render(canvas,
+          position: Vector2(0, 0), anchor: Anchor.topLeft);
+    } else if (button_number == 2) {
+      movebuttonSprite3.render(canvas,
+          position: Vector2(0, 0), anchor: Anchor.topLeft);
+    } else if (button_number == 3) {
+      movebuttonSprite4.render(canvas,
+          position: Vector2(0, 0), anchor: Anchor.topLeft);
     }
   }
 
   @override
   void onTapUp(TapUpEvent event) {
-      Token token = gameRef.current_player!.tokens[this.button_number];
+    Token token = gameRef.current_player!.tokens[this.button_number];
 
-      if (token.field!.current != FieldState.heaven && token.can_move)
-      {
-        Move(gameRef, token);
-      }
-
+    if (!gameRef.current_player!.is_AI &&
+        token.field!.current != FieldState.heaven &&
+        token.can_move) {
+      Move(gameRef, token);
     }
-
-    
+  }
 }
