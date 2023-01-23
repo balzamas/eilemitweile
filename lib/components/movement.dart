@@ -1,8 +1,13 @@
 import 'dart:math';
 
+import 'package:EileMitWeile/components/player.dart';
 import 'package:EileMitWeile/components/tokens.dart';
+import 'package:EileMitWeile/components/victory.dart';
 import 'package:EileMitWeile/eilemitweile_game.dart';
+import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
 
 import '../enums.dart';
 
@@ -11,13 +16,8 @@ const tau = 2 * pi;
 void Move(EilemitweileGame game, Token token) {
   if (token.field!.number == 0) {
     token.field!.removeToken(token);
-    for (var i = token.player.start_field + 1;
-        i < token.player.start_field + game.last_throw.last_throw;
-        i++) {
-      if (game.fields[i].tokens.length > 0) {
-        game.fields[i].sendHomeTokens(token.player, game.fields[0]);
-      }
-    }
+    sendHome(token.player.start_field + 1,
+        token.player.start_field + game.last_throw.last_throw - 1, game, token);
     token.field =
         game.fields[token.player.start_field + game.last_throw.last_throw];
     token.add(
@@ -64,14 +64,59 @@ void Move(EilemitweileGame game, Token token) {
     for (Token token in game.current_player!.tokens) {
       token.can_move = false;
     }
-    game.NextPlayer();
+    if (CheckVictory(token.player)) {
+      ShowVictoryMessage(token.player, game);
+    } else {
+      game.NextPlayer();
+    }
   }
+}
+
+bool CheckVictory(Player player) {
+  int token_in_heaven = 0;
+
+  for (Token token in player.tokens) {
+    if (token.field!.number == 76) {
+      token_in_heaven++;
+    }
+  }
+
+  if (token_in_heaven == 4) {
+    return true;
+  }
+  return false;
+}
+
+void ShowVictoryMessage(Player player, EilemitweileGame game) {
+  Victory victory = Victory();
+  victory.position = Vector2(
+      EilemitweileGame.console +
+          8 * EilemitweileGame.fieldHeight +
+          1.5 * EilemitweileGame.fieldWidth,
+      EilemitweileGame.screenHeight / 2 - 100);
+  victory.add(RemoveEffect(delay: 2.0));
+  game.world.add(victory);
+
+  final style = TextStyle(color: BasicPalette.black.color, fontSize: 120);
+
+  TextPaint textPaint = TextPaint(style: style);
+  TextComponent winner =
+      TextComponent(text: player.name, textRenderer: textPaint);
+
+  winner.position = Vector2(EilemitweileGame.screenWidth / 2,
+      EilemitweileGame.screenHeight / 2 + 100);
+  winner.add(RemoveEffect(delay: 2.0));
+
+  game.world.add(winner);
 }
 
 void sendHome(start_field, end_field, EilemitweileGame game, Token token) {
   for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].tokens.length > 0) {
-      game.fields[i].sendHomeTokens(token.player, game.fields[0]);
+      token.player.bodycount = token.player.bodycount +
+          game.fields[i].sendHomeTokens(token.player, game.fields[0]);
+      token.bodycount = token.bodycount +
+          game.fields[i].sendHomeTokens(token.player, game.fields[0]);
     }
   }
 }

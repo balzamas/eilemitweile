@@ -1,15 +1,11 @@
-import 'dart:math';
 import 'dart:ui';
 
-import 'package:EileMitWeile/components/tokens.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
 
 import '../eilemitweile_game.dart';
 import 'package:flutter/widgets.dart';
 
-import '../enums.dart';
 import 'movement.dart';
 
 class Dice extends PositionComponent

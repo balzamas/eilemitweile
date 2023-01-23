@@ -3,22 +3,22 @@ import 'package:flame/components.dart';
 
 import 'package:flutter/material.dart';
 
-class InfoText extends TextComponent with HasGameRef<EilemitweileGame> {
+class KillInfo extends TextComponent with HasGameRef<EilemitweileGame> {
   late String text_content;
 
-  InfoText.playerScore({
+  KillInfo.killInfo({
     this.text_content = "",
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.rtl,
-            style: TextStyle(fontSize: 80, color: Colors.black));
+            style: TextStyle(fontSize: 50, color: Colors.black));
 
   late final TextPaint _textPaint;
 
   @override
   Future<void>? onLoad() {
-    text_content = "Red\n\nTurn 1";
+    text_content = "Kills\nRed: 0\nBlue: 0\nGreen: 0\nPurple: 0";
     anchor = Anchor.center;
-    position.setValues(160, 1000);
+    position.setValues(160, 1350);
     text = text_content;
 
     return super.onLoad();

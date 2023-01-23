@@ -18,6 +18,7 @@ class Token extends PositionComponent
   int token_number = 0;
   late Player player;
   Field? field;
+  int bodycount = 0;
   Token(Player player) {
     this.player = player;
   }

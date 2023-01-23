@@ -12,10 +12,14 @@ import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:yaml/yaml.dart';
 
 import 'components/dicenumber.dart';
 import 'components/field.dart';
+import 'components/kills.dart';
 import 'components/movement.dart';
 import 'components/player.dart';
 import 'enums.dart';
@@ -34,17 +38,23 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
   static const double tokenHeight = 50.0;
   static final Vector2 tokenSize = Vector2(tokenWidth, tokenHeight);
 
+  static const double screenWidth = 2000;
+  static const double screenHeight = 1600;
+
   static final double console = 450;
 
   late final ScoreText last_throw;
   late final InfoText info_text;
+  late final KillInfo kill_text;
   List<Field> fields = [];
   List<Player> players = [];
   List<MoveButton> move_buttons = [];
 
+  final world = World();
+
   Player? current_player;
   Heaven heaven = Heaven();
-  int round = 0;
+  int round = 1;
   Dice dice = Dice();
 
   @override
@@ -52,7 +62,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
     await Flame.images.load('eilemitweile-sprites.png');
 
     dice.position = Vector2(10, 50);
-    dice.size = Vector2(400, 400);
+    dice.size = Vector2(400, 1000);
 
     for (var i = 0; i < 4; i++) {
       MoveButton button = MoveButton();
@@ -192,20 +202,34 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
       }
     }
 
-    final world = World()
-      ..addAll(players)
-      ..addAll(fields)
-      ..add(dice)
-      ..add(last_throw = ScoreText.playerScore())
-      ..add(info_text = InfoText.playerScore())
-      ..addAll(home_fields)
-      ..addAll(move_buttons)
-      ..add(heaven)
-      ..addAll(heaven_fields0)
-      ..addAll(heaven_fields1)
-      ..addAll(heaven_fields2)
-      ..addAll(heaven_fields3)
-      ..addAll(tokens);
+    final style = TextStyle(color: BasicPalette.black.color, fontSize: 40);
+
+    TextPaint textPaint = TextPaint(style: style);
+
+    final yamlString = await rootBundle.loadString('pubspec.yaml');
+    final parsedYaml = loadYaml(yamlString);
+
+    TextComponent version = TextComponent(
+        text: "Version: " + parsedYaml['version'], textRenderer: textPaint);
+
+    version.position = Vector2(0, EilemitweileGame.screenHeight - 100);
+
+    world.add(version);
+
+    world.addAll(players);
+    world.addAll(fields);
+    world.add(dice);
+    world.add(last_throw = ScoreText.playerScore());
+    world.add(info_text = InfoText.playerScore());
+    world.add(kill_text = KillInfo.killInfo());
+    world.addAll(home_fields);
+    world.addAll(move_buttons);
+    world.add(heaven);
+    world.addAll(heaven_fields0);
+    world.addAll(heaven_fields1);
+    world.addAll(heaven_fields2);
+    world.addAll(heaven_fields3);
+    world.addAll(tokens);
 
     await add(world);
 
@@ -214,13 +238,23 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
     players[0].is_AI = false;
 
     final camera = CameraComponent(world: world)
-      ..viewfinder.visibleGameSize = Vector2(2000, 1600)
+      ..viewfinder.visibleGameSize = Vector2(screenWidth, screenHeight)
       ..viewfinder.position = Vector2(1150, 0)
       ..viewfinder.anchor = Anchor.topCenter;
     add(camera);
   }
 
   void NextPlayer() {
+    //Show Kills
+    kill_text.text_content = "Kills\nRed: " +
+        players[0].bodycount.toString() +
+        "\nBlue: " +
+        players[1].bodycount.toString() +
+        "\nGreen: " +
+        players[2].bodycount.toString() +
+        "\nPurple: " +
+        players[3].bodycount.toString();
+
     Future.delayed(const Duration(milliseconds: 500), () {
       last_throw.last_throw = 0;
 
@@ -233,7 +267,8 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
         current_player = players[index + 1];
       }
 
-      info_text.text_content = current_player!.name;
+      info_text.text_content =
+          current_player!.name + "\n\nTurn " + round.toString();
 
       if (current_player!.is_AI) {
         Future.delayed(const Duration(milliseconds: 500), () {

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:EileMitWeile/components/paeng.dart';
 import 'package:EileMitWeile/components/player.dart';
 import 'package:EileMitWeile/components/tokens.dart';
 import 'package:flame/components.dart';
@@ -141,7 +142,8 @@ class Field extends SpriteGroupComponent<FieldState>
     }
   }
 
-  void sendHomeTokens(Player player, Field homefield) {
+  int sendHomeTokens(Player player, Field homefield) {
+    int sentHome = 0;
     if (this.current != FieldState.bench && this.current != FieldState.ladder) {
       List<Token> tokens_to_send_home = [];
       for (Token token in tokens) {
@@ -151,6 +153,15 @@ class Field extends SpriteGroupComponent<FieldState>
       }
 
       for (Token token_to_send_home in tokens_to_send_home) {
+        sentHome++;
+
+        Paeng paeng = Paeng();
+        paeng.position = Vector2(
+            token_to_send_home.position.x + 25, token_to_send_home.y + 25);
+        //paeng.angle = pi / 3;
+        gameRef.world.add(paeng);
+        paeng.add(RemoveEffect(delay: 1.0));
+
         tokens.remove(token_to_send_home);
         token_to_send_home.add(
           MoveEffect.to(
@@ -160,5 +171,6 @@ class Field extends SpriteGroupComponent<FieldState>
         );
       }
     }
+    return sentHome;
   }
 }
