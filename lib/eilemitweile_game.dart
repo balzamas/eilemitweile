@@ -1,10 +1,8 @@
-import 'dart:io';
-import 'dart:ui';
-
+import 'package:EileMitWeile/components/box.dart';
 import 'package:EileMitWeile/components/dice.dart';
 import 'package:EileMitWeile/components/heaven.dart';
 import 'package:EileMitWeile/components/home_field.dart';
-import 'package:EileMitWeile/components/infotext.dart';
+import 'package:EileMitWeile/components/text_components/infotext.dart';
 import 'package:EileMitWeile/components/move_button.dart';
 import 'package:EileMitWeile/components/tokens.dart';
 import 'package:EileMitWeile/playfield.dart';
@@ -17,9 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
-import 'components/dicenumber.dart';
+import 'components/text_components/dicenumber.dart';
 import 'components/field.dart';
-import 'components/kills.dart';
+import 'components/text_components/kills.dart';
 import 'components/movement.dart';
 import 'components/player.dart';
 import 'enums.dart';
@@ -43,12 +41,16 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
 
   static final double console = 450;
 
-  late final ScoreText last_throw;
+  late final ScoreText dice_text;
   late final InfoText info_text;
   late final KillInfo kill_text;
   List<Field> fields = [];
   List<Player> players = [];
   List<MoveButton> move_buttons = [];
+
+  List<int> thrown_dices = [];
+  int current_dice = 0;
+  bool can_throw_dice = true;
 
   final world = World();
 
@@ -214,27 +216,30 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
 
     version.position = Vector2(0, EilemitweileGame.screenHeight - 100);
 
-    world.add(version);
+    Box box = Box();
 
-    world.addAll(players);
-    world.addAll(fields);
-    world.add(dice);
-    world.add(last_throw = ScoreText.playerScore());
-    world.add(info_text = InfoText.playerScore());
-    world.add(kill_text = KillInfo.killInfo());
-    world.addAll(home_fields);
-    world.addAll(move_buttons);
-    world.add(heaven);
-    world.addAll(heaven_fields0);
-    world.addAll(heaven_fields1);
-    world.addAll(heaven_fields2);
-    world.addAll(heaven_fields3);
-    world.addAll(tokens);
+    world.add(box);
+    world.add(version);
+    box.addAll(players);
+    box.addAll(fields);
+    box.add(dice);
+    box.add(dice_text = ScoreText.playerScore());
+    box.add(info_text = InfoText.playerScore());
+    box.add(kill_text = KillInfo.killInfo());
+    box.addAll(home_fields);
+    box.addAll(move_buttons);
+    box.add(heaven);
+    box.addAll(heaven_fields0);
+    box.addAll(heaven_fields1);
+    box.addAll(heaven_fields2);
+    box.addAll(heaven_fields3);
+    box.addAll(tokens);
 
     await add(world);
 
-    current_player = players[0];
+    current_player = players[3];
     info_text.text_content = current_player!.name;
+    NextPlayer();
     players[0].is_AI = false;
 
     final camera = CameraComponent(world: world)
@@ -256,7 +261,9 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
         players[3].bodycount.toString();
 
     Future.delayed(const Duration(milliseconds: 500), () {
-      last_throw.last_throw = 0;
+      can_throw_dice = true;
+      thrown_dices = [];
+      dice_text.text_content = "";
 
       final index = players
           .indexWhere((element) => element.color == current_player!.color);
@@ -273,32 +280,54 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
       if (current_player!.is_AI) {
         Future.delayed(const Duration(milliseconds: 500), () {
           ThrowDice(this);
-          if (current_player!.has_moveable_token) {
-            Move_KI();
+
+          if (can_throw_dice) {
+            ThrowDice(this);
           }
+
+          if (can_throw_dice) {
+            ThrowDice(this);
+          }
+
+          Future.delayed(const Duration(milliseconds: 500), () {
+            int dices = thrown_dices.length;
+            for (var i = 0; i < dices; i++) {
+              if (check_tokens_to_move(this, thrown_dices[0])) {
+                Move_KI(thrown_dices[0]);
+              } else {
+                thrown_dices.removeAt(0);
+              }
+            }
+            for (Token token in current_player!.tokens) {
+              if (token.last_round_moved == this.round) {
+                token.MoveSprite();
+              }
+            }
+            NextPlayer();
+          });
         });
       }
     });
   }
 
-  void Move_KI() {
-    if (last_throw.last_throw == 5) {
+  void Move_KI(int dice_number) {
+    if (dice_number == 5) {
       for (Token token in current_player!.tokens) {
         if (token.can_move && token.field!.number == 0) {
-          Move(this, token);
+          Move(this, token, dice_number);
           return;
         }
       }
     }
     for (Token token in current_player!.tokens) {
       if (token.can_move && token.field!.number < 69) {
-        Move(this, token);
+        Move(this, token, dice_number);
         return;
       }
     }
     for (Token token in current_player!.tokens) {
       if (token.can_move) {
-        Move(this, token);
+        Move(this, token, dice_number);
         return;
       }
     }

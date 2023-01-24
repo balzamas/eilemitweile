@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'dart:ui';
 
-import 'package:EileMitWeile/components/tokens.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
 

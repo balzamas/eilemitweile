@@ -13,22 +13,15 @@ import '../enums.dart';
 
 const tau = 2 * pi;
 
-void Move(EilemitweileGame game, Token token) {
+void Move(EilemitweileGame game, Token token, int moves) {
   if (token.field!.number == 0) {
     token.field!.removeToken(token);
-    sendHome(token.player.start_field + 1,
-        token.player.start_field + game.last_throw.last_throw - 1, game, token);
-    token.field =
-        game.fields[token.player.start_field + game.last_throw.last_throw];
-    token.add(
-      MoveEffect.to(
-        token.field!.addToken(token),
-        EffectController(duration: 0.5),
-      ),
-    );
+    sendHome(token.player.start_field, token.player.start_field + moves, game,
+        token);
+    token.field = game.fields[token.player.start_field + moves];
+    token.field!.tokens.add(token);
+
     token.last_round_moved = game.round;
-    //token.position = token.field!.addToken(token);
-    game.NextPlayer();
   } else {
     token.field!.removeToken(token);
     token.field!.rearrangeTokens();
@@ -37,38 +30,30 @@ void Move(EilemitweileGame game, Token token) {
     int end_field = 0;
 
     if (start_field <= token.player.heaven_start &&
-        start_field + game.last_throw.last_throw > token.player.heaven_start) {
-      int steps_in_heaven = game.last_throw.last_throw -
-          (token.player.heaven_start - start_field);
+        start_field + moves > token.player.heaven_start) {
+      int steps_in_heaven = moves - (token.player.heaven_start - start_field);
       sendHome(start_field, token.player.heaven_start, game, token);
       end_field = 68 + steps_in_heaven;
-    } else if (start_field < 69 &&
-        (start_field + game.last_throw.last_throw > 68)) {
-      end_field = start_field + game.last_throw.last_throw - 68;
+    } else if (start_field < 69 && (start_field + moves > 68)) {
+      end_field = start_field + moves - 68;
 
       sendHome(start_field, 68, game, token);
       sendHome(0, end_field, game, token);
     } else {
-      end_field = start_field + game.last_throw.last_throw;
+      end_field = start_field + moves;
       sendHome(start_field, end_field, game, token);
     }
     token.field = game.fields[end_field];
+    token.field!.tokens.add(token);
 
-    token.add(
-      MoveEffect.to(
-        token.field!.addToken(token),
-        EffectController(duration: 0.5),
-      ),
-    );
     token.last_round_moved = game.round;
-    for (Token token in game.current_player!.tokens) {
-      token.can_move = false;
-    }
-    if (CheckVictory(token.player)) {
-      ShowVictoryMessage(token.player, game);
-    } else {
-      game.NextPlayer();
-    }
+  }
+
+  game.thrown_dices.removeAt(0);
+  game.dice_text.text_content = game.thrown_dices.join("\n");
+
+  if (CheckVictory(token.player)) {
+    ShowVictoryMessage(token.player, game);
   }
 }
 
@@ -113,31 +98,56 @@ void ShowVictoryMessage(Player player, EilemitweileGame game) {
 void sendHome(start_field, end_field, EilemitweileGame game, Token token) {
   for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].tokens.length > 0) {
-      token.player.bodycount = token.player.bodycount +
-          game.fields[i].sendHomeTokens(token.player, game.fields[0]);
-      token.bodycount = token.bodycount +
-          game.fields[i].sendHomeTokens(token.player, game.fields[0]);
+      token.player.bodycount =
+          token.player.bodycount + game.fields[i].sendHomeTokens(token.player);
+      token.bodycount =
+          token.bodycount + game.fields[i].sendHomeTokens(token.player);
     }
   }
 }
 
-void ThrowDice(EilemitweileGame game) {
+bool ThrowDice(EilemitweileGame game) {
+  bool start_next_player = false;
+
   int rand_num = Random().nextInt(6) + 1;
   if (rand_num == 6) {
     rand_num = 12;
   }
-  game.last_throw.last_throw = rand_num;
 
-  //check which token can move
-  game.current_player!.has_moveable_token = false;
-  for (Token token in game.current_player!.tokens) {
-    if (check_if_token_can_move(game, token, rand_num)) {
-      game.current_player!.has_moveable_token = true;
+  game.thrown_dices.add(rand_num);
+  game.dice_text.text_content = game.thrown_dices.join("\n");
+
+  if (rand_num == 12 && game.thrown_dices.length == 3) {
+    //Send all home!
+    for (Token token in game.current_player!.tokens) {
+      if (token.field!.number != 0 && token.field!.number < 69) {
+        token.SendMeHome();
+      }
+      game.thrown_dices = [];
+      start_next_player = true;
     }
   }
-  if (!game.current_player!.has_moveable_token) {
-    game.NextPlayer();
+  if (rand_num != 12) {
+    game.can_throw_dice = false;
+    if (check_tokens_to_move(
+            game, game.thrown_dices[game.thrown_dices.length - 1]) ==
+        false) {
+      start_next_player = true;
+    }
   }
+
+  return start_next_player;
+}
+
+bool check_tokens_to_move(EilemitweileGame game, int dice_number) {
+  //check which token can move
+  bool has_moveable_token = false;
+  for (Token token in game.current_player!.tokens) {
+    if (check_if_token_can_move(game, token, dice_number)) {
+      has_moveable_token = true;
+    }
+  }
+  return has_moveable_token;
 }
 
 bool check_if_token_can_move(
@@ -179,12 +189,11 @@ bool check_for_blocked_fields(EilemitweileGame game, Token token, int moves) {
   int end_field = 0;
 
   if (start_field <= token.player.heaven_start &&
-      start_field + game.last_throw.last_throw > token.player.heaven_start) {
+      start_field + moves > token.player.heaven_start) {
     is_blocked =
         field_blocked(game, start_field, token.player.heaven_start, token);
-  } else if (start_field < 69 &&
-      (start_field + game.last_throw.last_throw > 68)) {
-    end_field = start_field + game.last_throw.last_throw - 68;
+  } else if (start_field < 69 && (start_field + moves > 68)) {
+    end_field = start_field + moves - 68;
 
     bool test1 = false;
     bool test2 = false;
@@ -196,8 +205,7 @@ bool check_for_blocked_fields(EilemitweileGame game, Token token, int moves) {
       is_blocked = true;
     }
   } else {
-    is_blocked = field_blocked(
-        game, start_field, (start_field + game.last_throw.last_throw), token);
+    is_blocked = field_blocked(game, start_field, (start_field + moves), token);
   }
   return is_blocked;
 }

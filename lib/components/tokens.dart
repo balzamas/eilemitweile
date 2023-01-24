@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:EileMitWeile/components/movement.dart';
+import 'package:EileMitWeile/components/paeng.dart';
 import 'package:EileMitWeile/components/player.dart';
-import 'package:EileMitWeile/enums.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
@@ -112,15 +112,47 @@ class Token extends PositionComponent
     if (!gameRef.current_player!.is_AI &&
         gameRef.current_player == this.player &&
         this.can_move) {
-      Move(gameRef, this);
+      Move(gameRef, this, gameRef.thrown_dices[0]);
+      this.MoveSprite();
+      if (gameRef.thrown_dices.length == 0 ||
+          check_tokens_to_move(gameRef, gameRef.thrown_dices[0]) == false) {
+        gameRef.NextPlayer();
+      }
     }
+  }
+
+  void MoveSprite() {
+    this.add(
+      MoveEffect.to(
+        this.field!.getTokenPosition(this),
+        EffectController(duration: 0.5),
+      ),
+    );
   }
 
   void sendHome(start_field, end_field) {
     for (var i = start_field + 1; i < end_field; i++) {
       if (gameRef.fields[i].tokens.length > 0) {
-        gameRef.fields[i].sendHomeTokens(this.player, gameRef.fields[0]);
+        gameRef.fields[i].sendHomeTokens(this.player);
       }
     }
+  }
+
+  void SendMeHome() {
+    Paeng paeng = Paeng();
+    paeng.position = Vector2(this.position.x + 25, this.y + 25);
+    //paeng.angle = pi / 3;
+    gameRef.world.add(paeng);
+    paeng.add(RemoveEffect(delay: 1.0));
+
+    this.field!.tokens.remove(this);
+    this.field = game.fields[0];
+    this.field!.tokens.add(this);
+    this.add(
+      MoveEffect.to(
+        gameRef.fields[0].getTokenPosition(this),
+        EffectController(duration: 0.5),
+      ),
+    );
   }
 }

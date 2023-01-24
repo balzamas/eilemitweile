@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
 
 import '../eilemitweile_game.dart';
@@ -22,8 +23,18 @@ class Dice extends PositionComponent
 
   @override
   void onTapUp(TapUpEvent event) {
-    if (!gameRef.current_player!.is_AI) {
-      ThrowDice(gameRef);
+    if (!gameRef.current_player!.is_AI && gameRef.can_throw_dice) {
+      if (ThrowDice(gameRef)) {
+        gameRef.NextPlayer();
+      } else if (!gameRef.can_throw_dice) {
+        int dices = gameRef.thrown_dices.length;
+        for (var i = 0; i < dices; i++) {
+          if (check_tokens_to_move(gameRef, gameRef.thrown_dices[0]) == false) {
+            gameRef.thrown_dices.removeAt(0);
+          }
+          gameRef.dice_text.text_content = gameRef.thrown_dices.join("\n");
+        }
+      }
     }
   }
 }

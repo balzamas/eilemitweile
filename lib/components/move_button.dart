@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:EileMitWeile/components/tokens.dart';
@@ -9,7 +8,6 @@ import 'package:flame/experimental.dart';
 import '../eilemitweile_game.dart';
 import 'package:flutter/widgets.dart';
 
-import 'field.dart';
 import 'movement.dart';
 
 class MoveButton extends PositionComponent
@@ -46,9 +44,14 @@ class MoveButton extends PositionComponent
     Token token = gameRef.current_player!.tokens[this.button_number];
 
     if (!gameRef.current_player!.is_AI &&
-        token.field!.current != FieldState.heaven &&
+        gameRef.current_player == token.player &&
         token.can_move) {
-      Move(gameRef, token);
+      Move(gameRef, token, gameRef.thrown_dices[0]);
+      token.MoveSprite();
+      if (gameRef.thrown_dices.length == 0 ||
+          check_tokens_to_move(gameRef, gameRef.thrown_dices[0]) == false) {
+        gameRef.NextPlayer();
+      }
     }
   }
 }

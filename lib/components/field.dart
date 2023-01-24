@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:EileMitWeile/components/paeng.dart';
 import 'package:EileMitWeile/components/player.dart';
@@ -56,13 +55,12 @@ class Field extends SpriteGroupComponent<FieldState>
   @override
   void update(double dt) {}
 
-  Vector2 addToken(Token token) {
-    token.field = this;
+  Vector2 getTokenPosition(Token token) {
     Vector2 token_pos = Vector2(0, 0);
     if (this.current == FieldState.heaven) {
       token_pos = Vector2(
           (gameRef.heaven.x +
-              (tokens.length * (EilemitweileGame.tokenHeight)) +
+              ((tokens.length - 1) * (EilemitweileGame.tokenHeight)) +
               80),
           gameRef.heaven.y + 80);
     } else if (this.current == FieldState.home) {
@@ -98,24 +96,27 @@ class Field extends SpriteGroupComponent<FieldState>
     } else if (this.current == FieldState.ladder) {
       int ladder_pos = this.number - 69;
 
-      if (this.isRotated) {
+      if (gameRef.current_player == gameRef.players[1] ||
+          gameRef.current_player == gameRef.players[3]) {
         token_pos = Vector2(
             (token.player.ladder_fields[ladder_pos].x -
-                EilemitweileGame.fieldHeight),
+                (1 * EilemitweileGame.fieldHeight)),
             token.player.ladder_fields[ladder_pos].y);
       } else {
         token_pos = Vector2((token.player.ladder_fields[ladder_pos].x),
             token.player.ladder_fields[ladder_pos].y);
       }
     } else if (this.isRotated) {
-      token_pos = Vector2((this.position.x - EilemitweileGame.fieldHeight),
-          this.position.y + (tokens.length * (EilemitweileGame.tokenHeight)));
+      token_pos = Vector2(
+          (this.position.x - EilemitweileGame.fieldHeight),
+          this.position.y +
+              ((tokens.length - 1) * (EilemitweileGame.tokenHeight)));
     } else {
       token_pos = Vector2(
-          (this.position.x + (tokens.length * (EilemitweileGame.tokenHeight))),
+          (this.position.x +
+              ((tokens.length - 1) * (EilemitweileGame.tokenHeight))),
           this.position.y);
     }
-    tokens.add(token);
     return token_pos;
   }
 
@@ -128,21 +129,36 @@ class Field extends SpriteGroupComponent<FieldState>
     for (Token token in tokens) {
       if (this.current == FieldState.normal ||
           this.current == FieldState.bench) {
-        if (this.isRotated) {
-          token.position = Vector2(
-              (this.position.x - EilemitweileGame.fieldHeight),
-              this.position.y + (token_num * (EilemitweileGame.tokenHeight)));
+        if (this.tokens.length > 4) {
+          if (this.isRotated) {
+            token.position = Vector2(
+                (this.position.x - EilemitweileGame.fieldHeight),
+                this.position.y +
+                    (token_num * (EilemitweileGame.tokenHeight / 2)));
+          } else {
+            token.position = Vector2(
+                (this.position.x +
+                    (token_num * (EilemitweileGame.tokenHeight / 2))),
+                this.position.y);
+          }
         } else {
-          token.position = Vector2(
-              (this.position.x + (token_num * (EilemitweileGame.tokenHeight))),
-              this.position.y);
+          if (this.isRotated) {
+            token.position = Vector2(
+                (this.position.x - EilemitweileGame.fieldHeight),
+                this.position.y + (token_num * (EilemitweileGame.tokenHeight)));
+          } else {
+            token.position = Vector2(
+                (this.position.x +
+                    (token_num * (EilemitweileGame.tokenHeight))),
+                this.position.y);
+          }
         }
       }
       token_num++;
     }
   }
 
-  int sendHomeTokens(Player player, Field homefield) {
+  int sendHomeTokens(Player player) {
     int sentHome = 0;
     if (this.current != FieldState.bench && this.current != FieldState.ladder) {
       List<Token> tokens_to_send_home = [];
@@ -155,20 +171,7 @@ class Field extends SpriteGroupComponent<FieldState>
       for (Token token_to_send_home in tokens_to_send_home) {
         sentHome++;
 
-        Paeng paeng = Paeng();
-        paeng.position = Vector2(
-            token_to_send_home.position.x + 25, token_to_send_home.y + 25);
-        //paeng.angle = pi / 3;
-        gameRef.world.add(paeng);
-        paeng.add(RemoveEffect(delay: 1.0));
-
-        tokens.remove(token_to_send_home);
-        token_to_send_home.add(
-          MoveEffect.to(
-            homefield.addToken(token_to_send_home),
-            EffectController(duration: 0.5),
-          ),
-        );
+        token_to_send_home.SendMeHome();
       }
     }
     return sentHome;

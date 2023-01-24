@@ -12,6 +12,5 @@ class Player extends PositionComponent {
   int heaven_start = 0;
   List<Token> tokens = [];
   List<Field> ladder_fields = [];
-  bool has_moveable_token = false;
   int bodycount = 0;
 }

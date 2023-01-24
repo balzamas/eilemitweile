@@ -18,7 +18,7 @@ class KillInfo extends TextComponent with HasGameRef<EilemitweileGame> {
   Future<void>? onLoad() {
     text_content = "Kills\nRed: 0\nBlue: 0\nGreen: 0\nPurple: 0";
     anchor = Anchor.center;
-    position.setValues(160, 1350);
+    position.setValues(175, 1350);
     text = text_content;
 
     return super.onLoad();
