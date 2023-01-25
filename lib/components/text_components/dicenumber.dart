@@ -10,14 +10,14 @@ class ScoreText extends TextComponent with HasGameRef<EilemitweileGame> {
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.rtl,
             style: TextStyle(
-                fontSize: 80, color: Colors.black, fontFamily: 'Komika'));
+                fontSize: 90, color: Colors.black, fontFamily: 'Komika'));
 
   late final TextPaint _textPaint;
 
   @override
   Future<void>? onLoad() {
     text_content = "";
-    position.setValues(190, 500);
+    position.setValues(170, 460);
     anchor = Anchor.center;
 
     return super.onLoad();

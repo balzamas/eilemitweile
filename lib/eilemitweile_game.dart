@@ -240,8 +240,9 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
 
     current_player = players[3];
     info_text.text_content = current_player!.name;
-    NextPlayer();
     players[0].is_AI = false;
+
+    NextPlayer();
 
     final camera = CameraComponent(world: world)
       ..viewfinder.visibleGameSize = Vector2(screenWidth, screenHeight)
@@ -318,6 +319,25 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
           Move(this, token, dice_number);
           return;
         }
+      }
+    }
+    //Can token move on bench?
+    for (Token token in current_player!.tokens) {
+      if (token.can_move &&
+          token.field!.number < 69 &&
+          CheckIfTokenCanMoveOnBench(this, token, dice_number)) {
+        Move(this, token, dice_number);
+        return;
+      }
+    }
+
+    //Can token kill?
+    for (Token token in current_player!.tokens) {
+      if (token.can_move &&
+          token.field!.number < 69 &&
+          CheckIfTokenCanKill(this, token, dice_number)) {
+        Move(this, token, dice_number);
+        return;
       }
     }
     for (Token token in current_player!.tokens) {

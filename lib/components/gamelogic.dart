@@ -11,6 +11,7 @@ import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 
 import '../enums.dart';
+import 'field.dart';
 
 const tau = 2 * pi;
 
@@ -128,7 +129,8 @@ bool ThrowDice(EilemitweileGame game) {
   }
 
   game.thrown_dices.add(rand_num);
-  game.dice_text.text_content = game.thrown_dices.join("\n");
+  game.dice_text.text_content = game.thrown_dices.join(" ");
+  game.dice_text.text_content = "12\n12\n5";
 
   if (rand_num == 12 && game.thrown_dices.length == 3) {
     //Send all home!
@@ -165,6 +167,32 @@ bool CheckTokensToMove(EilemitweileGame game, int dice_number) {
   return has_moveable_token;
 }
 
+bool CheckIfTokenCanMoveOnBench(
+    EilemitweileGame game, Token token, int thrown_number) {
+  if (token.field!.current != FieldState.ladder &&
+      !(token.field!.number <= token.player.heaven_start &&
+          token.field!.number + thrown_number > token.player.heaven_start) &&
+      game.fields[(token.field!.number + thrown_number)].current ==
+          FieldState.bench) {
+    return true;
+  }
+  return false;
+}
+
+bool CheckIfTokenCanKill(
+    EilemitweileGame game, Token token, int thrown_number) {
+  bool token_can_kill = false;
+  if (token.field!.current == FieldState.ladder) {
+    return false;
+  }
+  if (token.field!.number <= token.player.heaven_start &&
+      token.field!.number + thrown_number > token.player.heaven_start) {
+    for (Field field in game.fields) {}
+  }
+
+  return token_can_kill;
+}
+
 bool CheckIfTokenCanMove(EilemitweileGame game, Token token, thrown_number) {
   token.can_move = true;
 
@@ -195,6 +223,37 @@ bool CheckIfTokenCanMove(EilemitweileGame game, Token token, thrown_number) {
   }
 
   return true;
+}
+
+bool CheckForPrey(EilemitweileGame game, Token token, int moves) {
+  int start_field = token.field!.number;
+  int end_field = 0;
+
+  if (start_field <= token.player.heaven_start &&
+      start_field + moves > token.player.heaven_start) {
+    return FieldPrey(game, start_field, token.player.heaven_start, token);
+  } else if (start_field < 69 && (start_field + moves > 68)) {
+    end_field = start_field + moves - 68;
+
+    return FieldPrey(game, start_field, 68, token);
+  } else {
+    return FieldPrey(game, start_field, (start_field + moves), token);
+  }
+}
+
+bool FieldPrey(EilemitweileGame game, start_field, end_field, moving_token) {
+  bool has_prey = false;
+  for (var i = start_field; i < end_field; i++) {
+    if (game.fields[i].current == FieldState.normal &&
+        game.fields[i].tokens.length > 1) {
+      for (Token token in game.fields[i].tokens) {
+        if (token.player != game.current_player) {
+          has_prey = true;
+        }
+      }
+    }
+  }
+  return has_prey;
 }
 
 bool CheckForBlockedFields(EilemitweileGame game, Token token, int moves) {

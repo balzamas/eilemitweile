@@ -94,14 +94,24 @@ class Field extends SpriteGroupComponent<FieldState>
     } else if (this.current == FieldState.ladder) {
       int ladder_pos = this.number - 69;
 
+      int token_count = 0;
+      for (Token token in this.tokens) {
+        if (token.player == gameRef.current_player) {
+          token_count++;
+        }
+      }
+
       if (gameRef.current_player == gameRef.players[1] ||
           gameRef.current_player == gameRef.players[3]) {
         token_pos = Vector2(
             (token.player.ladder_fields[ladder_pos].x -
                 (1 * EilemitweileGame.fieldHeight)),
-            token.player.ladder_fields[ladder_pos].y);
+            token.player.ladder_fields[ladder_pos].y +
+                (token_count - 1) * EilemitweileGame.fieldHeight);
       } else {
-        token_pos = Vector2((token.player.ladder_fields[ladder_pos].x),
+        token_pos = Vector2(
+            (token.player.ladder_fields[ladder_pos].x +
+                (token_count - 1) * EilemitweileGame.fieldHeight),
             token.player.ladder_fields[ladder_pos].y);
       }
     } else if (this.isRotated) {
