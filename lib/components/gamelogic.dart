@@ -130,7 +130,6 @@ bool ThrowDice(EilemitweileGame game) {
 
   game.thrown_dices.add(rand_num);
   game.dice_text.text_content = game.thrown_dices.join(" ");
-  game.dice_text.text_content = "12\n12\n5";
 
   if (rand_num == 12 && game.thrown_dices.length == 3) {
     //Send all home!
