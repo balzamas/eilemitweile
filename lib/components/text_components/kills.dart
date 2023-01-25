@@ -10,7 +10,8 @@ class KillInfo extends TextComponent with HasGameRef<EilemitweileGame> {
     this.text_content = "",
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.rtl,
-            style: TextStyle(fontSize: 50, color: Colors.black));
+            style: TextStyle(
+                fontSize: 50, color: Colors.black, fontFamily: 'Komika'));
 
   late final TextPaint _textPaint;
 

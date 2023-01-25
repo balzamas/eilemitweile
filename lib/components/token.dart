@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:EileMitWeile/components/movement.dart';
-import 'package:EileMitWeile/components/paeng.dart';
+import 'package:EileMitWeile/components/gamelogic.dart';
+import 'package:EileMitWeile/components/sprites/paeng.dart';
 import 'package:EileMitWeile/components/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -115,7 +115,7 @@ class Token extends PositionComponent
       Move(gameRef, this, gameRef.thrown_dices[0]);
       this.MoveSprite();
       if (gameRef.thrown_dices.length == 0 ||
-          check_tokens_to_move(gameRef, gameRef.thrown_dices[0]) == false) {
+          CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
         gameRef.NextPlayer();
       }
     }
@@ -130,7 +130,7 @@ class Token extends PositionComponent
     );
   }
 
-  void sendHome(start_field, end_field) {
+  void SendHome(start_field, end_field) {
     for (var i = start_field + 1; i < end_field; i++) {
       if (gameRef.fields[i].tokens.length > 0) {
         gameRef.fields[i].sendHomeTokens(this.player);

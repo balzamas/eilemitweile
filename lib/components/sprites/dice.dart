@@ -1,13 +1,12 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
 
-import '../eilemitweile_game.dart';
+import '../../eilemitweile_game.dart';
 import 'package:flutter/widgets.dart';
 
-import 'movement.dart';
+import '../gamelogic.dart';
 
 class Dice extends PositionComponent
     with TapCallbacks, HasGameRef<EilemitweileGame> {
@@ -29,7 +28,7 @@ class Dice extends PositionComponent
       } else if (!gameRef.can_throw_dice) {
         int dices = gameRef.thrown_dices.length;
         for (var i = 0; i < dices; i++) {
-          if (check_tokens_to_move(gameRef, gameRef.thrown_dices[0]) == false) {
+          if (CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
             gameRef.thrown_dices.removeAt(0);
           }
           gameRef.dice_text.text_content = gameRef.thrown_dices.join("\n");

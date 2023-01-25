@@ -1,16 +1,22 @@
-# eilemitweile
+# Eile mit Weile App
 
-A new Flutter project.
+Eile mit Weile App written in Flutter with Flame.
 
-## Getting Started
+("Hâte-toi lentement", "Swiss Ludo", "Swiss Parchisi")
 
-This project is a starting point for a Flutter application.
+## Rules
+This app uses the common Eile mit Weile rules ("Hâte-toi lentement", "Swiss Ludo", "Swiss Parchisi").
 
-A few resources to get you started if this is your first Flutter project:
+For more information see:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+https://de.wikipedia.org/wiki/Eile_mit_Weile (German)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://eile-mit-weile.ch/blog/?page_id=151 (German)
+
+## Stage/Notes
+
+Early stage - check issues on GitHub.
+
+Especially bench logic, UI and AI need work to be done.
+
+This is my first Flutter project, therefore the code also needs heavy refactoring.

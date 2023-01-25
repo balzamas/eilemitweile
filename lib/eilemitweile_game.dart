@@ -1,11 +1,11 @@
 import 'package:EileMitWeile/components/box.dart';
-import 'package:EileMitWeile/components/dice.dart';
-import 'package:EileMitWeile/components/heaven.dart';
-import 'package:EileMitWeile/components/home_field.dart';
+import 'package:EileMitWeile/components/sprites/dice.dart';
+import 'package:EileMitWeile/components/sprites/heaven.dart';
+import 'package:EileMitWeile/components/sprites/home_field.dart';
 import 'package:EileMitWeile/components/text_components/infotext.dart';
-import 'package:EileMitWeile/components/move_button.dart';
-import 'package:EileMitWeile/components/tokens.dart';
-import 'package:EileMitWeile/playfield.dart';
+import 'package:EileMitWeile/components/sprites/move_button.dart';
+import 'package:EileMitWeile/components/token.dart';
+import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/flame.dart';
@@ -18,13 +18,13 @@ import 'package:yaml/yaml.dart';
 import 'components/text_components/dicenumber.dart';
 import 'components/field.dart';
 import 'components/text_components/kills.dart';
-import 'components/movement.dart';
+import 'components/gamelogic.dart';
 import 'components/player.dart';
 import 'enums.dart';
 
 class EilemitweileGame extends FlameGame with HasTappableComponents {
   @override
-  Color backgroundColor() => Color.fromARGB(255, 207, 232, 245);
+  Color backgroundColor() => Color.fromARGB(255, 245, 255, 157);
 
   static const double fieldWidth = 200.0;
   static const double fieldHeight = 50.0;
@@ -56,7 +56,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
 
   Player? current_player;
   Heaven heaven = Heaven();
-  int round = 1;
+  int round = 0;
   Dice dice = Dice();
 
   @override
@@ -75,9 +75,9 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
       move_buttons.add(button);
     }
 
-    fields = createFields();
+    fields = CreateFields();
 
-    players = createPlayers();
+    players = CreatePlayers();
 
     final List<HomeField> home_fields = [];
 
@@ -214,7 +214,8 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
     TextComponent version = TextComponent(
         text: "Version: " + parsedYaml['version'], textRenderer: textPaint);
 
-    version.position = Vector2(0, EilemitweileGame.screenHeight - 100);
+    version.position = Vector2(EilemitweileGame.screenHeight / 2 + 200,
+        EilemitweileGame.screenHeight - 100);
 
     Box box = Box();
 
@@ -275,7 +276,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
       }
 
       info_text.text_content =
-          current_player!.name + "\n\nTurn " + round.toString();
+          current_player!.name + "\nTurn " + round.toString();
 
       if (current_player!.is_AI) {
         Future.delayed(const Duration(milliseconds: 500), () {
@@ -292,7 +293,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
           Future.delayed(const Duration(milliseconds: 500), () {
             int dices = thrown_dices.length;
             for (var i = 0; i < dices; i++) {
-              if (check_tokens_to_move(this, thrown_dices[0])) {
+              if (CheckTokensToMove(this, thrown_dices[0])) {
                 Move_KI(thrown_dices[0]);
               } else {
                 thrown_dices.removeAt(0);

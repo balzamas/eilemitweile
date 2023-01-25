@@ -1,5 +1,5 @@
 import 'package:EileMitWeile/components/field.dart';
-import 'package:EileMitWeile/components/tokens.dart';
+import 'package:EileMitWeile/components/token.dart';
 import 'package:flame/components.dart';
 
 class Player extends PositionComponent {

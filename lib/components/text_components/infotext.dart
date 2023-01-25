@@ -10,15 +10,16 @@ class InfoText extends TextComponent with HasGameRef<EilemitweileGame> {
     this.text_content = "",
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.rtl,
-            style: TextStyle(fontSize: 80, color: Colors.black));
+            style: TextStyle(
+                fontSize: 60, color: Colors.black, fontFamily: 'Komika'));
 
   late final TextPaint _textPaint;
 
   @override
   Future<void>? onLoad() {
-    text_content = "Red\n\nTurn 1";
+    text_content = "Red\nTurn 1";
     anchor = Anchor.center;
-    position.setValues(160, 1000);
+    position.setValues(200, 1000);
     text = text_content;
 
     return super.onLoad();

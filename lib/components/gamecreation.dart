@@ -1,12 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 
-import 'components/field.dart';
-import 'components/player.dart';
-import 'eilemitweile_game.dart';
-import 'enums.dart';
+import 'field.dart';
+import 'player.dart';
+import '../eilemitweile_game.dart';
+import '../enums.dart';
 
-List<Player> createPlayers() {
+List<Player> CreatePlayers() {
   double console = EilemitweileGame.console;
   double fieldWidth = EilemitweileGame.fieldWidth;
   double fieldHeight = EilemitweileGame.fieldHeight;
@@ -66,7 +66,7 @@ List<Player> createPlayers() {
   return players;
 }
 
-List<Field> createFields() {
+List<Field> CreateFields() {
   double console = EilemitweileGame.console;
   double fieldWidth = EilemitweileGame.fieldWidth;
   double fieldHeight = EilemitweileGame.fieldHeight;

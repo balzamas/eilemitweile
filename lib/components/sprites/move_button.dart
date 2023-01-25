@@ -1,14 +1,13 @@
 import 'dart:ui';
 
-import 'package:EileMitWeile/components/tokens.dart';
-import 'package:EileMitWeile/enums.dart';
+import 'package:EileMitWeile/components/token.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
 
-import '../eilemitweile_game.dart';
+import '../../eilemitweile_game.dart';
 import 'package:flutter/widgets.dart';
 
-import 'movement.dart';
+import '../gamelogic.dart';
 
 class MoveButton extends PositionComponent
     with TapCallbacks, HasPaint, HasGameRef<EilemitweileGame> {
@@ -17,10 +16,10 @@ class MoveButton extends PositionComponent
   @override
   bool get debugMode => false;
 
-  static late final Sprite movebuttonSprite1 = emwSprite(0, 300, 350, 350);
-  static late final Sprite movebuttonSprite2 = emwSprite(350, 300, 350, 350);
-  static late final Sprite movebuttonSprite3 = emwSprite(700, 300, 350, 350);
-  static late final Sprite movebuttonSprite4 = emwSprite(1050, 300, 350, 350);
+  static late final Sprite movebuttonSprite1 = emwSprite(0, 300, 332, 332);
+  static late final Sprite movebuttonSprite2 = emwSprite(332, 300, 332, 332);
+  static late final Sprite movebuttonSprite3 = emwSprite(664, 300, 332, 332);
+  static late final Sprite movebuttonSprite4 = emwSprite(996, 300, 332, 332);
 
   @override
   void render(Canvas canvas) {
@@ -49,7 +48,7 @@ class MoveButton extends PositionComponent
       Move(gameRef, token, gameRef.thrown_dices[0]);
       token.MoveSprite();
       if (gameRef.thrown_dices.length == 0 ||
-          check_tokens_to_move(gameRef, gameRef.thrown_dices[0]) == false) {
+          CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
         gameRef.NextPlayer();
       }
     }

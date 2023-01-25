@@ -3,19 +3,19 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
 
-import '../eilemitweile_game.dart';
+import '../../eilemitweile_game.dart';
 import 'package:flutter/widgets.dart';
 
-class Victory extends PositionComponent
+class ThreeSix extends PositionComponent
     with TapCallbacks, HasGameRef<EilemitweileGame> {
   @override
   bool get debugMode => false;
 
-  static late final Sprite victorySprite = emwSprite(410, 651, 410, 370);
+  static late final Sprite threesixSprite = emwSprite(665, 1030, 810, 710);
 
   @override
   void render(Canvas canvas) {
-    victorySprite.render(canvas,
+    threesixSprite.render(canvas,
         position: Vector2(0, 0), anchor: Anchor.center);
   }
 }

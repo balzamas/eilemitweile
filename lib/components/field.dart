@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:EileMitWeile/components/paeng.dart';
 import 'package:EileMitWeile/components/player.dart';
-import 'package:EileMitWeile/components/tokens.dart';
+import 'package:EileMitWeile/components/token.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import '../eilemitweile_game.dart';
 import '../enums.dart';
 
