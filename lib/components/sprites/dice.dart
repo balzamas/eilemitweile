@@ -31,7 +31,7 @@ class Dice extends PositionComponent
           if (CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
             gameRef.thrown_dices.removeAt(0);
           }
-          gameRef.dice_text.text_content = gameRef.thrown_dices.join("\n");
+          gameRef.dice_new.text = gameRef.thrown_dices.join("\n");
         }
       }
     }

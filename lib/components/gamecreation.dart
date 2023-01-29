@@ -51,7 +51,7 @@ List<Player> CreatePlayers() {
 
       case 4:
         {
-          player.name = "Violet";
+          player.name = "Purple";
           player.home_x = console + (8 * fieldHeight + 3 * fieldWidth);
           player.home_y = 0;
           player.start_field = 51;

@@ -17,6 +17,7 @@ import 'package:yaml/yaml.dart';
 
 import 'components/text_components/dicenumber.dart';
 import 'components/field.dart';
+import 'components/text_components/dicenumber_new.dart';
 import 'components/text_components/kills.dart';
 import 'components/gamelogic.dart';
 import 'components/player.dart';
@@ -41,12 +42,12 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
 
   static final double console = 450;
 
-  late final ScoreText dice_text;
   late final InfoText info_text;
   late final KillInfo kill_text;
   List<Field> fields = [];
   List<Player> players = [];
   List<MoveButton> move_buttons = [];
+  DiceText dice_new = DiceText("hans");
 
   List<int> thrown_dices = [];
   int current_dice = 0;
@@ -63,8 +64,9 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
   Future<void> onLoad() async {
     await Flame.images.load('eilemitweile-sprites.png');
 
-    dice.position = Vector2(10, 50);
-    dice.size = Vector2(400, 1000);
+    dice.anchor = Anchor.topCenter;
+    dice.position = Vector2(console / 2, fieldHeight);
+    dice.size = Vector2(362, 1000);
 
     for (var i = 0; i < 4; i++) {
       MoveButton button = MoveButton();
@@ -224,7 +226,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
     box.addAll(players);
     box.addAll(fields);
     box.add(dice);
-    box.add(dice_text = ScoreText.playerScore());
+    box.add(dice_new);
     box.add(info_text = InfoText.playerScore());
     box.add(kill_text = KillInfo.killInfo());
     box.addAll(home_fields);
@@ -241,6 +243,9 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
     current_player = players[3];
     info_text.text_content = current_player!.name;
     players[0].is_AI = false;
+
+    dice_new.position = Vector2(console / 2, 600);
+    dice_new.anchor = Anchor.center;
 
     NextPlayer();
 
@@ -265,7 +270,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
     Future.delayed(const Duration(milliseconds: 500), () {
       can_throw_dice = true;
       thrown_dices = [];
-      dice_text.text_content = "";
+      dice_new.text = "";
 
       final index = players
           .indexWhere((element) => element.color == current_player!.color);
@@ -313,6 +318,15 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
   }
 
   void Move_KI(int dice_number) {
+    //is there a token right behind me?
+    for (Token token in current_player!.tokens) {
+      if (token.can_move &&
+          token.field!.number < 69 &&
+          CheckIfTokenBehindMe(this, token, dice_number)) {
+        Move(this, token, dice_number);
+        return;
+      }
+    }
     if (dice_number == 5) {
       for (Token token in current_player!.tokens) {
         if (token.can_move && token.field!.number == 0) {
@@ -335,7 +349,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
     for (Token token in current_player!.tokens) {
       if (token.can_move &&
           token.field!.number < 69 &&
-          CheckIfTokenCanKill(this, token, dice_number)) {
+          CheckForPrey(this, token, dice_number)) {
         Move(this, token, dice_number);
         return;
       }
@@ -352,6 +366,23 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
         return;
       }
     }
+  }
+
+  void NewGame() {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      round = 0;
+      for (Player player in players) {
+        player.bodycount = 0;
+        for (Token token in player.tokens) {
+          token.SendMeHome();
+          token.bodycount = 0;
+          token.last_round_moved = 0;
+        }
+      }
+
+      current_player = players[3];
+      NextPlayer();
+    });
   }
 }
 

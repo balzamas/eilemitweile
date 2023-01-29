@@ -19,7 +19,7 @@ class InfoText extends TextComponent with HasGameRef<EilemitweileGame> {
   Future<void>? onLoad() {
     text_content = "Red\nTurn 1";
     anchor = Anchor.center;
-    position.setValues(200, 1000);
+    position.setValues(280, 950);
     text = text_content;
 
     return super.onLoad();

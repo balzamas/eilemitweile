@@ -52,10 +52,12 @@ void Move(EilemitweileGame game, Token token, int moves) {
   }
 
   game.thrown_dices.removeAt(0);
-  game.dice_text.text_content = game.thrown_dices.join("\n");
+  game.dice_new.text = game.thrown_dices.join("\n");
 
   if (CheckVictory(token.player)) {
     ShowVictoryMessage(token.player, game);
+
+    game.NewGame();
   }
 }
 
@@ -104,7 +106,7 @@ void ShowVictoryMessage(Player player, EilemitweileGame game) {
 
   winner.position = Vector2(EilemitweileGame.screenWidth / 2,
       EilemitweileGame.screenHeight / 2 + 300);
-  winner.add(RemoveEffect(delay: 2.0));
+  winner.add(RemoveEffect(delay: 4.0));
 
   game.world.add(winner);
 }
@@ -129,7 +131,7 @@ bool ThrowDice(EilemitweileGame game) {
   }
 
   game.thrown_dices.add(rand_num);
-  game.dice_text.text_content = game.thrown_dices.join(" ");
+  game.dice_new.text = game.thrown_dices.join(" ");
 
   if (rand_num == 12 && game.thrown_dices.length == 3) {
     //Send all home!
@@ -166,6 +168,55 @@ bool CheckTokensToMove(EilemitweileGame game, int dice_number) {
   return has_moveable_token;
 }
 
+bool CheckIfTokenBehindMe(
+    EilemitweileGame game, Token token, int thrown_number) {
+  if (token.field!.current == FieldState.normal) {
+    if (token.field!.number == 1) {
+      bool is_in_danger = false;
+      if (CheckFieldForEnemyToken(game.fields[68], token)) {
+        is_in_danger = true;
+      }
+      if (CheckFieldForEnemyToken(game.fields[67], token)) {
+        is_in_danger = true;
+      }
+      return is_in_danger;
+    }
+    if (token.field!.number == 2) {
+      bool is_in_danger = false;
+      if (CheckFieldForEnemyToken(game.fields[68], token)) {
+        is_in_danger = true;
+      }
+      if (CheckFieldForEnemyToken(game.fields[1], token)) {
+        is_in_danger = true;
+      }
+      return is_in_danger;
+    }
+
+    bool is_in_danger = false;
+    if (CheckFieldForEnemyToken(game.fields[token.field!.number - 1], token)) {
+      is_in_danger = true;
+    }
+    if (CheckFieldForEnemyToken(game.fields[token.field!.number - 1], token)) {
+      is_in_danger = true;
+    }
+    return is_in_danger;
+  }
+  return false;
+}
+
+bool CheckFieldForEnemyToken(Field field, Token token) {
+  int enemy_tokens = 0;
+  for (Token token_on_field in field.tokens) {
+    if (token_on_field.player != token.player) {
+      enemy_tokens++;
+    }
+  }
+  if (enemy_tokens > 0) {
+    return true;
+  }
+  return false;
+}
+
 bool CheckIfTokenCanMoveOnBench(
     EilemitweileGame game, Token token, int thrown_number) {
   if (token.field!.current != FieldState.ladder &&
@@ -176,20 +227,6 @@ bool CheckIfTokenCanMoveOnBench(
     return true;
   }
   return false;
-}
-
-bool CheckIfTokenCanKill(
-    EilemitweileGame game, Token token, int thrown_number) {
-  bool token_can_kill = false;
-  if (token.field!.current == FieldState.ladder) {
-    return false;
-  }
-  if (token.field!.number <= token.player.heaven_start &&
-      token.field!.number + thrown_number > token.player.heaven_start) {
-    for (Field field in game.fields) {}
-  }
-
-  return token_can_kill;
 }
 
 bool CheckIfTokenCanMove(EilemitweileGame game, Token token, thrown_number) {
@@ -207,7 +244,7 @@ bool CheckIfTokenCanMove(EilemitweileGame game, Token token, thrown_number) {
       token.field!.number + thrown_number > token.player.heaven_start) {
     int steps_in_heaven =
         thrown_number - (token.player.heaven_start - token.field!.number);
-    if (steps_in_heaven > 9) {
+    if (steps_in_heaven > 8) {
       token.can_move = false;
       return false;
     }
@@ -242,9 +279,9 @@ bool CheckForPrey(EilemitweileGame game, Token token, int moves) {
 
 bool FieldPrey(EilemitweileGame game, start_field, end_field, moving_token) {
   bool has_prey = false;
-  for (var i = start_field; i < end_field; i++) {
+  for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].current == FieldState.normal &&
-        game.fields[i].tokens.length > 1) {
+        game.fields[i].tokens.length > 0) {
       for (Token token in game.fields[i].tokens) {
         if (token.player != game.current_player) {
           has_prey = true;
@@ -263,7 +300,7 @@ bool CheckForBlockedFields(EilemitweileGame game, Token token, int moves) {
   if (start_field <= token.player.heaven_start &&
       start_field + moves > token.player.heaven_start) {
     is_blocked =
-        FieldBlocked(game, start_field, token.player.heaven_start, token);
+        FieldBlocked(game, start_field, token.player.heaven_start + 1, token);
   } else if (start_field < 69 && (start_field + moves > 68)) {
     end_field = start_field + moves - 68;
 
