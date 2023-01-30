@@ -3,12 +3,9 @@ import 'dart:math';
 import 'package:EileMitWeile/components/player.dart';
 import 'package:EileMitWeile/components/sprites/threesix.dart';
 import 'package:EileMitWeile/components/token.dart';
-import 'package:EileMitWeile/components/sprites/victory.dart';
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-import 'package:flame/palette.dart';
-import 'package:flutter/material.dart';
 
 import '../enums.dart';
 import 'field.dart';
@@ -52,7 +49,7 @@ void Move(EileMitWeileGame game, Token token, int moves) {
   }
 
   game.thrown_dices.removeAt(0);
-  game.dice_new.text = game.thrown_dices.join(" ");
+  game.dice_text.text = game.thrown_dices.join(" ");
 
   if (CheckVictory(token.player)) {
     game.router.pushNamed('victory');
@@ -107,7 +104,7 @@ bool ThrowDice(EileMitWeileGame game) {
   }
 
   game.thrown_dices.add(rand_num);
-  game.dice_new.text = game.thrown_dices.join(" ");
+  game.dice_text.text = game.thrown_dices.join(" ");
 
   if (rand_num == 12 && game.thrown_dices.length == 3) {
     //Send all home!

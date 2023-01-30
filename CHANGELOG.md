@@ -1,3 +1,7 @@
+## v0.0.8
+- Added routes
+- Added Victory screen fullscreen
+
 ## v0.0.7
 - Fix: Restart game when someone has won
 - Violet to purple

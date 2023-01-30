@@ -10,7 +10,7 @@ class DiceText extends TextBoxComponent {
           textRenderer: TextPaint(
               textDirection: TextDirection.rtl,
               style: TextStyle(
-                  fontSize: 130, color: Colors.black, fontFamily: 'Komika')),
+                  fontSize: 110, color: Colors.black, fontFamily: 'Komika')),
           boxConfig: TextBoxConfig(timePerChar: 0.05),
         );
 

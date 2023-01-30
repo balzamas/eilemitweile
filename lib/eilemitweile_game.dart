@@ -1,11 +1,8 @@
-import 'package:EileMitWeile/components/box.dart';
 import 'package:EileMitWeile/components/sprites/dice.dart';
 import 'package:EileMitWeile/components/sprites/heaven.dart';
-import 'package:EileMitWeile/components/sprites/home_field.dart';
 import 'package:EileMitWeile/components/text_components/infotext.dart';
 import 'package:EileMitWeile/components/sprites/move_button.dart';
 import 'package:EileMitWeile/components/token.dart';
-import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
@@ -16,16 +13,15 @@ import 'package:flame/palette.dart';
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:yaml/yaml.dart';
 
 import 'components/field.dart';
 import 'components/screens/maingame.dart';
+import 'components/screens/newgame.dart';
 import 'components/screens/victoryscreen.dart';
 import 'components/text_components/dicetext.dart';
 import 'components/text_components/kills.dart';
 import 'components/gamelogic.dart';
 import 'components/player.dart';
-import 'enums.dart';
 
 class EileMitWeileGame extends FlameGame with HasTappableComponents {
   late final RouterComponent router;
@@ -57,7 +53,7 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   List<Field> fields = [];
   List<Player> players = [];
   List<MoveButton> move_buttons = [];
-  DiceText dice_new = DiceText("hans");
+  DiceText dice_text = DiceText("hans");
 
   List<int> thrown_dices = [];
   int current_dice = 0;
@@ -77,7 +73,8 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       router = RouterComponent(
         routes: {
           'game': Route(MainGame.new),
-          'victory': Route(VictoryScreen.new)
+          'victory': Route(VictoryScreen.new, maintainState: false),
+          'newgame': Route(NewGameScreen.new)
         },
         initialRoute: 'game',
       ),
@@ -98,7 +95,7 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
     Future.delayed(const Duration(milliseconds: 500), () {
       can_throw_dice = true;
       thrown_dices = [];
-      dice_new.text = "";
+      dice_text.text = "";
 
       final index = players
           .indexWhere((element) => element.color == current_player!.color);

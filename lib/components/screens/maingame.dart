@@ -1,6 +1,4 @@
 import 'package:EileMitWeile/components/box.dart';
-import 'package:EileMitWeile/components/sprites/dice.dart';
-import 'package:EileMitWeile/components/sprites/heaven.dart';
 import 'package:EileMitWeile/components/sprites/home_field.dart';
 import 'package:EileMitWeile/components/text_components/infotext.dart';
 import 'package:EileMitWeile/components/sprites/move_button.dart';
@@ -9,9 +7,6 @@ import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
-import 'package:flame/flame.dart';
-
-import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 
 import 'package:flutter/rendering.dart';
@@ -205,14 +200,14 @@ class MainGame extends Component
       borderColor: const Color(0xffedffab),
     );
 
-    _button1.position = Vector2(300, 300);
+    _button1.position = Vector2(300, 600);
 
     gameRef.world.add(box);
     gameRef.world.add(version);
     box.addAll(gameRef.players);
     box.addAll(gameRef.fields);
     box.add(gameRef.dice);
-    box.add(gameRef.dice_new);
+    box.add(gameRef.dice_text);
     box.add(gameRef.info_text = InfoText.playerScore());
     box.add(gameRef.kill_text = KillInfo.killInfo());
     box.addAll(home_fields);
@@ -223,7 +218,7 @@ class MainGame extends Component
     box.addAll(heaven_fields2);
     box.addAll(heaven_fields3);
     box.addAll(tokens);
-    // box.add(_button1);
+    //box.add(_button1);
 
     await add(gameRef.world);
 
@@ -231,8 +226,8 @@ class MainGame extends Component
     gameRef.info_text.text_content = gameRef.current_player!.name;
     gameRef.players[0].is_AI = false;
 
-    gameRef.dice_new.position = Vector2(EileMitWeileGame.console / 2, 600);
-    gameRef.dice_new.anchor = Anchor.center;
+    gameRef.dice_text.position = Vector2(EileMitWeileGame.console / 2, 600);
+    gameRef.dice_text.anchor = Anchor.center;
 
     gameRef.NextPlayer();
 
