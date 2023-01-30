@@ -31,4 +31,4 @@ This is my first Flutter project, therefore the code also needs heavy refactorin
 
 Contact: d.berger@dontsniff.co.uk
 
-Thanks to Eile-mit-Weile-WM-Team and my dear Madlaina
+Thanks to the Eile-mit-Weile-WM-Team and my dear Madlaina

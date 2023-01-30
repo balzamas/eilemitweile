@@ -8,7 +8,7 @@ class DiceText extends TextBoxComponent {
           align: Anchor.center,
           size: Vector2(500, 200),
           textRenderer: TextPaint(
-              textDirection: TextDirection.rtl,
+              textDirection: TextDirection.ltr,
               style: TextStyle(
                   fontSize: 110, color: Colors.black, fontFamily: 'Komika')),
           boxConfig: TextBoxConfig(timePerChar: 0.05),

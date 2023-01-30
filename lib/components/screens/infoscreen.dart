@@ -1,16 +1,16 @@
-import 'package:EileMitWeile/components/token.dart';
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
 import 'package:flame/palette.dart';
 
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:yaml/yaml.dart';
 
 import '../../eilemitweile_game.dart';
 import '../box_victory.dart';
-import '../sprites/victory.dart';
 
-class VictoryScreen extends Component
+class InfoScreen extends Component
     with TapCallbacks, HasGameRef<EileMitWeileGame> {
   @override
   bool get debugMode => false;
@@ -19,13 +19,8 @@ class VictoryScreen extends Component
   Future<void> onLoad() async {
     Vector2 scale = Vector2.all(game.size.x / gameRef.screenWidth);
 
-    Victory victory = Victory();
-    victory.position = Vector2(game.size.x / 2, scale.y * 200);
-    victory.scale = scale / 2;
-    add(victory);
-
     final style = TextStyle(
-        color: BasicPalette.black.color, fontSize: 100, fontFamily: 'Komika');
+        color: BasicPalette.black.color, fontSize: 150, fontFamily: 'Komika');
 
     final style_small = TextStyle(
         color: BasicPalette.black.color, fontSize: 30, fontFamily: 'Komika');
@@ -33,54 +28,48 @@ class VictoryScreen extends Component
     TextPaint textPaint = TextPaint(style: style);
     TextPaint textPaint_small = TextPaint(style: style_small);
 
-    TextComponent winner = TextComponent(
-        text: gameRef.current_player!.name,
-        textRenderer: textPaint,
-        anchor: Anchor.center);
+    TextComponent title = TextComponent(
+        text: "Eile mit Weile", textRenderer: textPaint, anchor: Anchor.center);
 
-    winner.position = Vector2(game.size.x / 2, scale.y * 500);
-    winner.scale = scale;
+    title.position = Vector2(game.size.x / 2, scale.y * 100);
+    title.scale = scale;
 
-    add(winner);
+    add(title);
 
-    TextComponent stats = TextComponent(
-        text: "Turns: " + game.round.toString(),
+    final yamlString = await rootBundle.loadString('pubspec.yaml');
+    final parsedYaml = loadYaml(yamlString);
+
+    TextComponent subtitle = TextComponent(
+        text: '"Hâte-toi lentement", "Swiss Ludo", "Swiss Parchisi"\n' +
+            "Version: " +
+            parsedYaml['version'],
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    stats.position = Vector2(game.size.x / 2, scale.y * 700);
-    stats.scale = scale;
+    subtitle.position = Vector2(game.size.x / 2, scale.y * 250);
+    subtitle.scale = scale;
+    add(subtitle);
 
-    add(stats);
-
-    Token topkiller_1;
-    topkiller_1 = game.players[0].tokens[0];
-    for (Token token in game.players[0].tokens) {
-      if (token.bodycount > topkiller_1.bodycount) {
-        topkiller_1 = token;
-      }
-    }
-
-    Token topkiller_1_x = Token(game.players[0]);
-    topkiller_1_x.token_number = topkiller_1.token_number;
-
-    topkiller_1_x.position =
-        Vector2(game.size.x / 2 - (scale.x * 25), scale.y * 800);
-    topkiller_1_x.scale = scale;
-    topkiller_1_x.anchor = Anchor.center;
-    add(topkiller_1_x);
-
-    TextComponent kills = TextComponent(
-        text: "Your top killer with " +
-            topkiller_1.bodycount.toString() +
-            " kills:",
+    TextComponent help = TextComponent(
+        text: 'This app uses (mostly) the common Eile mit Weile rules.\n'
+            'In short:\n'
+            '- You need a 5 to move a token onto the field.\n'
+            '- With a six you can move 12 fields and you can roll the dice again.\n'
+            '- Three six in a row -> all tokens go gome.\n'
+            '- Two token on a bench block the field for others passing through.\n'
+            '- If two players have two tokens on a bench then both can move.\n'
+            '- Others can always move up onto the bench.\n\n'
+            'Contact: d.berger@dontsniff.co.uk\n'
+            'GitHub: https://github.com/balzamas/eilemitweile\n\n'
+            'Thanks to the Eile-mit-Weile-WM-OK, Madlaina and the Flame team.',
         textRenderer: textPaint_small,
-        anchor: Anchor.center);
+        size: Vector2(game.size.x - 100, game.size.y),
+        anchor: Anchor.topCenter);
 
-    kills.position = Vector2(game.size.x / 2, scale.y * 775);
-    kills.scale = scale;
+    help.position = Vector2(game.size.x / 2, scale.y * 350);
+    help.scale = scale;
 
-    add(kills);
+    add(help);
 
     BoxVictory boxv = BoxVictory();
 

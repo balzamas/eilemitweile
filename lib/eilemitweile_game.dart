@@ -1,8 +1,10 @@
+import 'package:EileMitWeile/components/screens/infoscreen.dart';
 import 'package:EileMitWeile/components/sprites/dice.dart';
 import 'package:EileMitWeile/components/sprites/heaven.dart';
 import 'package:EileMitWeile/components/text_components/infotext.dart';
 import 'package:EileMitWeile/components/sprites/move_button.dart';
 import 'package:EileMitWeile/components/token.dart';
+import 'package:EileMitWeile/enums.dart';
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
@@ -74,7 +76,8 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
         routes: {
           'game': Route(MainGame.new),
           'victory': Route(VictoryScreen.new, maintainState: false),
-          'newgame': Route(NewGameScreen.new)
+          'newgame': Route(NewGameScreen.new),
+          'info': Route(InfoScreen.new)
         },
         initialRoute: 'game',
       ),
@@ -179,12 +182,22 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
         return;
       }
     }
+
+    //Move with tokens who are not on a bench/ladder
+    for (Token token in current_player!.tokens) {
+      if (token.can_move && token.field!.current == FieldState.normal) {
+        Move(this, token, dice_number);
+        return;
+      }
+    }
+
     for (Token token in current_player!.tokens) {
       if (token.can_move && token.field!.number < 69) {
         Move(this, token, dice_number);
         return;
       }
     }
+
     for (Token token in current_player!.tokens) {
       if (token.can_move) {
         Move(this, token, dice_number);

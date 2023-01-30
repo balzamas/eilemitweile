@@ -1,6 +1,8 @@
 ## v0.0.8
 - Added routes
 - Added Victory screen fullscreen
+- First move with tokens out in the wild, then with those on benches/ladder
+- Added info screen
 
 ## v0.0.7
 - Fix: Restart game when someone has won

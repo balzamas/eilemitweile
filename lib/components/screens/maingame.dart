@@ -7,11 +7,8 @@ import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
-import 'package:flame/palette.dart';
 
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:yaml/yaml.dart';
 
 import '../../eilemitweile_game.dart';
 import '../../enums.dart';
@@ -178,32 +175,20 @@ class MainGame extends Component
       }
     }
 
-    final style = TextStyle(color: BasicPalette.black.color, fontSize: 40);
-
-    TextPaint textPaint = TextPaint(style: style);
-
-    final yamlString = await rootBundle.loadString('pubspec.yaml');
-    final parsedYaml = loadYaml(yamlString);
-
-    TextComponent version = TextComponent(
-        text: "Version: " + parsedYaml['version'], textRenderer: textPaint);
-
-    version.position =
-        Vector2(gameRef.screenHeight / 2 + 200, gameRef.screenHeight - 100);
-
     Box box = Box();
 
-    RoundedButton _button1 = RoundedButton(
-      text: 'Level 1',
-      action: () => gameRef.router.pushNamed('victory'),
-      color: const Color(0xffadde6c),
-      borderColor: const Color(0xffedffab),
+    RoundedButton infoButton = RoundedButton(
+      text: 'Info',
+      action: () => gameRef.router.pushNamed('info'),
+      color: Color.fromARGB(255, 238, 255, 0),
+      borderColor: Color.fromARGB(255, 0, 0, 0),
     );
 
-    _button1.position = Vector2(300, 600);
+    infoButton.position =
+        Vector2(gameRef.screenHeight / 2 - 520, gameRef.screenHeight - 100);
 
     gameRef.world.add(box);
-    gameRef.world.add(version);
+    //gameRef.world.add(version);
     box.addAll(gameRef.players);
     box.addAll(gameRef.fields);
     box.add(gameRef.dice);
@@ -218,7 +203,7 @@ class MainGame extends Component
     box.addAll(heaven_fields2);
     box.addAll(heaven_fields3);
     box.addAll(tokens);
-    //box.add(_button1);
+    box.add(infoButton);
 
     await add(gameRef.world);
 
@@ -249,25 +234,26 @@ class RoundedButton extends PositionComponent with TapCallbacks {
     super.anchor = Anchor.center,
   }) : _textDrawable = TextPaint(
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 50,
             color: Color(0xFF000000),
             fontWeight: FontWeight.w800,
+            fontFamily: 'Komika',
           ),
         ).toTextPainter(text) {
-    size = Vector2(150, 40);
+    size = Vector2(150, 70);
 
     _textOffset = Offset(
       (size.x - _textDrawable.width) / 2,
       (size.y - _textDrawable.height) / 2,
     );
 
-    _rrect = RRect.fromLTRBR(0, 0, size.x, size.y, Radius.circular(size.y / 2));
+    _rrect = RRect.fromLTRBR(0, 0, size.x, size.y, Radius.circular(size.y / 6));
 
     _bgPaint = Paint()..color = color;
 
     _borderPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
+      ..strokeWidth = 4
       ..color = borderColor;
   }
 
