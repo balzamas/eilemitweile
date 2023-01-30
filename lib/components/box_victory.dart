@@ -23,6 +23,7 @@ class BoxVictory extends PositionComponent
 
   @override
   void onTapUp(TapUpEvent event) {
+    gameRef.NewGame();
     gameRef.router.pop();
   }
 }
