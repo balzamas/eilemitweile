@@ -2,7 +2,6 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 class DiceText extends TextBoxComponent {
-  String _text = "";
   DiceText(String text)
       : super(
           text: text,

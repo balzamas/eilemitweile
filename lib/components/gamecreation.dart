@@ -7,9 +7,9 @@ import '../eilemitweile_game.dart';
 import '../enums.dart';
 
 List<Player> CreatePlayers() {
-  double console = EilemitweileGame.console;
-  double fieldWidth = EilemitweileGame.fieldWidth;
-  double fieldHeight = EilemitweileGame.fieldHeight;
+  double console = EileMitWeileGame.console;
+  double fieldWidth = EileMitWeileGame.fieldWidth;
+  double fieldHeight = EileMitWeileGame.fieldHeight;
   List<Player> players = [];
 
   for (var i = 1; i < 5; i++) {
@@ -67,9 +67,9 @@ List<Player> CreatePlayers() {
 }
 
 List<Field> CreateFields() {
-  double console = EilemitweileGame.console;
-  double fieldWidth = EilemitweileGame.fieldWidth;
-  double fieldHeight = EilemitweileGame.fieldHeight;
+  double console = EileMitWeileGame.console;
+  double fieldWidth = EileMitWeileGame.fieldWidth;
+  double fieldHeight = EileMitWeileGame.fieldHeight;
   List<Field> fields = [];
 
   Field home_field = Field(fieldst: FieldState.home);

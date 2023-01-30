@@ -3,7 +3,7 @@ import 'package:flame/components.dart';
 
 import 'package:flutter/material.dart';
 
-class InfoText extends TextComponent with HasGameRef<EilemitweileGame> {
+class InfoText extends TextComponent with HasGameRef<EileMitWeileGame> {
   late String text_content;
 
   InfoText.playerScore({

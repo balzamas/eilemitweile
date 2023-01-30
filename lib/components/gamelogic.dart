@@ -15,7 +15,7 @@ import 'field.dart';
 
 const tau = 2 * pi;
 
-void Move(EilemitweileGame game, Token token, int moves) {
+void Move(EileMitWeileGame game, Token token, int moves) {
   if (token.field!.number == 0) {
     token.field!.removeToken(token);
     SendHome(token.player.start_field, token.player.start_field + moves, game,
@@ -52,10 +52,10 @@ void Move(EilemitweileGame game, Token token, int moves) {
   }
 
   game.thrown_dices.removeAt(0);
-  game.dice_new.text = game.thrown_dices.join("\n");
+  game.dice_new.text = game.thrown_dices.join(" ");
 
   if (CheckVictory(token.player)) {
-    ShowVictoryMessage(token.player, game);
+    game.router.pushNamed('victory');
 
     game.NewGame();
   }
@@ -76,42 +76,18 @@ bool CheckVictory(Player player) {
   return false;
 }
 
-void ShowTripleSixMessage(EilemitweileGame game) {
+void ShowTripleSixMessage(EileMitWeileGame game) {
   ThreeSix threesix = ThreeSix();
   threesix.position = Vector2(
-      EilemitweileGame.console +
-          8 * EilemitweileGame.fieldHeight +
-          1.5 * EilemitweileGame.fieldWidth,
-      EilemitweileGame.screenHeight / 2);
+      EileMitWeileGame.console +
+          8 * EileMitWeileGame.fieldHeight +
+          1.5 * EileMitWeileGame.fieldWidth,
+      game.screenHeight / 2);
   threesix.add(RemoveEffect(delay: 1.0));
   game.world.add(threesix);
 }
 
-void ShowVictoryMessage(Player player, EilemitweileGame game) {
-  Victory victory = Victory();
-  victory.position = Vector2(
-      EilemitweileGame.console +
-          8 * EilemitweileGame.fieldHeight +
-          1.5 * EilemitweileGame.fieldWidth,
-      EilemitweileGame.screenHeight / 2 - 100);
-  victory.add(RemoveEffect(delay: 2.0));
-  game.world.add(victory);
-
-  final style = TextStyle(
-      color: BasicPalette.red.color, fontSize: 170, fontFamily: 'Komika');
-
-  TextPaint textPaint = TextPaint(style: style);
-  TextComponent winner =
-      TextComponent(text: player.name, textRenderer: textPaint);
-
-  winner.position = Vector2(EilemitweileGame.screenWidth / 2,
-      EilemitweileGame.screenHeight / 2 + 300);
-  winner.add(RemoveEffect(delay: 4.0));
-
-  game.world.add(winner);
-}
-
-void SendHome(start_field, end_field, EilemitweileGame game, Token token) {
+void SendHome(start_field, end_field, EileMitWeileGame game, Token token) {
   for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].tokens.length > 0) {
       token.player.bodycount =
@@ -122,7 +98,7 @@ void SendHome(start_field, end_field, EilemitweileGame game, Token token) {
   }
 }
 
-bool ThrowDice(EilemitweileGame game) {
+bool ThrowDice(EileMitWeileGame game) {
   bool start_next_player = false;
 
   int rand_num = Random().nextInt(6) + 1;
@@ -157,7 +133,7 @@ bool ThrowDice(EilemitweileGame game) {
   return start_next_player;
 }
 
-bool CheckTokensToMove(EilemitweileGame game, int dice_number) {
+bool CheckTokensToMove(EileMitWeileGame game, int dice_number) {
   //check which token can move
   bool has_moveable_token = false;
   for (Token token in game.current_player!.tokens) {
@@ -169,7 +145,7 @@ bool CheckTokensToMove(EilemitweileGame game, int dice_number) {
 }
 
 bool CheckIfTokenBehindMe(
-    EilemitweileGame game, Token token, int thrown_number) {
+    EileMitWeileGame game, Token token, int thrown_number) {
   if (token.field!.current == FieldState.normal) {
     if (token.field!.number == 1) {
       bool is_in_danger = false;
@@ -218,7 +194,7 @@ bool CheckFieldForEnemyToken(Field field, Token token) {
 }
 
 bool CheckIfTokenCanMoveOnBench(
-    EilemitweileGame game, Token token, int thrown_number) {
+    EileMitWeileGame game, Token token, int thrown_number) {
   if (token.field!.current != FieldState.ladder &&
       !(token.field!.number <= token.player.heaven_start &&
           token.field!.number + thrown_number > token.player.heaven_start) &&
@@ -229,7 +205,7 @@ bool CheckIfTokenCanMoveOnBench(
   return false;
 }
 
-bool CheckIfTokenCanMove(EilemitweileGame game, Token token, thrown_number) {
+bool CheckIfTokenCanMove(EileMitWeileGame game, Token token, thrown_number) {
   token.can_move = true;
 
   if (token.field!.current == FieldState.heaven) {
@@ -261,7 +237,7 @@ bool CheckIfTokenCanMove(EilemitweileGame game, Token token, thrown_number) {
   return true;
 }
 
-bool CheckForPrey(EilemitweileGame game, Token token, int moves) {
+bool CheckForPrey(EileMitWeileGame game, Token token, int moves) {
   int start_field = token.field!.number;
   int end_field = 0;
 
@@ -277,7 +253,7 @@ bool CheckForPrey(EilemitweileGame game, Token token, int moves) {
   }
 }
 
-bool FieldPrey(EilemitweileGame game, start_field, end_field, moving_token) {
+bool FieldPrey(EileMitWeileGame game, start_field, end_field, moving_token) {
   bool has_prey = false;
   for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].current == FieldState.normal &&
@@ -292,7 +268,7 @@ bool FieldPrey(EilemitweileGame game, start_field, end_field, moving_token) {
   return has_prey;
 }
 
-bool CheckForBlockedFields(EilemitweileGame game, Token token, int moves) {
+bool CheckForBlockedFields(EileMitWeileGame game, Token token, int moves) {
   bool is_blocked = false;
   int start_field = token.field!.number;
   int end_field = 0;
@@ -319,7 +295,7 @@ bool CheckForBlockedFields(EilemitweileGame game, Token token, int moves) {
   return is_blocked;
 }
 
-bool FieldBlocked(EilemitweileGame game, start_field, end_field, moving_token) {
+bool FieldBlocked(EileMitWeileGame game, start_field, end_field, moving_token) {
   for (var i = start_field; i < end_field; i++) {
     if (game.fields[i].current == FieldState.bench &&
         game.fields[i].tokens.length > 1) {

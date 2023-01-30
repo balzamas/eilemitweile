@@ -11,7 +11,7 @@ import '../eilemitweile_game.dart';
 import 'field.dart';
 
 class Token extends PositionComponent
-    with TapCallbacks, HasPaint, OpacityProvider, HasGameRef<EilemitweileGame> {
+    with TapCallbacks, HasPaint, OpacityProvider, HasGameRef<EileMitWeileGame> {
   bool can_move = false;
   int last_round_moved = 0;
   int cur_tile = 0;

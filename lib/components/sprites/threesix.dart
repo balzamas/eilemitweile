@@ -7,7 +7,7 @@ import '../../eilemitweile_game.dart';
 import 'package:flutter/widgets.dart';
 
 class ThreeSix extends PositionComponent
-    with TapCallbacks, HasGameRef<EilemitweileGame> {
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
   @override
   bool get debugMode => false;
 

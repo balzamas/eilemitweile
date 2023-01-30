@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import '../gamelogic.dart';
 
 class MoveButton extends PositionComponent
-    with TapCallbacks, HasPaint, HasGameRef<EilemitweileGame> {
+    with TapCallbacks, HasPaint, HasGameRef<EileMitWeileGame> {
   int button_number = 0;
 
   @override

@@ -9,7 +9,7 @@ import '../enums.dart';
 const tau = 2 * pi;
 
 class Field extends SpriteGroupComponent<FieldState>
-    with HasGameRef<EilemitweileGame> {
+    with HasGameRef<EileMitWeileGame> {
   bool isRotated = false;
   Player? player;
   int number = 1;
@@ -42,8 +42,8 @@ class Field extends SpriteGroupComponent<FieldState>
       FieldState.ladder: spriteNormal
     };
 
-    width = EilemitweileGame.fieldWidth;
-    height = EilemitweileGame.fieldHeight;
+    width = EileMitWeileGame.fieldWidth;
+    height = EileMitWeileGame.fieldHeight;
 
     anchor = Anchor.topLeft;
 
@@ -58,7 +58,7 @@ class Field extends SpriteGroupComponent<FieldState>
     if (this.current == FieldState.heaven) {
       token_pos = Vector2(
           (gameRef.heaven.x +
-              ((tokens.length - 1) * (EilemitweileGame.tokenHeight)) +
+              ((tokens.length - 1) * (EileMitWeileGame.tokenHeight)) +
               80),
           gameRef.heaven.y + 80);
     } else if (this.current == FieldState.home) {
@@ -66,28 +66,28 @@ class Field extends SpriteGroupComponent<FieldState>
         case 0:
           {
             token_pos = Vector2(token.player.home_x + 75,
-                token.player.home_y + 75 + EilemitweileGame.tokenHeight);
+                token.player.home_y + 75 + EileMitWeileGame.tokenHeight);
           }
           break;
 
         case 1:
           {
             token_pos = Vector2(token.player.home_x + 275,
-                token.player.home_y + 75 + EilemitweileGame.tokenHeight);
+                token.player.home_y + 75 + EileMitWeileGame.tokenHeight);
           }
           break;
 
         case 2:
           {
             token_pos = Vector2(token.player.home_x + 75,
-                token.player.home_y + 275 + EilemitweileGame.tokenHeight);
+                token.player.home_y + 275 + EileMitWeileGame.tokenHeight);
           }
           break;
 
         case 3:
           {
             token_pos = Vector2(token.player.home_x + 275,
-                token.player.home_y + 275 + EilemitweileGame.tokenHeight);
+                token.player.home_y + 275 + EileMitWeileGame.tokenHeight);
           }
           break;
       }
@@ -105,24 +105,24 @@ class Field extends SpriteGroupComponent<FieldState>
           gameRef.current_player == gameRef.players[3]) {
         token_pos = Vector2(
             (token.player.ladder_fields[ladder_pos].x -
-                (1 * EilemitweileGame.fieldHeight)),
+                (1 * EileMitWeileGame.fieldHeight)),
             token.player.ladder_fields[ladder_pos].y +
-                (token_count - 1) * EilemitweileGame.fieldHeight);
+                (token_count - 1) * EileMitWeileGame.fieldHeight);
       } else {
         token_pos = Vector2(
             (token.player.ladder_fields[ladder_pos].x +
-                (token_count - 1) * EilemitweileGame.fieldHeight),
+                (token_count - 1) * EileMitWeileGame.fieldHeight),
             token.player.ladder_fields[ladder_pos].y);
       }
     } else if (this.isRotated) {
       token_pos = Vector2(
-          (this.position.x - EilemitweileGame.fieldHeight),
+          (this.position.x - EileMitWeileGame.fieldHeight),
           this.position.y +
-              ((tokens.length - 1) * (EilemitweileGame.tokenHeight)));
+              ((tokens.length - 1) * (EileMitWeileGame.tokenHeight)));
     } else {
       token_pos = Vector2(
           (this.position.x +
-              ((tokens.length - 1) * (EilemitweileGame.tokenHeight))),
+              ((tokens.length - 1) * (EileMitWeileGame.tokenHeight))),
           this.position.y);
     }
     return token_pos;
@@ -140,24 +140,24 @@ class Field extends SpriteGroupComponent<FieldState>
         if (this.tokens.length > 4) {
           if (this.isRotated) {
             token.position = Vector2(
-                (this.position.x - EilemitweileGame.fieldHeight),
+                (this.position.x - EileMitWeileGame.fieldHeight),
                 this.position.y +
-                    (token_num * (EilemitweileGame.tokenHeight / 2)));
+                    (token_num * (EileMitWeileGame.tokenHeight / 2)));
           } else {
             token.position = Vector2(
                 (this.position.x +
-                    (token_num * (EilemitweileGame.tokenHeight / 2))),
+                    (token_num * (EileMitWeileGame.tokenHeight / 2))),
                 this.position.y);
           }
         } else {
           if (this.isRotated) {
             token.position = Vector2(
-                (this.position.x - EilemitweileGame.fieldHeight),
-                this.position.y + (token_num * (EilemitweileGame.tokenHeight)));
+                (this.position.x - EileMitWeileGame.fieldHeight),
+                this.position.y + (token_num * (EileMitWeileGame.tokenHeight)));
           } else {
             token.position = Vector2(
                 (this.position.x +
-                    (token_num * (EilemitweileGame.tokenHeight))),
+                    (token_num * (EileMitWeileGame.tokenHeight))),
                 this.position.y);
           }
         }

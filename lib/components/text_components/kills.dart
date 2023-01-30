@@ -3,7 +3,7 @@ import 'package:flame/components.dart';
 
 import 'package:flutter/material.dart';
 
-class KillInfo extends TextComponent with HasGameRef<EilemitweileGame> {
+class KillInfo extends TextComponent with HasGameRef<EileMitWeileGame> {
   late String text_content;
 
   KillInfo.killInfo({

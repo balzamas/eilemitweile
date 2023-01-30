@@ -5,7 +5,7 @@ import 'package:EileMitWeile/components/token.dart';
 import 'package:flame/components.dart';
 import '../../eilemitweile_game.dart';
 
-class HomeField extends PositionComponent with HasGameRef<EilemitweileGame> {
+class HomeField extends PositionComponent with HasGameRef<EileMitWeileGame> {
   late Player player;
   List<Token> tokens = [];
 

@@ -4,7 +4,7 @@ import 'package:flame/experimental.dart';
 
 import '../eilemitweile_game.dart';
 
-class Box extends PositionComponent
+class BoxVictory extends PositionComponent
     with TapCallbacks, OpacityProvider, HasGameRef<EileMitWeileGame> {
   @override
   Future<void>? onLoad() {
@@ -20,4 +20,9 @@ class Box extends PositionComponent
 
   @override
   late double opacity;
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    gameRef.router.pop();
+  }
 }

@@ -28,3 +28,7 @@ Early stage - check issues on GitHub.
 Especially bench logic, UI and AI need work to be done.
 
 This is my first Flutter project, therefore the code also needs heavy refactoring.
+
+Contact: d.berger@dontsniff.co.uk
+
+Thanks to Eile-mit-Weile-WM-Team and my dear Madlaina

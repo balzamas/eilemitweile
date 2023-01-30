@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import '../gamelogic.dart';
 
 class Dice extends PositionComponent
-    with TapCallbacks, HasGameRef<EilemitweileGame> {
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
   @override
   bool get debugMode => false;
 
@@ -31,7 +31,7 @@ class Dice extends PositionComponent
           if (CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
             gameRef.thrown_dices.removeAt(0);
           }
-          gameRef.dice_new.text = gameRef.thrown_dices.join("\n");
+          gameRef.dice_new.text = gameRef.thrown_dices.join(" ");
         }
       }
     }

@@ -7,40 +7,50 @@ import 'package:EileMitWeile/components/sprites/move_button.dart';
 import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
+
 import 'package:flame/experimental.dart';
 import 'package:flame/flame.dart';
+
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
-import 'package:flutter/material.dart';
+
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
-import 'components/text_components/dicenumber.dart';
 import 'components/field.dart';
-import 'components/text_components/dicenumber_new.dart';
+import 'components/screens/maingame.dart';
+import 'components/screens/victoryscreen.dart';
+import 'components/text_components/dicetext.dart';
 import 'components/text_components/kills.dart';
 import 'components/gamelogic.dart';
 import 'components/player.dart';
 import 'enums.dart';
 
-class EilemitweileGame extends FlameGame with HasTappableComponents {
+class EileMitWeileGame extends FlameGame with HasTappableComponents {
+  late final RouterComponent router;
+
   @override
   Color backgroundColor() => Color.fromARGB(255, 245, 255, 157);
 
   static const double fieldWidth = 200.0;
   static const double fieldHeight = 50.0;
-  static final Vector2 fieldSizeVert = Vector2(fieldWidth, fieldHeight);
-  static final Vector2 fieldSizeHoe = Vector2(fieldHeight, fieldWidth);
-  static const double fieldRadius = 100.0;
-
   static const double tokenWidth = 50.0;
   static const double tokenHeight = 50.0;
-  static final Vector2 tokenSize = Vector2(tokenWidth, tokenHeight);
 
-  static const double screenWidth = 2000;
-  static const double screenHeight = 1600;
+  Vector2 fieldSizeVert =
+      Vector2(EileMitWeileGame.fieldWidth, EileMitWeileGame.fieldHeight);
+  Vector2 fieldSizeHoe =
+      Vector2(EileMitWeileGame.fieldHeight, EileMitWeileGame.fieldWidth);
+  double fieldRadius = 100.0;
 
-  static final double console = 450;
+  Vector2 tokenSize =
+      Vector2(EileMitWeileGame.tokenWidth, EileMitWeileGame.tokenHeight);
+
+  double screenWidth = 2000;
+  double screenHeight = 1600;
+
+  static const double console = 450;
 
   late final InfoText info_text;
   late final KillInfo kill_text;
@@ -63,197 +73,15 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
   @override
   Future<void> onLoad() async {
     await Flame.images.load('eilemitweile-sprites.png');
-
-    dice.anchor = Anchor.topCenter;
-    dice.position = Vector2(console / 2, fieldHeight);
-    dice.size = Vector2(362, 1000);
-
-    for (var i = 0; i < 4; i++) {
-      MoveButton button = MoveButton();
-      button.button_number = i;
-      button.position =
-          Vector2(console + 1400 + fieldHeight, fieldHeight + i * 350);
-      button.size = Vector2(350, 350);
-      move_buttons.add(button);
-    }
-
-    fields = CreateFields();
-
-    players = CreatePlayers();
-
-    final List<HomeField> home_fields = [];
-
-    final List<Token> tokens = [];
-
-    // //----Creating Ladders - horrible --------
-
-    final List<Field> heaven_fields0 = [];
-    for (var i = 1; i < 8; i++) {
-      Field field = Field(fieldst: FieldState.ladder_1);
-      field.player = players[0];
-      field.number = -1;
-      field.position = Vector2((console + (8 * fieldHeight) + fieldWidth),
-          fields[players[0].heaven_start].position.y + (i * fieldHeight));
-      heaven_fields0.add(field);
-    }
-    players[0].ladder_fields = heaven_fields0;
-
-    final List<Field> heaven_fields1 = [];
-    for (var i = 1; i < 8; i++) {
-      Field field = Field(fieldst: FieldState.ladder_2);
-      field.angle = 1.57;
-      field.isRotated = true;
-      field.player = players[1];
-      field.number = -1;
-      field.position = Vector2(
-          (fields[players[1].heaven_start].position.x + (i * fieldHeight)),
-          (9 * fieldHeight) + fieldWidth);
-      heaven_fields1.add(field);
-    }
-    players[1].ladder_fields = heaven_fields1;
-
-    final List<Field> heaven_fields2 = [];
-    for (var i = 1; i < 8; i++) {
-      Field field = Field(fieldst: FieldState.ladder_3);
-      field.player = players[2];
-      field.number = -1;
-      field.position = Vector2((console + (8 * fieldHeight) + fieldWidth),
-          fields[players[2].heaven_start].position.y - (i * fieldHeight));
-      heaven_fields2.add(field);
-    }
-    players[2].ladder_fields = heaven_fields2;
-
-    final List<Field> heaven_fields3 = [];
-    for (var i = 1; i < 8; i++) {
-      Field field = Field(fieldst: FieldState.ladder_4);
-      field.angle = 1.57;
-      field.isRotated = true;
-      field.player = players[3];
-      field.number = -1;
-      field.position = Vector2(
-          (fields[players[3].heaven_start].position.x - (i * fieldHeight)),
-          (9 * fieldHeight) + fieldWidth);
-      heaven_fields3.add(field);
-    }
-    players[3].ladder_fields = heaven_fields3;
-
-    //----------------------------------------
-
-    heaven.position =
-        Vector2(console + 8 * fieldHeight, 8 * fieldHeight + fieldHeight);
-
-    for (Player player in players) {
-      HomeField home_field1 = HomeField();
-      home_field1.player = player;
-      home_field1.position =
-          Vector2(player.home_x, player.home_y + fieldHeight);
-      home_fields.add(home_field1);
-
-      HomeField home_field2 = HomeField();
-      home_field2.player = player;
-      home_field2.position =
-          Vector2(player.home_x + 200, player.home_y + fieldHeight);
-      home_fields.add(home_field2);
-
-      HomeField home_field3 = HomeField();
-      home_field3.player = player;
-      home_field3.position =
-          Vector2(player.home_x, player.home_y + 200 + fieldHeight);
-      home_fields.add(home_field3);
-
-      HomeField home_field4 = HomeField();
-      home_field4.player = player;
-      home_field4.position =
-          Vector2(player.home_x + 200, player.home_y + 200 + fieldHeight);
-      home_fields.add(home_field4);
-
-      for (var i = 0; i < 4; i++) {
-        Token token = Token(player);
-        token.size = tokenSize;
-        token.field = fields[0];
-        token.token_number = i;
-        tokens.add(token);
-        player.tokens.add(token);
-        switch (i) {
-          case 0:
-            {
-              token.position = Vector2(token.player.home_x + 75,
-                  token.player.home_y + 75 + EilemitweileGame.tokenHeight);
-            }
-            break;
-
-          case 1:
-            {
-              token.position = Vector2(token.player.home_x + 275,
-                  token.player.home_y + 75 + EilemitweileGame.tokenHeight);
-            }
-            break;
-
-          case 2:
-            {
-              token.position = Vector2(token.player.home_x + 75,
-                  token.player.home_y + 275 + EilemitweileGame.tokenHeight);
-            }
-            break;
-
-          case 3:
-            {
-              token.position = Vector2(token.player.home_x + 275,
-                  token.player.home_y + 275 + EilemitweileGame.tokenHeight);
-            }
-            break;
-        }
-      }
-    }
-
-    final style = TextStyle(color: BasicPalette.black.color, fontSize: 40);
-
-    TextPaint textPaint = TextPaint(style: style);
-
-    final yamlString = await rootBundle.loadString('pubspec.yaml');
-    final parsedYaml = loadYaml(yamlString);
-
-    TextComponent version = TextComponent(
-        text: "Version: " + parsedYaml['version'], textRenderer: textPaint);
-
-    version.position = Vector2(EilemitweileGame.screenHeight / 2 + 200,
-        EilemitweileGame.screenHeight - 100);
-
-    Box box = Box();
-
-    world.add(box);
-    world.add(version);
-    box.addAll(players);
-    box.addAll(fields);
-    box.add(dice);
-    box.add(dice_new);
-    box.add(info_text = InfoText.playerScore());
-    box.add(kill_text = KillInfo.killInfo());
-    box.addAll(home_fields);
-    box.addAll(move_buttons);
-    box.add(heaven);
-    box.addAll(heaven_fields0);
-    box.addAll(heaven_fields1);
-    box.addAll(heaven_fields2);
-    box.addAll(heaven_fields3);
-    box.addAll(tokens);
-
-    await add(world);
-
-    current_player = players[3];
-    info_text.text_content = current_player!.name;
-    players[0].is_AI = false;
-
-    dice_new.position = Vector2(console / 2, 600);
-    dice_new.anchor = Anchor.center;
-
-    NextPlayer();
-
-    final camera = CameraComponent(world: world)
-      ..viewfinder.visibleGameSize = Vector2(screenWidth, screenHeight)
-      ..viewfinder.position = Vector2(1150, 0)
-      ..viewfinder.anchor = Anchor.topCenter;
-    add(camera);
+    add(
+      router = RouterComponent(
+        routes: {
+          'game': Route(MainGame.new),
+          'victory': Route(VictoryScreen.new)
+        },
+        initialRoute: 'game',
+      ),
+    );
   }
 
   void NextPlayer() {
@@ -306,7 +134,7 @@ class EilemitweileGame extends FlameGame with HasTappableComponents {
               }
             }
             for (Token token in current_player!.tokens) {
-              if (token.last_round_moved == this.round) {
+              if (token.last_round_moved == round) {
                 token.MoveSprite();
               }
             }
