@@ -1,3 +1,6 @@
+## v0.0.9
+- Fix: show bodycount of best killer
+
 ## v0.0.8
 - Added routes
 - Added Victory screen fullscreen

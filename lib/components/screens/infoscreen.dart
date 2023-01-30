@@ -60,7 +60,7 @@ class InfoScreen extends Component
             '- If two players have two tokens on a bench then both can move.\n'
             '- Others can always move up onto the bench.\n\n'
             'Contact: d.berger@dontsniff.co.uk\n'
-            'GitHub: https://github.com/balzamas/eilemitweile\n\n'
+            'GitHub: https://github.com/balzamas/eilemitweile\n'
             'Thanks to the Eile-mit-Weile-WM-OK, Madlaina and the Flame team.',
         textRenderer: textPaint_small,
         size: Vector2(game.size.x - 100, game.size.y),

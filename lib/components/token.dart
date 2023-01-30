@@ -146,6 +146,7 @@ class Token extends PositionComponent
     paeng.add(RemoveEffect(delay: 1.0));
 
     this.field!.tokens.remove(this);
+    this.field?.rearrangeTokens();
     this.field = game.fields[0];
     this.field!.tokens.add(this);
     this.add(

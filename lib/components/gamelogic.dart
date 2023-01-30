@@ -53,7 +53,6 @@ void Move(EileMitWeileGame game, Token token, int moves) {
 
   if (CheckVictory(token.player)) {
     game.router.pushNamed('victory');
-
     game.NewGame();
   }
 }
@@ -87,10 +86,9 @@ void ShowTripleSixMessage(EileMitWeileGame game) {
 void SendHome(start_field, end_field, EileMitWeileGame game, Token token) {
   for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].tokens.length > 0) {
-      token.player.bodycount =
-          token.player.bodycount + game.fields[i].sendHomeTokens(token.player);
-      token.bodycount =
-          token.bodycount + game.fields[i].sendHomeTokens(token.player);
+      int sent_home = game.fields[i].sendHomeTokens(token.player);
+      token.player.bodycount = token.player.bodycount + sent_home;
+      token.bodycount = token.bodycount + sent_home;
     }
   }
 }
