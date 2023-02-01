@@ -114,6 +114,11 @@ class Token extends PositionComponent
         this.can_move) {
       Move(gameRef, this, gameRef.thrown_dices[0]);
       this.MoveSprite();
+      if (gameRef.thrown_dices.length == 2 &&
+          CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
+        game.thrown_dices.removeAt(0);
+        game.dice_text.text = game.thrown_dices.join(" ");
+      }
       if (gameRef.thrown_dices.length == 0 ||
           CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
         gameRef.NextPlayer();

@@ -137,29 +137,14 @@ class Field extends SpriteGroupComponent<FieldState>
     for (Token token in tokens) {
       if (this.current == FieldState.normal ||
           this.current == FieldState.bench) {
-        if (this.tokens.length > 4) {
-          if (this.isRotated) {
-            token.position = Vector2(
-                (this.position.x - EileMitWeileGame.fieldHeight),
-                this.position.y +
-                    (token_num * (EileMitWeileGame.tokenHeight / 2)));
-          } else {
-            token.position = Vector2(
-                (this.position.x +
-                    (token_num * (EileMitWeileGame.tokenHeight / 2))),
-                this.position.y);
-          }
+        if (this.isRotated) {
+          token.position = Vector2(
+              (this.position.x - EileMitWeileGame.fieldHeight),
+              this.position.y + (token_num * (EileMitWeileGame.tokenHeight)));
         } else {
-          if (this.isRotated) {
-            token.position = Vector2(
-                (this.position.x - EileMitWeileGame.fieldHeight),
-                this.position.y + (token_num * (EileMitWeileGame.tokenHeight)));
-          } else {
-            token.position = Vector2(
-                (this.position.x +
-                    (token_num * (EileMitWeileGame.tokenHeight))),
-                this.position.y);
-          }
+          token.position = Vector2(
+              (this.position.x + (token_num * (EileMitWeileGame.tokenHeight))),
+              this.position.y);
         }
       }
       token_num++;

@@ -1,3 +1,8 @@
+## v0.0.10
+- Fix: android chrome error
+- Pimp victory screen
+- Fix 12 12 x problem for humans #36
+
 ## v0.0.9
 - Fix: show bodycount of best killer
 

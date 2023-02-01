@@ -20,7 +20,7 @@ class VictoryScreen extends Component
     Vector2 scale = Vector2.all(game.size.x / gameRef.screenWidth);
 
     Victory victory = Victory();
-    victory.position = Vector2(game.size.x / 2, scale.y * 200);
+    victory.position = Vector2(game.size.x / 2, scale.y * 250);
     victory.scale = scale / 2;
     add(victory);
 
@@ -38,7 +38,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint,
         anchor: Anchor.center);
 
-    winner.position = Vector2(game.size.x / 2, scale.y * 500);
+    winner.position = Vector2(game.size.x / 2, scale.y * 550);
     winner.scale = scale;
 
     add(winner);
@@ -53,6 +53,16 @@ class VictoryScreen extends Component
 
     add(stats);
 
+    TextComponent killstitle = TextComponent(
+        text: "Topkillers",
+        textRenderer: textPaint_small,
+        anchor: Anchor.center);
+
+    killstitle.position = Vector2(game.size.x / 2, scale.y * 750);
+    killstitle.scale = scale;
+
+    add(killstitle);
+
     Token topkiller_1;
     topkiller_1 = game.players[0].tokens[0];
     for (Token token in game.players[0].tokens) {
@@ -65,22 +75,98 @@ class VictoryScreen extends Component
     topkiller_1_x.token_number = topkiller_1.token_number;
 
     topkiller_1_x.position =
-        Vector2(game.size.x / 2 - (scale.x * 25), scale.y * 800);
+        Vector2(3 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
     topkiller_1_x.scale = scale;
     topkiller_1_x.anchor = Anchor.center;
     add(topkiller_1_x);
 
-    TextComponent kills = TextComponent(
-        text: "Your top killer with " +
-            topkiller_1.bodycount.toString() +
-            " kills:",
+    Token topkiller_2;
+    topkiller_2 = game.players[1].tokens[0];
+    for (Token token in game.players[1].tokens) {
+      if (token.bodycount > topkiller_2.bodycount) {
+        topkiller_2 = token;
+      }
+    }
+
+    Token topkiller_2_x = Token(game.players[1]);
+    topkiller_2_x.token_number = topkiller_2.token_number;
+
+    topkiller_2_x.position =
+        Vector2(4 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
+    topkiller_2_x.scale = scale;
+    topkiller_2_x.anchor = Anchor.center;
+    add(topkiller_2_x);
+
+    Token topkiller_3;
+    topkiller_3 = game.players[2].tokens[0];
+    for (Token token in game.players[2].tokens) {
+      if (token.bodycount > topkiller_3.bodycount) {
+        topkiller_3 = token;
+      }
+    }
+
+    Token topkiller_3_x = Token(game.players[2]);
+    topkiller_3_x.token_number = topkiller_3.token_number;
+
+    topkiller_3_x.position =
+        Vector2(5 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
+    topkiller_3_x.scale = scale;
+    topkiller_3_x.anchor = Anchor.center;
+    add(topkiller_3_x);
+
+    Token topkiller_4;
+    topkiller_4 = game.players[3].tokens[0];
+    for (Token token in game.players[3].tokens) {
+      if (token.bodycount > topkiller_4.bodycount) {
+        topkiller_4 = token;
+      }
+    }
+
+    Token topkiller_4_x = Token(game.players[3]);
+    topkiller_4_x.token_number = topkiller_4.token_number;
+
+    topkiller_4_x.position =
+        Vector2(6 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
+    topkiller_4_x.scale = scale;
+    topkiller_4_x.anchor = Anchor.center;
+    add(topkiller_4_x);
+
+    TextComponent kills1 = TextComponent(
+        text: topkiller_1.bodycount.toString(),
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    kills.position = Vector2(game.size.x / 2, scale.y * 775);
-    kills.scale = scale;
+    kills1.position = Vector2(3 * (game.size.x / 9), scale.y * 900);
+    kills1.scale = scale;
 
-    add(kills);
+    TextComponent kills2 = TextComponent(
+        text: topkiller_2.bodycount.toString(),
+        textRenderer: textPaint_small,
+        anchor: Anchor.center);
+
+    kills2.position = Vector2(4 * (game.size.x / 9), scale.y * 900);
+    kills2.scale = scale;
+
+    TextComponent kills3 = TextComponent(
+        text: topkiller_3.bodycount.toString(),
+        textRenderer: textPaint_small,
+        anchor: Anchor.center);
+
+    kills3.position = Vector2(5 * (game.size.x / 9), scale.y * 900);
+    kills3.scale = scale;
+
+    TextComponent kills4 = TextComponent(
+        text: topkiller_4.bodycount.toString(),
+        textRenderer: textPaint_small,
+        anchor: Anchor.center);
+
+    kills4.position = Vector2(6 * (game.size.x / 9), scale.y * 900);
+    kills4.scale = scale;
+
+    add(kills1);
+    add(kills2);
+    add(kills3);
+    add(kills4);
 
     BoxVictory boxv = BoxVictory();
 
