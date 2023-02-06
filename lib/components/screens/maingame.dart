@@ -13,6 +13,7 @@ import 'package:flutter/rendering.dart';
 import '../../eilemitweile_game.dart';
 import '../../enums.dart';
 import '../field.dart';
+import '../gamelogic.dart';
 import '../player.dart';
 import '../text_components/kills.dart';
 
@@ -214,7 +215,7 @@ class MainGame extends Component
     gameRef.dice_text.position = Vector2(EileMitWeileGame.console / 2, 600);
     gameRef.dice_text.anchor = Anchor.center;
 
-    gameRef.NextPlayer();
+    gameRef.players[0].tokens[3].gameRef.NextPlayer();
 
     final camera = CameraComponent(world: gameRef.world)
       ..viewfinder.visibleGameSize =

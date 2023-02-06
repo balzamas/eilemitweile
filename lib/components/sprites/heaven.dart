@@ -9,7 +9,7 @@ class Heaven extends PositionComponent {
   @override
   bool get debugMode => false;
 
-  static late final Sprite heavenSprite = emwSprite(0, 1050, 600, 600);
+  static late final Sprite heavenSprite = emwSprite(0, 785, 600, 600);
 
   @override
   void render(Canvas canvas) {

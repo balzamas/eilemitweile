@@ -13,7 +13,8 @@ class Dice extends PositionComponent
   @override
   bool get debugMode => false;
 
-  static late final Sprite diceSprite = emwSprite(0, 651, 399, 399);
+  //static late final Sprite diceSprite = emwSprite(0, 651, 399, 399);
+  static late final Sprite diceSprite = emwSprite(0, 375, 399, 399);
 
   @override
   void render(Canvas canvas) {

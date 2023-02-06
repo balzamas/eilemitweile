@@ -11,7 +11,7 @@ class Victory extends PositionComponent
   @override
   bool get debugMode => false;
 
-  static late final Sprite victorySprite = emwSprite(1461, 1042, 918, 700);
+  static late final Sprite victorySprite = emwSprite(1461, 766, 918, 700);
 
   @override
   void render(Canvas canvas) {

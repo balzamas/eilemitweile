@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.eilemitweile">
+    package="ch.atomikzopht.eilemitweile">
    <application
-        android:label="eilemitweile"
+        android:label="Eile mit Weile"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

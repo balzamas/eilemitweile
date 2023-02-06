@@ -16,10 +16,10 @@ class MoveButton extends PositionComponent
   @override
   bool get debugMode => false;
 
-  static late final Sprite movebuttonSprite1 = emwSprite(0, 300, 332, 332);
-  static late final Sprite movebuttonSprite2 = emwSprite(332, 300, 332, 332);
-  static late final Sprite movebuttonSprite3 = emwSprite(664, 300, 332, 332);
-  static late final Sprite movebuttonSprite4 = emwSprite(996, 300, 332, 332);
+  static late final Sprite movebuttonSprite1 = emwSprite(1150, 0, 332, 332);
+  static late final Sprite movebuttonSprite2 = emwSprite(1482, 0, 332, 332);
+  static late final Sprite movebuttonSprite3 = emwSprite(1814, 0, 332, 332);
+  static late final Sprite movebuttonSprite4 = emwSprite(2146, 0, 332, 332);
 
   @override
   void render(Canvas canvas) {

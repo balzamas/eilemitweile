@@ -12,7 +12,7 @@ In short:
 - You need a 5 to get into the game
 - With a six you can move 12 fields (directly shown as 12) and you can throw the dice again
 - Three six in a row -> all tokens go gome (except those on ladders and in heaven)
-- Two token on a bench block the field for others passing through. The can move up on the bench though. [Currently if two players have each two token on the same bench, both can move. Also, token who where on the bench before the blockade was started can not move anymore. This will change in the future.]
+- Two tokens and more on a bench block the field for others passing through. Others can move up on the bench though. Tokens who were on the bench before the blockade started can still move.
 
 
 For more information see:
@@ -23,9 +23,7 @@ https://eile-mit-weile.ch/blog/?page_id=151 (German)
 
 ## Stage/Notes
 
-Early stage - check issues on GitHub.
-
-Especially bench logic, UI and AI need work to be done.
+Check/create issues on GitHub.
 
 This is my first Flutter project, therefore the code also needs heavy refactoring.
 

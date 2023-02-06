@@ -224,12 +224,56 @@ bool CheckIfTokenCanMove(EileMitWeileGame game, Token token, thrown_number) {
     token.can_move = false;
     return false;
   }
+  if (token.field!.current == FieldState.bench &&
+      CheckBenchBlock(game, token)) {
+    token.can_move = false;
+    return false;
+  }
   if (CheckForBlockedFields(game, token, thrown_number)) {
     token.can_move = false;
     return false;
   }
 
   return true;
+}
+
+bool CheckBenchBlock(EileMitWeileGame game, Token token) {
+  final index = token.field!.tokens.indexWhere((element) => element == token);
+  int playerCounter = 0;
+  var otherPlayersCounter = {
+    game.players[0]: 0,
+    game.players[1]: 0,
+    game.players[2]: 0,
+    game.players[3]: 0
+  };
+
+  for (var i = 0; i < index; i++) {
+    if (token.field!.tokens != token.player) {
+      otherPlayersCounter[token.player] =
+          (otherPlayersCounter[token.player]! + 1);
+    } else {
+      playerCounter++;
+    }
+  }
+
+  if (playerCounter < otherPlayersCounter[game.players[0]]! &&
+      otherPlayersCounter[game.players[0]]! > 1) {
+    return true;
+  }
+  if (playerCounter < otherPlayersCounter[game.players[1]]! &&
+      otherPlayersCounter[game.players[1]]! > 1) {
+    return true;
+  }
+  if (playerCounter < otherPlayersCounter[game.players[2]]! &&
+      otherPlayersCounter[game.players[2]]! > 1) {
+    return true;
+  }
+  if (playerCounter < otherPlayersCounter[game.players[3]]! &&
+      otherPlayersCounter[game.players[3]]! > 1) {
+    return true;
+  }
+
+  return false;
 }
 
 bool CheckForPrey(EileMitWeileGame game, Token token, int moves) {
@@ -265,8 +309,8 @@ bool FieldPrey(EileMitWeileGame game, start_field, end_field, moving_token) {
 
 bool CheckForBlockedFields(EileMitWeileGame game, Token token, int moves) {
   bool is_blocked = false;
-  int start_field = token.field!.number;
-  int end_field = 0;
+  int start_field = token.field!.number + 1;
+  int end_field = token.field!.number + moves;
 
   if (start_field <= token.player.heaven_start &&
       start_field + moves > token.player.heaven_start) {
@@ -285,52 +329,69 @@ bool CheckForBlockedFields(EileMitWeileGame game, Token token, int moves) {
       is_blocked = true;
     }
   } else {
-    is_blocked = FieldBlocked(game, start_field, (start_field + moves), token);
+    is_blocked = FieldBlocked(game, start_field, end_field, token);
   }
   return is_blocked;
 }
 
-bool FieldBlocked(EileMitWeileGame game, start_field, end_field, moving_token) {
+bool FieldBlocked(
+    EileMitWeileGame game, start_field, end_field, Token moving_token) {
   for (var i = start_field; i < end_field; i++) {
     if (game.fields[i].current == FieldState.bench &&
         game.fields[i].tokens.length > 1) {
       var playerCounter = 0;
-      int playerFirstArrival = 999999999999;
       var otherPlayersCounter = {
         game.players[0]: 0,
         game.players[1]: 0,
         game.players[2]: 0,
         game.players[3]: 0
       };
+      Player? first_double;
+      Player? first_triple;
 
       for (Token token in game.fields[i].tokens) {
         if (token.player != moving_token.player) {
           otherPlayersCounter[token.player] =
               (otherPlayersCounter[token.player]! + 1);
+          if (otherPlayersCounter[token.player]! == 2 && first_double == null) {
+            first_double = token.player;
+          }
+          if (otherPlayersCounter[token.player]! == 3 && first_triple == null) {
+            first_triple = token.player;
+          }
         } else {
           playerCounter++;
-          if (playerFirstArrival == 999999999999) {
-            playerFirstArrival = token.last_round_moved;
-          } else if (token.last_round_moved < playerFirstArrival) {
-            playerFirstArrival = token.last_round_moved;
+          if (playerCounter == 2 && first_double == null) {
+            first_double = token.player;
+          }
+          if (playerCounter == 3 && first_triple == null) {
+            first_triple = token.player;
           }
         }
       }
 
-      if (playerCounter < otherPlayersCounter[game.players[0]]! &&
-          otherPlayersCounter[game.players[0]]! > 1) {
+      if (playerCounter <= otherPlayersCounter[game.players[0]]! &&
+          otherPlayersCounter[game.players[0]]! > 1 &&
+          first_double != moving_token.player &&
+          first_triple != moving_token.player) {
         return true;
       }
-      if (playerCounter < otherPlayersCounter[game.players[1]]! &&
-          otherPlayersCounter[game.players[1]]! > 1) {
+      if (playerCounter <= otherPlayersCounter[game.players[1]]! &&
+          otherPlayersCounter[game.players[1]]! > 1 &&
+          first_double != moving_token.player &&
+          first_triple != moving_token.player) {
         return true;
       }
-      if (playerCounter < otherPlayersCounter[game.players[2]]! &&
-          otherPlayersCounter[game.players[2]]! > 1) {
+      if (playerCounter <= otherPlayersCounter[game.players[2]]! &&
+          otherPlayersCounter[game.players[2]]! > 1 &&
+          first_double != moving_token.player &&
+          first_triple != moving_token.player) {
         return true;
       }
-      if (playerCounter < otherPlayersCounter[game.players[3]]! &&
-          otherPlayersCounter[game.players[3]]! > 1) {
+      if (playerCounter <= otherPlayersCounter[game.players[3]]! &&
+          otherPlayersCounter[game.players[3]]! > 1 &&
+          first_double != moving_token.player &&
+          first_triple != moving_token.player) {
         return true;
       }
     }

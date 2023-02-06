@@ -28,7 +28,7 @@ class Token extends PositionComponent
 
   static late final Sprite tokenSprite_red_1 = emwSprite(602, 0, 50, 50);
   static late final Sprite tokenSprite_red_2 = emwSprite(652, 0, 50, 50);
-  static late final Sprite tokenSprite_red_3 = emwSprite(602, 50, 50, 50);
+  static late final Sprite tokenSprite_red_3 = emwSprite(603, 50, 50, 50);
   static late final Sprite tokenSprite_red_4 = emwSprite(652, 50, 50, 50);
 
   static late final Sprite tokenSprite_blue_1 = emwSprite(702, 0, 50, 50);

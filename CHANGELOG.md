@@ -1,3 +1,10 @@
+## v0.0.12
+- Shrink sprites
+- Bench check according to 'official' rules
+
+## v0.0.11
+- Android config
+
 ## v0.0.10
 - Fix: android chrome error
 - Pimp victory screen
