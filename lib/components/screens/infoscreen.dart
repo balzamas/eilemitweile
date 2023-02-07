@@ -57,7 +57,7 @@ class InfoScreen extends Component
             '- With a six you can move 12 fields and you can roll the dice again.\n'
             '- Three six in a row -> all tokens go gome.\n'
             '- Two token on a bench block the field for others passing through.\n'
-            '- If two players have two tokens on a bench then both can move.\n'
+            '- Tokens who where on the bench before the block can still move.\n'
             '- Others can always move up onto the bench.\n\n'
             'Contact: d.berger@dontsniff.co.uk\n'
             'GitHub: https://github.com/balzamas/eilemitweile\n'

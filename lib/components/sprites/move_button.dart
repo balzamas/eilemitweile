@@ -44,7 +44,9 @@ class MoveButton extends PositionComponent
 
     if (!gameRef.current_player!.is_AI &&
         gameRef.current_player == token.player &&
+        !gameRef.can_throw_dice &&
         token.can_move) {
+      token.can_move = false;
       Move(gameRef, token, gameRef.thrown_dices[0]);
       token.MoveSprite();
       if (gameRef.thrown_dices.length == 2 &&

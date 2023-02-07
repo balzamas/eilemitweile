@@ -248,9 +248,9 @@ bool CheckBenchBlock(EileMitWeileGame game, Token token) {
   };
 
   for (var i = 0; i < index; i++) {
-    if (token.field!.tokens != token.player) {
-      otherPlayersCounter[token.player] =
-          (otherPlayersCounter[token.player]! + 1);
+    if (token.field!.tokens[i].player != token.player) {
+      otherPlayersCounter[token.field!.tokens[i].player] =
+          (otherPlayersCounter[token.field!.tokens[i].player]! + 1);
     } else {
       playerCounter++;
     }
@@ -313,16 +313,16 @@ bool CheckForBlockedFields(EileMitWeileGame game, Token token, int moves) {
   int end_field = token.field!.number + moves;
 
   if (start_field <= token.player.heaven_start &&
-      start_field + moves > token.player.heaven_start) {
+      end_field > token.player.heaven_start) {
     is_blocked =
         FieldBlocked(game, start_field, token.player.heaven_start + 1, token);
-  } else if (start_field < 69 && (start_field + moves > 68)) {
-    end_field = start_field + moves - 68;
+  } else if (start_field < 69 && (end_field > 68)) {
+    end_field = end_field - 68;
 
     bool test1 = false;
     bool test2 = false;
 
-    test1 = FieldBlocked(game, start_field, 68, token);
+    test1 = FieldBlocked(game, start_field, 69, token);
     test2 = FieldBlocked(game, 0, end_field, token);
 
     if (test1 || test2) {
