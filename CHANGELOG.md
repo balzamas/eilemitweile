@@ -1,6 +1,8 @@
 ## v0.0.12
 - Shrink sprites
 - Bench check according to 'official' rules
+- Added tests
+ - Fix some bench issues
 
 ## v0.0.11
 - Android config
