@@ -4,26 +4,29 @@ import 'package:flame/experimental.dart';
 
 import '../eilemitweile_game.dart';
 
-class BoxVictory extends PositionComponent
+class BoxAIHuman extends PositionComponent
     with TapCallbacks, OpacityProvider, HasGameRef<EileMitWeileGame> {
+  int player_id = 0;
   @override
   Future<void>? onLoad() {
-    position.setValues(0, 50);
-    size = Vector2(2000, 1850);
-    anchor = Anchor.topLeft;
+    size = Vector2(400, 200);
+    anchor = Anchor.center;
 
     return super.onLoad();
   }
 
   @override
-  bool get debugMode => false;
+  bool get debugMode => true;
 
   @override
   late double opacity;
 
   @override
   void onTapUp(TapUpEvent event) {
-    //gameRef.router.pushNamed('newgame');
-    gameRef.router.pop();
+    if (gameRef.players[player_id].is_AI) {
+      gameRef.players[player_id].is_AI = false;
+    } else {
+      gameRef.players[player_id].is_AI = true;
+    }
   }
 }

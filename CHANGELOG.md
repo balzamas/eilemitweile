@@ -1,10 +1,11 @@
-## v0.0.12
-- Shrink sprites
+## v0.0.12+3
+- Reduce graphic size sprites
 - Bench check according to 'official' rules
 - Added tests
- - Fix some bench issues
+- Fix some bench issues
+- Prepare hot seat
 
-## v0.0.11
+## v0.0.11+2
 - Android config
 
 ## v0.0.10

@@ -1,8 +1,6 @@
 import 'package:EileMitWeile/components/gamelogic.dart';
 import 'package:EileMitWeile/components/player.dart';
-import 'package:EileMitWeile/components/screens/maingame.dart';
 import 'package:EileMitWeile/eilemitweile_game.dart';
-import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -126,6 +124,23 @@ void main() {
       bool can_move = CheckIfTokenCanMove(game, game.players[3].tokens[0], 12);
 
       expect(!can_move, true);
+    });
+
+    emwGameTester.test('Move on ', (game) async {
+      game.players[1].tokens[0].field = game.fields[22];
+      game.fields[22].tokens.add(game.players[1].tokens[0]);
+
+      game.players[0].tokens[0].field = game.fields[25];
+      game.fields[22].tokens.add(game.players[0].tokens[0]);
+
+      game.thrown_dices = [3];
+
+      Move(game, game.players[1].tokens[0], game.thrown_dices[0]);
+
+      expect(
+          (game.players[1].tokens[0].field == game.fields[25] &&
+              game.players[0].tokens[0].field == game.fields[25]),
+          true);
     });
   });
 }
