@@ -106,8 +106,6 @@ void main() {
       expect(!can_move, true);
     });
 
-    //[blue, blue, green] on the bench on field 68, is red blocked from going to heaven?
-
     emwGameTester.test('Pink blocked from cross 5 bench', (game) async {
       game.players[1].tokens[0].field = game.fields[5];
       game.fields[5].tokens.add(game.players[1].tokens[0]);
@@ -141,6 +139,98 @@ void main() {
           (game.players[1].tokens[0].field == game.fields[25] &&
               game.players[0].tokens[0].field == game.fields[25]),
           true);
+    });
+
+    //[blue, blue, green] on the bench on field 68, is red blocked from going to heaven?
+
+    emwGameTester.test('12 from bench 68', (game) async {
+      game.players[1].tokens[0].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[1].tokens[0]);
+
+      game.players[1].tokens[1].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[1].tokens[1]);
+
+      game.players[2].tokens[0].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[2].tokens[0]);
+
+      bool can_move = CheckIfTokenCanMove(game, game.players[1].tokens[0], 12);
+
+      expect(can_move, true);
+    });
+
+    emwGameTester.test('KI checks', (game) async {
+      game.players[3].tokens[0].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[3].tokens[0]);
+
+      game.players[3].tokens[1].field = game.fields[0];
+      game.fields[0].tokens.add(game.players[3].tokens[1]);
+
+      game.players[3].tokens[2].field = game.fields[0];
+      game.fields[0].tokens.add(game.players[3].tokens[2]);
+
+      game.players[3].tokens[3].field = game.fields[0];
+      game.fields[0].tokens.add(game.players[3].tokens[3]);
+
+      game.current_player = game.players[3];
+
+      game.thrown_dices.add(12);
+      game.thrown_dices.add(5);
+      int dices = game.thrown_dices.length;
+
+      for (var i = 0; i < dices; i++) {
+        if (CheckTokensToMove(game, game.thrown_dices[0])) {
+          game.Move_KI(game.thrown_dices[0]);
+        } else {
+          game.thrown_dices.removeAt(0);
+        }
+      }
+
+      expect(game.thrown_dices.length, 0);
+    });
+
+    emwGameTester.test('12 from bench 68', (game) async {
+      game.players[1].tokens[0].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[1].tokens[0]);
+
+      game.players[1].tokens[1].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[1].tokens[1]);
+
+      game.players[2].tokens[0].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[2].tokens[0]);
+
+      bool can_move = CheckIfTokenCanMove(game, game.players[1].tokens[0], 12);
+
+      expect(can_move, true);
+    });
+
+    emwGameTester.test('KI checks', (game) async {
+      game.players[3].tokens[0].field = game.fields[68];
+      game.fields[68].tokens.add(game.players[3].tokens[0]);
+
+      game.players[3].tokens[1].field = game.fields[0];
+      game.fields[0].tokens.add(game.players[3].tokens[1]);
+
+      game.players[3].tokens[2].field = game.fields[0];
+      game.fields[0].tokens.add(game.players[3].tokens[2]);
+
+      game.players[3].tokens[3].field = game.fields[0];
+      game.fields[0].tokens.add(game.players[3].tokens[3]);
+
+      game.current_player = game.players[3];
+
+      game.thrown_dices.add(12);
+      game.thrown_dices.add(5);
+      int dices = game.thrown_dices.length;
+
+      for (var i = 0; i < dices; i++) {
+        if (CheckTokensToMove(game, game.thrown_dices[0])) {
+          game.Move_KI(game.thrown_dices[0]);
+        } else {
+          game.thrown_dices.removeAt(0);
+        }
+      }
+
+      expect(game.thrown_dices.length, 0);
     });
   });
 }

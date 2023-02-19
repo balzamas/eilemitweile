@@ -20,6 +20,7 @@ import 'components/field.dart';
 import 'components/screens/maingame.dart';
 import 'components/screens/newgame.dart';
 import 'components/screens/victoryscreen.dart';
+import 'components/sprites/move_buttons2.dart';
 import 'components/text_components/dicetext.dart';
 import 'components/text_components/kills.dart';
 import 'components/gamelogic.dart';
@@ -54,7 +55,7 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   late final KillInfo kill_text;
   List<Field> fields = [];
   List<Player> players = [];
-  List<MoveButton> move_buttons = [];
+  List<ButtonComponent> move_buttons = [];
   DiceText dice_text = DiceText("hans");
 
   List<int> thrown_dices = [];
@@ -108,6 +109,11 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       } else {
         current_player = players[index + 1];
       }
+
+      this.move_buttons[0].setPlayerColor(current_player!.color);
+      this.move_buttons[1].setPlayerColor(current_player!.color);
+      this.move_buttons[2].setPlayerColor(current_player!.color);
+      this.move_buttons[3].setPlayerColor(current_player!.color);
 
       info_text.text_content =
           current_player!.name + "\nTurn " + round.toString();

@@ -190,11 +190,24 @@ bool CheckFieldForEnemyToken(Field field, Token token) {
 
 bool CheckIfTokenCanMoveOnBench(
     EileMitWeileGame game, Token token, int thrown_number) {
+  int end_field = 0;
+  if (token.field!.number <= token.player.heaven_start &&
+      token.field!.number + thrown_number > token.player.heaven_start) {
+    int steps_in_heaven =
+        thrown_number - (token.player.heaven_start - token.field!.number);
+    SendHome(token.field!.number, token.player.heaven_start, game, token);
+    end_field = 68 + steps_in_heaven;
+  } else if (token.field!.number < 69 &&
+      (token.field!.number + thrown_number > 68)) {
+    end_field = token.field!.number + thrown_number - 68;
+  } else {
+    end_field = token.field!.number + thrown_number;
+  }
+
   if (token.field!.current != FieldState.ladder &&
       !(token.field!.number <= token.player.heaven_start &&
           token.field!.number + thrown_number > token.player.heaven_start) &&
-      game.fields[(token.field!.number + thrown_number)].current ==
-          FieldState.bench) {
+      game.fields[end_field].current == FieldState.bench) {
     return true;
   }
   return false;
@@ -219,10 +232,6 @@ bool CheckIfTokenCanMove(EileMitWeileGame game, Token token, thrown_number) {
       token.can_move = false;
       return false;
     }
-  }
-  if (token.field!.number + thrown_number > 76) {
-    token.can_move = false;
-    return false;
   }
   if (token.field!.current == FieldState.bench &&
       CheckBenchBlock(game, token)) {
@@ -309,27 +318,27 @@ bool FieldPrey(EileMitWeileGame game, start_field, end_field, moving_token) {
 
 bool CheckForBlockedFields(EileMitWeileGame game, Token token, int moves) {
   bool is_blocked = false;
-  int start_field = token.field!.number + 1;
+  int start_field = token.field!.number;
   int end_field = token.field!.number + moves;
 
   if (start_field <= token.player.heaven_start &&
       end_field > token.player.heaven_start) {
-    is_blocked =
-        FieldBlocked(game, start_field, token.player.heaven_start + 1, token);
+    is_blocked = FieldBlocked(
+        game, start_field + 1, token.player.heaven_start + 1, token);
   } else if (start_field < 69 && (end_field > 68)) {
     end_field = end_field - 68;
 
     bool test1 = false;
     bool test2 = false;
 
-    test1 = FieldBlocked(game, start_field, 69, token);
+    test1 = FieldBlocked(game, start_field + 1, 69, token);
     test2 = FieldBlocked(game, 0, end_field, token);
 
     if (test1 || test2) {
       is_blocked = true;
     }
   } else {
-    is_blocked = FieldBlocked(game, start_field, end_field, token);
+    is_blocked = FieldBlocked(game, start_field + 1, end_field, token);
   }
   return is_blocked;
 }

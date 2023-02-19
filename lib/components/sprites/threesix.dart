@@ -11,7 +11,7 @@ class ThreeSix extends PositionComponent
   @override
   bool get debugMode => false;
 
-  static late final Sprite threesixSprite = emwSprite(665, 757, 810, 710);
+  static late final Sprite threesixSprite = emwSprite(0, 1388, 810, 710);
 
   @override
   void render(Canvas canvas) {

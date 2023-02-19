@@ -1,5 +1,6 @@
 import 'package:EileMitWeile/components/box.dart';
 import 'package:EileMitWeile/components/sprites/home_field.dart';
+import 'package:EileMitWeile/components/sprites/move_buttons2.dart';
 import 'package:EileMitWeile/components/text_components/infotext.dart';
 import 'package:EileMitWeile/components/sprites/move_button.dart';
 import 'package:EileMitWeile/components/token.dart';
@@ -25,13 +26,19 @@ class MainGame extends Component
         Vector2(EileMitWeileGame.console / 2, EileMitWeileGame.fieldHeight);
     gameRef.dice.size = Vector2(362, 1000);
 
+    Sprite movebuttonSprite1 = emwSprite(1150, 0, 332, 332);
+
     for (var i = 0; i < 4; i++) {
-      MoveButton button = MoveButton();
+      ButtonComponent button = ButtonComponent(
+        position: Vector2(
+            EileMitWeileGame.console + 1400 + EileMitWeileGame.fieldHeight,
+            EileMitWeileGame.fieldHeight + i * 350),
+        sprite: movebuttonSprite1,
+      );
+
       button.button_number = i;
-      button.position = Vector2(
-          EileMitWeileGame.console + 1400 + EileMitWeileGame.fieldHeight,
-          EileMitWeileGame.fieldHeight + i * 350);
-      button.size = Vector2(350, 350);
+
+      //button.size = Vector2(350, 350);
       gameRef.move_buttons.add(button);
     }
 
@@ -187,6 +194,8 @@ class MainGame extends Component
     infoButton.position =
         Vector2(gameRef.screenHeight / 2 - 520, gameRef.screenHeight - 100);
 
+    gameRef.heaven.size = Vector2(600, 600);
+
     gameRef.world.add(box);
     //gameRef.world.add(version);
     box.addAll(gameRef.players);
@@ -204,6 +213,10 @@ class MainGame extends Component
     box.addAll(heaven_fields3);
     box.addAll(tokens);
     box.add(infoButton);
+
+    gameRef.move_buttons[1].setPlayerColor(1);
+    gameRef.move_buttons[2].setPlayerColor(2);
+    gameRef.move_buttons[3].setPlayerColor(3);
 
     await add(gameRef.world);
 
