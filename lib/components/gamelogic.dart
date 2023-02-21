@@ -238,7 +238,13 @@ bool CheckIfTokenCanMove(EileMitWeileGame game, Token token, thrown_number) {
     token.can_move = false;
     return false;
   }
-  if (CheckForBlockedFields(game, token, thrown_number)) {
+  if (token.field!.current == FieldState.ladder &&
+      token.field!.number + thrown_number > 76) {
+    token.can_move = false;
+    return false;
+  }
+  if (token.field!.current != FieldState.ladder &&
+      CheckForBlockedFields(game, token, thrown_number)) {
     token.can_move = false;
     return false;
   }

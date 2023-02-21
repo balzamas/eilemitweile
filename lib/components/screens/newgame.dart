@@ -1,6 +1,4 @@
-import 'package:EileMitWeile/components/box_ai_human.dart';
 import 'package:EileMitWeile/components/box_start.dart';
-import 'package:EileMitWeile/components/box_victory.dart';
 import 'package:EileMitWeile/components/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';

@@ -1,5 +1,6 @@
 ## v0.0.14+4
 - Bug: failed can move on bench check
+- Bug: overshoot in heaven
 
 ## v0.0.13+4
 - Bug: move with 12 from bench 68 not possible #49 

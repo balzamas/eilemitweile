@@ -1,8 +1,7 @@
 import 'package:EileMitWeile/components/box.dart';
 import 'package:EileMitWeile/components/sprites/home_field.dart';
-import 'package:EileMitWeile/components/sprites/move_buttons2.dart';
+import 'package:EileMitWeile/components/sprites/move_buttons.dart';
 import 'package:EileMitWeile/components/text_components/infotext.dart';
-import 'package:EileMitWeile/components/sprites/move_button.dart';
 import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
