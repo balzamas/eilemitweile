@@ -1,25 +1,25 @@
-import 'dart:ui';
-
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
 
-import '../../eilemitweile_game.dart';
-import 'package:flutter/widgets.dart';
+import '../eilemitweile_game.dart';
+import 'gamelogic.dart';
 
-import '../gamelogic.dart';
+class BoxDice extends PositionComponent
+    with TapCallbacks, OpacityProvider, HasGameRef<EileMitWeileGame> {
+  @override
+  Future<void>? onLoad() {
+    anchor = Anchor.center;
+    size = Vector2(EileMitWeileGame.info_col_size, gameRef.screenHeight);
 
-class Heaven extends PositionComponent
-    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+    return super.onLoad();
+  }
+
   @override
   bool get debugMode => false;
 
-  static late final Sprite heavenSprite = emwSprite(0, 785, 600, 600);
-
   @override
-  void render(Canvas canvas) {
-    heavenSprite.render(canvas,
-        position: Vector2(0, 0), anchor: Anchor.topLeft);
-  }
+  late double opacity;
 
   @override
   void onTapUp(TapUpEvent event) {
@@ -33,6 +33,7 @@ class Heaven extends PositionComponent
             gameRef.thrown_dices.removeAt(0);
             game.dices_gfx[0].removeFromParent();
             game.dices_gfx.removeAt(0);
+            PaintDices(game);
           }
         }
       }

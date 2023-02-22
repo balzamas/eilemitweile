@@ -9,7 +9,7 @@ class KillInfo extends TextComponent with HasGameRef<EileMitWeileGame> {
   KillInfo.killInfo({
     this.text_content = "",
   }) : _textPaint = TextPaint(
-            textDirection: TextDirection.rtl,
+            textDirection: TextDirection.ltr,
             style: TextStyle(
                 fontSize: 50, color: Colors.black, fontFamily: 'Komika'));
 
@@ -17,9 +17,8 @@ class KillInfo extends TextComponent with HasGameRef<EileMitWeileGame> {
 
   @override
   Future<void>? onLoad() {
-    text_content = "Kills\nRed: 0\nBlue: 0\nGreen: 0\nPurple: 0";
-    anchor = Anchor.center;
-    position.setValues(260, 1300);
+    text_content = "Turn 1 // Kills: Red 0 // Blue 0 // Green 0 // Purple 0";
+    anchor = Anchor.centerLeft;
     text = text_content;
 
     return super.onLoad();

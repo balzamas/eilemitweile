@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:EileMitWeile/components/player.dart';
+import 'package:EileMitWeile/components/sprites/dice_thrown.dart';
 import 'package:EileMitWeile/components/sprites/threesix.dart';
 import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/eilemitweile_game.dart';
@@ -49,7 +50,10 @@ void Move(EileMitWeileGame game, Token token, int moves) {
   }
 
   game.thrown_dices.removeAt(0);
-  game.dice_text.text = game.thrown_dices.join(" ");
+  game.dices_gfx[0].removeFromParent();
+  game.dices_gfx.removeAt(0);
+
+  PaintDices(game);
 
   if (CheckVictory(token.player)) {
     game.router.pushNamed('victory');
@@ -93,16 +97,85 @@ void SendHome(start_field, end_field, EileMitWeileGame game, Token token) {
   }
 }
 
+void PaintDices(EileMitWeileGame game) {
+  if (game.thrown_dices.length == 1) {
+    game.dices_gfx[0].position = Vector2(
+        EileMitWeileGame.console +
+            8 * EileMitWeileGame.fieldHeight +
+            EileMitWeileGame.fieldWidth +
+            5,
+        9 * EileMitWeileGame.fieldHeight +
+            2 * EileMitWeileGame.fieldWidth +
+            EileMitWeileGame.fieldHeight +
+            5);
+    game.dices_gfx[0].changeParent(game.world);
+  } else if (game.thrown_dices.length == 2) {
+    game.dices_gfx[0].position = Vector2(
+        EileMitWeileGame.console +
+            8 * EileMitWeileGame.fieldHeight +
+            0.5 * EileMitWeileGame.fieldWidth +
+            5,
+        9 * EileMitWeileGame.fieldHeight +
+            2 * EileMitWeileGame.fieldWidth +
+            EileMitWeileGame.fieldHeight +
+            5);
+
+    game.dices_gfx[1].position = Vector2(
+        EileMitWeileGame.console +
+            8 * EileMitWeileGame.fieldHeight +
+            1.5 * EileMitWeileGame.fieldWidth +
+            5,
+        9 * EileMitWeileGame.fieldHeight +
+            2 * EileMitWeileGame.fieldWidth +
+            EileMitWeileGame.fieldHeight +
+            5);
+    game.dices_gfx[1].changeParent(game.world);
+  } else if (game.thrown_dices.length == 3) {
+    game.dices_gfx[0].position = Vector2(
+        EileMitWeileGame.console + 8 * EileMitWeileGame.fieldHeight + 5,
+        9 * EileMitWeileGame.fieldHeight +
+            2 * EileMitWeileGame.fieldWidth +
+            EileMitWeileGame.fieldHeight +
+            5);
+    game.dices_gfx[1].position = Vector2(
+        EileMitWeileGame.console +
+            8 * EileMitWeileGame.fieldHeight +
+            EileMitWeileGame.fieldWidth +
+            5,
+        9 * EileMitWeileGame.fieldHeight +
+            2 * EileMitWeileGame.fieldWidth +
+            EileMitWeileGame.fieldHeight +
+            5);
+
+    game.dices_gfx[2].position = Vector2(
+        EileMitWeileGame.console +
+            8 * EileMitWeileGame.fieldHeight +
+            2 * EileMitWeileGame.fieldWidth +
+            5,
+        9 * EileMitWeileGame.fieldHeight +
+            2 * EileMitWeileGame.fieldWidth +
+            EileMitWeileGame.fieldHeight +
+            5);
+    game.dices_gfx[2].changeParent(game.world);
+  }
+}
+
 bool ThrowDice(EileMitWeileGame game) {
   bool start_next_player = false;
 
   int rand_num = Random().nextInt(6) + 1;
+
   if (rand_num == 6) {
     rand_num = 12;
   }
 
   game.thrown_dices.add(rand_num);
-  game.dice_text.text = game.thrown_dices.join(" ");
+
+  game.dices_gfx.add(DiceTComponent(
+    position: Vector2(0, 0),
+    dice_number: rand_num,
+  ));
+  PaintDices(game);
 
   if (rand_num == 12 && game.thrown_dices.length == 3) {
     //Send all home!
@@ -118,10 +191,16 @@ bool ThrowDice(EileMitWeileGame game) {
   }
   if (rand_num != 12) {
     game.can_throw_dice = false;
+
     if (CheckTokensToMove(
             game, game.thrown_dices[game.thrown_dices.length - 1]) ==
         false) {
       start_next_player = true;
+    } else {
+      if (!game.current_player!.is_AI) {
+        game.state_text_left.text_content = "🔼 Move 🔼";
+        game.state_text_right.text_content = "🔼 Move 🔼";
+      }
     }
   }
 

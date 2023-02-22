@@ -1,7 +1,6 @@
 import 'package:EileMitWeile/components/screens/infoscreen.dart';
 import 'package:EileMitWeile/components/sprites/dice.dart';
 import 'package:EileMitWeile/components/sprites/heaven.dart';
-import 'package:EileMitWeile/components/text_components/infotext.dart';
 import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/enums.dart';
 import 'package:flame/components.dart';
@@ -19,11 +18,12 @@ import 'components/field.dart';
 import 'components/screens/maingame.dart';
 import 'components/screens/newgame.dart';
 import 'components/screens/victoryscreen.dart';
+import 'components/sprites/dice_thrown.dart';
 import 'components/sprites/move_buttons.dart';
-import 'components/text_components/dicetext.dart';
 import 'components/text_components/kills.dart';
 import 'components/gamelogic.dart';
 import 'components/player.dart';
+import 'components/text_components/state.dart';
 
 class EileMitWeileGame extends FlameGame with HasTappableComponents {
   late final RouterComponent router;
@@ -45,19 +45,23 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   Vector2 tokenSize =
       Vector2(EileMitWeileGame.tokenWidth, EileMitWeileGame.tokenHeight);
 
-  double screenWidth = 2000;
+  static const double info_col_size = 450;
+  static const double button_size = 380;
+  static const double console = info_col_size + button_size;
+
+  double screenWidth = 2 * console + 1400;
   double screenHeight = 1600;
 
-  static const double console = 450;
+  late final KillInfo kill_text_left;
+  late final State state_text_left;
+  late final State state_text_right;
 
-  late final InfoText info_text;
-  late final KillInfo kill_text;
   List<Field> fields = [];
   List<Player> players = [];
   List<ButtonComponent> move_buttons = [];
-  DiceText dice_text = DiceText("hans");
 
   List<int> thrown_dices = [];
+  List<DiceTComponent> dices_gfx = [];
   int current_dice = 0;
   bool can_throw_dice = true;
 
@@ -66,7 +70,6 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   Player? current_player;
   Heaven heaven = Heaven();
   int round = 0;
-  Dice dice = Dice();
 
   @override
   Future<void> onLoad() async {
@@ -79,26 +82,19 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
           'newgame': Route(NewGameScreen.new),
           'info': Route(InfoScreen.new)
         },
-        initialRoute: 'game',
+        initialRoute: 'newgame',
       ),
     );
   }
 
   void NextPlayer() {
-    //Show Kills
-    kill_text.text_content = "Kills\nRed: " +
-        players[0].bodycount.toString() +
-        "\nBlue: " +
-        players[1].bodycount.toString() +
-        "\nGreen: " +
-        players[2].bodycount.toString() +
-        "\nPurple: " +
-        players[3].bodycount.toString();
-
     Future.delayed(const Duration(milliseconds: 500), () {
+      for (DiceTComponent dice in dices_gfx) {
+        dice.removeFromParent();
+      }
+      dices_gfx = [];
       can_throw_dice = true;
       thrown_dices = [];
-      dice_text.text = "";
 
       final index = players
           .indexWhere((element) => element.color == current_player!.color);
@@ -113,11 +109,27 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       this.move_buttons[1].setPlayerColor(current_player!.color);
       this.move_buttons[2].setPlayerColor(current_player!.color);
       this.move_buttons[3].setPlayerColor(current_player!.color);
+      this.move_buttons[4].setPlayerColor(current_player!.color);
+      this.move_buttons[5].setPlayerColor(current_player!.color);
+      this.move_buttons[6].setPlayerColor(current_player!.color);
+      this.move_buttons[7].setPlayerColor(current_player!.color);
 
-      info_text.text_content =
-          current_player!.name + "\nTurn " + round.toString();
+      //Show Kills
+      kill_text_left.text_content = "Turn " +
+          round.toString() +
+          " // Kills: Red " +
+          players[0].bodycount.toString() +
+          " // Blue " +
+          players[1].bodycount.toString() +
+          " // Green " +
+          players[2].bodycount.toString() +
+          " // Purple " +
+          players[3].bodycount.toString();
 
       if (current_player!.is_AI) {
+        state_text_left.text_content = "";
+        state_text_right.text_content = "";
+
         Future.delayed(const Duration(milliseconds: 500), () {
           ThrowDice(this);
 
@@ -146,6 +158,9 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
             NextPlayer();
           });
         });
+      } else {
+        state_text_left.text_content = "🎲 Roll dice 🎲";
+        state_text_right.text_content = "🎲 Roll dice 🎲";
       }
     });
   }

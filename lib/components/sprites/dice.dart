@@ -13,7 +13,6 @@ class Dice extends PositionComponent
   @override
   bool get debugMode => false;
 
-  //static late final Sprite diceSprite = emwSprite(0, 651, 399, 399);
   static late final Sprite diceSprite = emwSprite(0, 375, 399, 399);
 
   @override
@@ -31,8 +30,10 @@ class Dice extends PositionComponent
         for (var i = 0; i < dices; i++) {
           if (CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
             gameRef.thrown_dices.removeAt(0);
+            game.dices_gfx[0].removeFromParent();
+            game.dices_gfx.removeAt(0);
+            PaintDices(game);
           }
-          gameRef.dice_text.text = gameRef.thrown_dices.join(" ");
         }
       }
     }

@@ -182,6 +182,8 @@ void main() {
           game.Move_KI(game.thrown_dices[0]);
         } else {
           game.thrown_dices.removeAt(0);
+          game.dices_gfx[0].removeFromParent();
+          game.dices_gfx.removeAt(0);
         }
       }
 

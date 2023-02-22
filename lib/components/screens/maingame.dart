@@ -1,7 +1,6 @@
 import 'package:EileMitWeile/components/box.dart';
 import 'package:EileMitWeile/components/sprites/home_field.dart';
 import 'package:EileMitWeile/components/sprites/move_buttons.dart';
-import 'package:EileMitWeile/components/text_components/infotext.dart';
 import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
@@ -12,19 +11,16 @@ import 'package:flutter/rendering.dart';
 
 import '../../eilemitweile_game.dart';
 import '../../enums.dart';
+import '../box_dice.dart';
 import '../field.dart';
 import '../player.dart';
 import '../text_components/kills.dart';
+import '../text_components/state.dart';
 
 class MainGame extends Component
     with TapCallbacks, HasGameRef<EileMitWeileGame> {
   @override
   Future<void> onLoad() async {
-    gameRef.dice.anchor = Anchor.topCenter;
-    gameRef.dice.position =
-        Vector2(EileMitWeileGame.console / 2, EileMitWeileGame.fieldHeight);
-    gameRef.dice.size = Vector2(362, 1000);
-
     Sprite movebuttonSprite1 = emwSprite(1150, 0, 332, 332);
 
     for (var i = 0; i < 4; i++) {
@@ -41,9 +37,22 @@ class MainGame extends Component
       gameRef.move_buttons.add(button);
     }
 
+    for (var i = 0; i < 4; i++) {
+      ButtonComponent button = ButtonComponent(
+        position: Vector2(EileMitWeileGame.info_col_size,
+            EileMitWeileGame.fieldHeight + i * 350),
+        sprite: movebuttonSprite1,
+      );
+
+      button.button_number = i;
+
+      //button.size = Vector2(350, 350);
+      gameRef.move_buttons.add(button);
+    }
+
     gameRef.fields = CreateFields();
 
-    gameRef.players = CreatePlayers();
+    //gameRef.players = CreatePlayers();
 
     final List<HomeField> home_fields = [];
 
@@ -191,18 +200,35 @@ class MainGame extends Component
     );
 
     infoButton.position =
-        Vector2(gameRef.screenHeight / 2 - 520, gameRef.screenHeight - 100);
+        Vector2(EileMitWeileGame.info_col_size, gameRef.screenHeight - 100);
 
     gameRef.heaven.size = Vector2(600, 600);
+
+    BoxDice box_dice_left = BoxDice();
+    BoxDice box_dice_right = BoxDice();
+
+    box_dice_left.position = Vector2(
+        EileMitWeileGame.info_col_size / 2 - 20, gameRef.screenHeight / 2);
+
+    box_dice_right.position = Vector2(
+        EileMitWeileGame.console +
+            1400 +
+            EileMitWeileGame.button_size +
+            EileMitWeileGame.info_col_size / 2 +
+            20,
+        gameRef.screenHeight / 2);
 
     gameRef.world.add(box);
     //gameRef.world.add(version);
     box.addAll(gameRef.players);
     box.addAll(gameRef.fields);
-    box.add(gameRef.dice);
-    box.add(gameRef.dice_text);
-    box.add(gameRef.info_text = InfoText.playerScore());
-    box.add(gameRef.kill_text = KillInfo.killInfo());
+
+    box.add(gameRef.kill_text_left = KillInfo.killInfo());
+    box.add(gameRef.state_text_left = State.stateInfo());
+    box.add(gameRef.state_text_right = State.stateInfo());
+    box.add(box_dice_left);
+    box.add(box_dice_right);
+
     box.addAll(home_fields);
     box.addAll(gameRef.move_buttons);
     box.add(gameRef.heaven);
@@ -213,25 +239,38 @@ class MainGame extends Component
     box.addAll(tokens);
     box.add(infoButton);
 
+    gameRef.kill_text_left.position =
+        Vector2(EileMitWeileGame.console, gameRef.screenHeight - 100);
+
+    gameRef.state_text_left.position = Vector2(
+        EileMitWeileGame.info_col_size / 2 - 20, gameRef.screenHeight / 2);
+
+    gameRef.state_text_right.is_right = true;
+    gameRef.state_text_right.position = Vector2(
+        EileMitWeileGame.console +
+            1400 +
+            EileMitWeileGame.button_size +
+            EileMitWeileGame.info_col_size / 2 +
+            20,
+        gameRef.screenHeight / 2);
+
     gameRef.move_buttons[1].setPlayerColor(1);
     gameRef.move_buttons[2].setPlayerColor(2);
     gameRef.move_buttons[3].setPlayerColor(3);
-
+    gameRef.move_buttons[5].setPlayerColor(1);
+    gameRef.move_buttons[6].setPlayerColor(2);
+    gameRef.move_buttons[7].setPlayerColor(3);
     await add(gameRef.world);
 
     gameRef.current_player = gameRef.players[3];
-    gameRef.info_text.text_content = gameRef.current_player!.name;
-    gameRef.players[0].is_AI = false;
-
-    gameRef.dice_text.position = Vector2(EileMitWeileGame.console / 2, 600);
-    gameRef.dice_text.anchor = Anchor.center;
+    //gameRef.players[0].is_AI = false;
 
     gameRef.NextPlayer();
 
     final camera = CameraComponent(world: gameRef.world)
       ..viewfinder.visibleGameSize =
           Vector2(gameRef.screenWidth, gameRef.screenHeight)
-      ..viewfinder.position = Vector2(1150, 0)
+      ..viewfinder.position = Vector2(1555, 0)
       ..viewfinder.anchor = Anchor.topCenter;
     add(camera);
   }
@@ -243,7 +282,7 @@ class RoundedButton extends PositionComponent with TapCallbacks {
     required this.action,
     required Color color,
     required Color borderColor,
-    super.anchor = Anchor.center,
+    super.anchor = Anchor.centerLeft,
   }) : _textDrawable = TextPaint(
           style: const TextStyle(
             fontSize: 50,

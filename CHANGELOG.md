@@ -1,3 +1,6 @@
+## v0.0.15+5
+- UI rearrange
+
 ## v0.0.14+4
 - Bug: failed can move on bench check
 - Bug: overshoot in heaven

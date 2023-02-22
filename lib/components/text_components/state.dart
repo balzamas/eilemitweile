@@ -1,26 +1,37 @@
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
 
 import 'package:flutter/material.dart';
 
-class InfoText extends TextComponent with HasGameRef<EileMitWeileGame> {
-  late String text_content;
+import '../gamelogic.dart';
 
-  InfoText.playerScore({
+class State extends TextComponent with HasGameRef<EileMitWeileGame> {
+  late String text_content;
+  late bool is_right = false;
+
+  @override
+  bool get debugMode => false;
+
+  State.stateInfo({
     this.text_content = "",
   }) : _textPaint = TextPaint(
-            textDirection: TextDirection.rtl,
+            textDirection: TextDirection.ltr,
             style: TextStyle(
-                fontSize: 60, color: Colors.black, fontFamily: 'Komika'));
+                fontSize: 90, color: Colors.black, fontFamily: 'Komika'));
 
   late final TextPaint _textPaint;
 
   @override
   Future<void>? onLoad() {
-    text_content = "Red\nTurn 1";
+    text_content = "🎲 Roll dice 🎲";
     anchor = Anchor.center;
-    position.setValues(280, 950);
     text = text_content;
+    if (is_right) {
+      angle = 4.71;
+    } else {
+      angle = 1.57;
+    }
 
     return super.onLoad();
   }

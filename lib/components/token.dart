@@ -117,7 +117,8 @@ class Token extends PositionComponent
       if (gameRef.thrown_dices.length == 2 &&
           CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
         game.thrown_dices.removeAt(0);
-        game.dice_text.text = game.thrown_dices.join(" ");
+        game.dices_gfx[0].removeFromParent();
+        game.dices_gfx.removeAt(0);
       }
       if (gameRef.thrown_dices.length == 0 ||
           CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
