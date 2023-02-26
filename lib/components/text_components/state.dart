@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
@@ -23,7 +25,7 @@ class State extends TextComponent with HasGameRef<EileMitWeileGame> {
   late final TextPaint _textPaint;
 
   @override
-  Future<void>? onLoad() {
+  FutureOr<void> onLoad() {
     text_content = "🎲 Roll dice 🎲";
     anchor = Anchor.center;
     text = text_content;

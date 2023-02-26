@@ -7,7 +7,6 @@ import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-
 import '../enums.dart';
 import 'field.dart';
 

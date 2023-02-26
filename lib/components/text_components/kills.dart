@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
 
@@ -16,7 +18,7 @@ class KillInfo extends TextComponent with HasGameRef<EileMitWeileGame> {
   late final TextPaint _textPaint;
 
   @override
-  Future<void>? onLoad() {
+  FutureOr<void> onLoad() {
     text_content = "Turn 1 // Kills: Red 0 // Blue 0 // Green 0 // Purple 0";
 
     // if (gameRef.is_hotseat) {

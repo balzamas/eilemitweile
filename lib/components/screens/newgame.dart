@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:EileMitWeile/components/box_start.dart';
 import 'package:EileMitWeile/components/player.dart';
 import 'package:flame/components.dart';
@@ -158,7 +160,7 @@ class BoxAIHuman extends PositionComponent
     with TapCallbacks, HasGameRef<EileMitWeileGame> {
   int player_id = 0;
   @override
-  Future<void>? onLoad() {
+  FutureOr<void> onLoad() {
     anchor = Anchor.center;
 
     return super.onLoad();

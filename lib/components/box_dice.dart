@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
@@ -8,7 +10,7 @@ import 'gamelogic.dart';
 class BoxDice extends PositionComponent
     with TapCallbacks, OpacityProvider, HasGameRef<EileMitWeileGame> {
   @override
-  Future<void>? onLoad() {
+  FutureOr<void> onLoad() {
     anchor = Anchor.center;
     size = Vector2(EileMitWeileGame.info_col_size, gameRef.screenHeight);
 

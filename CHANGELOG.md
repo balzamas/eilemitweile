@@ -1,3 +1,6 @@
+## v0.0.17+6
+- Upgrade flutter and flame
+
 ## v0.0.16+5
 - Clean up new game screen
 - Different UI hotseat/single player, enlarge dices

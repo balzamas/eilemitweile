@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
@@ -8,7 +10,7 @@ class BoxAIHuman extends PositionComponent
     with TapCallbacks, OpacityProvider, HasGameRef<EileMitWeileGame> {
   int player_id = 0;
   @override
-  Future<void>? onLoad() {
+  FutureOr<void> onLoad() {
     size = Vector2(400, 200);
     anchor = Anchor.center;
 
