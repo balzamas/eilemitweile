@@ -4,11 +4,13 @@ import 'package:flame/experimental.dart';
 
 import '../eilemitweile_game.dart';
 
-class BoxStart extends PositionComponent
+class BoxInfo extends PositionComponent
     with TapCallbacks, OpacityProvider, HasGameRef<EileMitWeileGame> {
   @override
   Future<void>? onLoad() {
-    anchor = Anchor.topCenter;
+    position.setValues(0, 50);
+    size = Vector2(2000, 1850);
+    anchor = Anchor.topLeft;
 
     return super.onLoad();
   }
@@ -21,6 +23,6 @@ class BoxStart extends PositionComponent
 
   @override
   void onTapUp(TapUpEvent event) {
-    gameRef.router.pushNamed('game');
+    gameRef.router.pop();
   }
 }

@@ -10,7 +10,7 @@ import '../gamecreation.dart';
 import '../token.dart';
 
 final style_small = TextStyle(
-    color: BasicPalette.black.color, fontSize: 30, fontFamily: 'Komika');
+    color: BasicPalette.black.color, fontSize: 40, fontFamily: 'Komika');
 
 TextPaint textPaint_small = TextPaint(style: style_small);
 
@@ -39,7 +39,7 @@ class NewGameScreen extends Component
         game.size.x / gameRef.screenWidth, game.size.x / gameRef.screenWidth);
 
     final style_large = TextStyle(
-        color: BasicPalette.black.color, fontSize: 90, fontFamily: 'Komika');
+        color: BasicPalette.black.color, fontSize: 70, fontFamily: 'Komika');
 
     TextPaint textPaint_large = TextPaint(style: style_large);
 
@@ -48,108 +48,107 @@ class NewGameScreen extends Component
     title.position = Vector2(game.size.x / 2, scale.x * 125);
     title.scale = scale;
 
-    add(title);
+    //add(title);
+
+    Sprite fild_img = emwSprite(624, 326, 500, 500);
+
+    SpriteComponent field =
+        SpriteComponent(sprite: fild_img, anchor: Anchor.center);
+    field.anchor = Anchor.topCenter;
+    field.size = Vector2(game.size.x / 3 - 80, game.size.x / 3 - 80);
+    field.position = Vector2(game.size.x / 2, 100);
+    add(field);
 
     Player player1 = Player();
     player1.color = 1;
 
-    Token token_p1 = Token(player1);
-    token_p1.position = Vector2(game.size.x / 7, scale.x * 300);
-    token_p1.token_number = 0;
+    Player player4 = Player();
+    player4.color = 4;
 
     Player player2 = Player();
     player2.color = 2;
 
-    Token token_p2 = Token(player2);
-    token_p2.position = Vector2(5 * (game.size.x / 7), scale.x * 300);
-    token_p2.token_number = 0;
-
     Player player3 = Player();
     player3.color = 3;
 
-    Token token_p3 = Token(player3);
-    token_p3.position = Vector2(game.size.x / 7, scale.x * 500);
-    token_p3.token_number = 0;
+    RoundedButton player1_btn = RoundedButton(
+        text: '',
+        action: () => gameRef.router.pushNamed('info'),
+        color: Color.fromARGB(255, 255, 0, 0),
+        borderColor: Color.fromARGB(255, 0, 0, 0),
+        game: game,
+        id: 0);
 
-    Player player4 = Player();
-    player4.color = 4;
+    player1_btn.position = Vector2(20 + (game.size.x / 3 / 2), 100);
+    player1_opt.position = Vector2(
+        20 + (game.size.x / 3 / 2), 100 + (game.size.x / 3 - 80) / 3 / 2);
 
-    Token token_p4 = Token(player4);
-    token_p4.position = Vector2(5 * (game.size.x / 7), scale.x * 500);
-    token_p4.token_number = 0;
-    token_p1.anchor = Anchor.center;
+    add(player1_btn);
 
-    add(token_p1);
-    add(token_p2);
-    add(token_p3);
-    add(token_p4);
+    RoundedButton player2_btn = RoundedButton(
+        text: '',
+        action: () => gameRef.router.pushNamed('info'),
+        color: Color.fromARGB(255, 0, 17, 255),
+        borderColor: Color.fromARGB(255, 0, 0, 0),
+        game: game,
+        id: 1);
 
-    player1_opt.position =
-        Vector2(game.size.x / 7 + (scale.x * 150), scale.x * 325);
-    player1_opt.scale = scale;
+    player2_btn.position = Vector2(
+        20 + (game.size.x / 3 / 2), (game.size.x / 3 - 80) / 3 * 2 + 100);
+    player2_opt.position = Vector2(20 + (game.size.x / 3 / 2),
+        (game.size.x / 3 - 80) / 3 * 2 + 100 + (game.size.x / 3 - 80) / 3 / 2);
 
-    player2_opt.position =
-        Vector2(5 * (game.size.x / 7) + (scale.x * 150), scale.x * 325);
-    player2_opt.scale = scale;
+    add(player2_btn);
 
-    player3_opt.position =
-        Vector2(game.size.x / 7 + (scale.x * 150), scale.x * 525);
-    player3_opt.scale = scale;
+    RoundedButton player3_btn = RoundedButton(
+        text: '',
+        action: () => gameRef.router.pushNamed('info'),
+        color: Color.fromARGB(255, 0, 187, 0),
+        borderColor: Color.fromARGB(255, 0, 0, 0),
+        game: game,
+        id: 2);
 
-    player4_opt.position =
-        Vector2(5 * (game.size.x / 7) + (scale.x * 150), scale.x * 525);
-    player4_opt.scale = scale;
+    player3_btn.position = Vector2(
+        (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
+        (game.size.x / 3 - 80) / 3 * 2 + 100);
+    player3_opt.position = Vector2(
+        (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
+        (game.size.x / 3 - 80) / 3 * 2 + 100 + (game.size.x / 3 - 80) / 3 / 2);
 
+    add(player3_btn);
+
+    RoundedButton player4_btn = RoundedButton(
+        text: '',
+        action: () => gameRef.router.pushNamed('info'),
+        color: Color.fromARGB(255, 164, 1, 185),
+        borderColor: Color.fromARGB(255, 0, 0, 0),
+        game: game,
+        id: 3);
+
+    player4_btn.position =
+        Vector2((2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20, 100);
+    player4_opt.position = Vector2(
+        (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
+        100 + (game.size.x / 3 - 80) / 3 / 2);
+
+    add(player4_btn);
+
+    BoxStart boxs = BoxStart();
+    boxs.anchor = Anchor.topCenter;
+    boxs.position = Vector2(game.size.x / 2, 100 + (game.size.x / 3 - 80));
+    boxs.size = Vector2(game.size.x, 400);
+    add(boxs);
+
+    TextComponent start = TextComponent(
+        text: "Start", textRenderer: textPaint_large, anchor: Anchor.center);
+    start.anchor = Anchor.topCenter;
+    start.position = Vector2(game.size.x / 2, 100 + game.size.x / 3 - 80);
+
+    add(start);
     add(player1_opt);
     add(player2_opt);
     add(player3_opt);
     add(player4_opt);
-
-    BoxStart boxs = BoxStart();
-
-    BoxAIHuman box_red = BoxAIHuman();
-    box_red.position =
-        Vector2(game.size.x / 7 + (scale.x * 150), scale.x * 325);
-    box_red.player_id = 0;
-    box_red.size = Vector2(scale.x * 400, scale.x * 200);
-
-    BoxAIHuman box_blue = BoxAIHuman();
-    box_blue.position =
-        Vector2(5 * (game.size.x / 7) + (scale.x * 150), scale.x * 325);
-    ;
-    box_blue.player_id = 1;
-    box_blue.size = Vector2(scale.x * 400, scale.x * 200);
-
-    BoxAIHuman box_green = BoxAIHuman();
-    box_green.position =
-        Vector2(game.size.x / 7 + (scale.x * 150), scale.x * 525);
-    ;
-    box_green.player_id = 2;
-    box_green.size = Vector2(scale.x * 400, scale.x * 200);
-
-    BoxAIHuman box_purple = BoxAIHuman();
-    box_purple.position =
-        Vector2(5 * (game.size.x / 7) + (scale.x * 150), scale.x * 525);
-    ;
-    box_purple.size = Vector2(scale.x * 400, scale.x * 200);
-
-    box_purple.player_id = 3;
-
-    boxs.position = Vector2(game.size.x / 2, scale.x * 780);
-    boxs.size = Vector2(2000, scale.x * 200);
-    add(boxs);
-
-    add(box_red);
-    add(box_blue);
-    add(box_green);
-    add(box_purple);
-
-    TextComponent start = TextComponent(
-        text: "Start", textRenderer: textPaint_large, anchor: Anchor.center);
-    start.position = Vector2(game.size.x / 2, scale.x * 770);
-    start.scale = scale;
-
-    add(start);
 
     gameRef.players[0].is_AI = false;
   }
@@ -172,9 +171,82 @@ class BoxAIHuman extends PositionComponent
   late double opacity;
 
   @override
+  void onTapUp(TapUpEvent event) {}
+}
+
+class RoundedButton extends PositionComponent with TapCallbacks {
+  int? player_id;
+  EileMitWeileGame? mygame;
+
+  RoundedButton({
+    required this.text,
+    required this.action,
+    required Color color,
+    required Color borderColor,
+    required EileMitWeileGame game,
+    required int id,
+    super.anchor = Anchor.topCenter,
+  }) : _textDrawable = TextPaint(
+          style: const TextStyle(
+            fontSize: 50,
+            color: Color(0xFF000000),
+            fontWeight: FontWeight.w800,
+            fontFamily: 'Komika',
+          ),
+        ).toTextPainter(text) {
+    size = Vector2(game.size.x / 3, (game.size.x / 3 - 80) / 3);
+    player_id = id;
+    mygame = game;
+
+    _textOffset = Offset(
+      (size.x - _textDrawable.width) / 2,
+      (size.y - _textDrawable.height) / 2,
+    );
+
+    _rrect = RRect.fromLTRBR(0, 0, size.x, size.y, Radius.circular(size.y / 9));
+
+    _bgPaint = Paint()..color = color;
+
+    _borderPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..color = borderColor;
+  }
+
+  String text;
+
+  final void Function() action;
+
+  final TextPainter _textDrawable;
+
+  late final Offset _textOffset;
+
+  late final RRect _rrect;
+
+  late final Paint _borderPaint;
+
+  late final Paint _bgPaint;
+
+  @override
+  void render(Canvas canvas) {
+    canvas.drawRRect(_rrect, _bgPaint);
+
+    canvas.drawRRect(_rrect, _borderPaint);
+
+    _textDrawable.paint(canvas, _textOffset);
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    scale = Vector2.all(1.05);
+  }
+
+  @override
   void onTapUp(TapUpEvent event) {
-    if (gameRef.players[player_id].is_AI) {
-      gameRef.players[player_id].is_AI = false;
+    scale = Vector2.all(1.0);
+
+    if (mygame!.players[this.player_id!].is_AI) {
+      mygame!.players[player_id!].is_AI = false;
       if (player_id == 0) {
         player1_opt.text = "Human";
       }
@@ -188,7 +260,7 @@ class BoxAIHuman extends PositionComponent
         player4_opt.text = "Human";
       }
     } else {
-      gameRef.players[player_id].is_AI = true;
+      mygame!.players[player_id!].is_AI = true;
       if (player_id == 0) {
         player1_opt.text = "KI";
       }
@@ -202,5 +274,10 @@ class BoxAIHuman extends PositionComponent
         player4_opt.text = "KI";
       }
     }
+  }
+
+  @override
+  void onTapCancel(TapCancelEvent event) {
+    scale = Vector2.all(1.0);
   }
 }

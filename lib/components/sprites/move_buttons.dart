@@ -41,6 +41,20 @@ class ButtonComponent extends SpriteComponent
           CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
         gameRef.NextPlayer();
       }
+    } else if (!gameRef.current_player!.is_AI && gameRef.can_throw_dice) {
+      if (ThrowDice(gameRef)) {
+        gameRef.NextPlayer();
+      } else if (!gameRef.can_throw_dice) {
+        int dices = gameRef.thrown_dices.length;
+        for (var i = 0; i < dices; i++) {
+          if (CheckTokensToMove(gameRef, gameRef.thrown_dices[0]) == false) {
+            gameRef.thrown_dices.removeAt(0);
+            game.dices_gfx[0].removeFromParent();
+            game.dices_gfx.removeAt(0);
+            PaintDices(game);
+          }
+        }
+      }
     }
   }
 

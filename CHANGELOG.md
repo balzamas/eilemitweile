@@ -1,5 +1,9 @@
+## v0.0.16+5
+- Clean up new game screen
+
 ## v0.0.15+5
 - UI rearrange
+- Add hotseat
 
 ## v0.0.14+4
 - Bug: failed can move on bench check
