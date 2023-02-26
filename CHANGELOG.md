@@ -1,5 +1,7 @@
 ## v0.0.16+5
 - Clean up new game screen
+- Different UI hotseat/single player, enlarge dices
+- Pimp gfx
 
 ## v0.0.15+5
 - UI rearrange

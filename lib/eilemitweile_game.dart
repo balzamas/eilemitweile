@@ -31,6 +31,8 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   @override
   Color backgroundColor() => Color.fromARGB(255, 245, 255, 157);
 
+  bool is_hotseat = false;
+
   static const double fieldWidth = 200.0;
   static const double fieldHeight = 50.0;
   static const double tokenWidth = 50.0;
@@ -52,7 +54,7 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   double screenWidth = 2 * console + 1400;
   double screenHeight = 1600;
 
-  late final KillInfo kill_text_left;
+  late final KillInfo kill_text;
   late final State state_text_left;
   late final State state_text_right;
 
@@ -109,13 +111,15 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       this.move_buttons[1].setPlayerColor(current_player!.color);
       this.move_buttons[2].setPlayerColor(current_player!.color);
       this.move_buttons[3].setPlayerColor(current_player!.color);
-      this.move_buttons[4].setPlayerColor(current_player!.color);
-      this.move_buttons[5].setPlayerColor(current_player!.color);
-      this.move_buttons[6].setPlayerColor(current_player!.color);
-      this.move_buttons[7].setPlayerColor(current_player!.color);
-
+      if (is_hotseat == true) {
+        this.move_buttons[4].setPlayerColor(current_player!.color);
+        this.move_buttons[5].setPlayerColor(current_player!.color);
+        this.move_buttons[6].setPlayerColor(current_player!.color);
+        this.move_buttons[7].setPlayerColor(current_player!.color);
+      }
       //Show Kills
-      kill_text_left.text_content = "Turn " +
+
+      kill_text.text_content = "Turn " +
           round.toString() +
           " // Kills: Red " +
           players[0].bodycount.toString() +
@@ -125,6 +129,30 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
           players[2].bodycount.toString() +
           " // Purple " +
           players[3].bodycount.toString();
+
+      // if (is_hotseat) {
+      //   kill_text.text_content = "Turn " +
+      //       round.toString() +
+      //       " // Kills: Red " +
+      //       players[0].bodycount.toString() +
+      //       " // Blue " +
+      //       players[1].bodycount.toString() +
+      //       " // Green " +
+      //       players[2].bodycount.toString() +
+      //       " // Purple " +
+      //       players[3].bodycount.toString();
+      // } else {
+      //   kill_text.text_content = "Turn " +
+      //       round.toString() +
+      //       "\nKills:\nRed " +
+      //       players[0].bodycount.toString() +
+      //       "\nBlue " +
+      //       players[1].bodycount.toString() +
+      //       "\nGreen " +
+      //       players[2].bodycount.toString() +
+      //       "\nPurple " +
+      //       players[3].bodycount.toString();
+      // }
 
       if (current_player!.is_AI) {
         state_text_left.text_content = "";

@@ -98,65 +98,88 @@ void SendHome(start_field, end_field, EileMitWeileGame game, Token token) {
 }
 
 void PaintDices(EileMitWeileGame game) {
-  if (game.thrown_dices.length == 1) {
-    game.dices_gfx[0].position = Vector2(
-        EileMitWeileGame.console +
-            8 * EileMitWeileGame.fieldHeight +
-            EileMitWeileGame.fieldWidth +
-            5,
-        9 * EileMitWeileGame.fieldHeight +
-            2 * EileMitWeileGame.fieldWidth +
-            EileMitWeileGame.fieldHeight +
-            5);
-    game.dices_gfx[0].changeParent(game.world);
-  } else if (game.thrown_dices.length == 2) {
-    game.dices_gfx[0].position = Vector2(
-        EileMitWeileGame.console +
-            8 * EileMitWeileGame.fieldHeight +
-            0.5 * EileMitWeileGame.fieldWidth +
-            5,
-        9 * EileMitWeileGame.fieldHeight +
-            2 * EileMitWeileGame.fieldWidth +
-            EileMitWeileGame.fieldHeight +
-            5);
+  if (game.is_hotseat == true) {
+    if (game.thrown_dices.length == 1) {
+      game.dices_gfx[0].position = Vector2(
+          EileMitWeileGame.console +
+              8 * EileMitWeileGame.fieldHeight +
+              EileMitWeileGame.fieldWidth +
+              5,
+          9 * EileMitWeileGame.fieldHeight +
+              2 * EileMitWeileGame.fieldWidth +
+              EileMitWeileGame.fieldHeight +
+              5);
+      game.dices_gfx[0].changeParent(game.world);
+    } else if (game.thrown_dices.length == 2) {
+      game.dices_gfx[0].position = Vector2(
+          EileMitWeileGame.console +
+              8 * EileMitWeileGame.fieldHeight +
+              0.5 * EileMitWeileGame.fieldWidth +
+              5,
+          9 * EileMitWeileGame.fieldHeight +
+              2 * EileMitWeileGame.fieldWidth +
+              EileMitWeileGame.fieldHeight +
+              5);
 
-    game.dices_gfx[1].position = Vector2(
-        EileMitWeileGame.console +
-            8 * EileMitWeileGame.fieldHeight +
-            1.5 * EileMitWeileGame.fieldWidth +
-            5,
-        9 * EileMitWeileGame.fieldHeight +
-            2 * EileMitWeileGame.fieldWidth +
-            EileMitWeileGame.fieldHeight +
-            5);
-    game.dices_gfx[1].changeParent(game.world);
-  } else if (game.thrown_dices.length == 3) {
-    game.dices_gfx[0].position = Vector2(
-        EileMitWeileGame.console + 8 * EileMitWeileGame.fieldHeight + 5,
-        9 * EileMitWeileGame.fieldHeight +
-            2 * EileMitWeileGame.fieldWidth +
-            EileMitWeileGame.fieldHeight +
-            5);
-    game.dices_gfx[1].position = Vector2(
-        EileMitWeileGame.console +
-            8 * EileMitWeileGame.fieldHeight +
-            EileMitWeileGame.fieldWidth +
-            5,
-        9 * EileMitWeileGame.fieldHeight +
-            2 * EileMitWeileGame.fieldWidth +
-            EileMitWeileGame.fieldHeight +
-            5);
+      game.dices_gfx[1].position = Vector2(
+          EileMitWeileGame.console +
+              8 * EileMitWeileGame.fieldHeight +
+              1.5 * EileMitWeileGame.fieldWidth +
+              5,
+          9 * EileMitWeileGame.fieldHeight +
+              2 * EileMitWeileGame.fieldWidth +
+              EileMitWeileGame.fieldHeight +
+              5);
+      game.dices_gfx[1].changeParent(game.world);
+    } else if (game.thrown_dices.length == 3) {
+      game.dices_gfx[0].position = Vector2(
+          EileMitWeileGame.console + 8 * EileMitWeileGame.fieldHeight + 5,
+          9 * EileMitWeileGame.fieldHeight +
+              2 * EileMitWeileGame.fieldWidth +
+              EileMitWeileGame.fieldHeight +
+              5);
+      game.dices_gfx[1].position = Vector2(
+          EileMitWeileGame.console +
+              8 * EileMitWeileGame.fieldHeight +
+              EileMitWeileGame.fieldWidth +
+              5,
+          9 * EileMitWeileGame.fieldHeight +
+              2 * EileMitWeileGame.fieldWidth +
+              EileMitWeileGame.fieldHeight +
+              5);
 
-    game.dices_gfx[2].position = Vector2(
-        EileMitWeileGame.console +
-            8 * EileMitWeileGame.fieldHeight +
-            2 * EileMitWeileGame.fieldWidth +
-            5,
-        9 * EileMitWeileGame.fieldHeight +
-            2 * EileMitWeileGame.fieldWidth +
-            EileMitWeileGame.fieldHeight +
-            5);
-    game.dices_gfx[2].changeParent(game.world);
+      game.dices_gfx[2].position = Vector2(
+          EileMitWeileGame.console +
+              8 * EileMitWeileGame.fieldHeight +
+              2 * EileMitWeileGame.fieldWidth +
+              5,
+          9 * EileMitWeileGame.fieldHeight +
+              2 * EileMitWeileGame.fieldWidth +
+              EileMitWeileGame.fieldHeight +
+              5);
+      game.dices_gfx[2].changeParent(game.world);
+    }
+  } else {
+    if (game.thrown_dices.length > 0) {
+      game.dices_gfx[0].size = Vector2(300, 300);
+      game.dices_gfx[0].position = Vector2(
+          EileMitWeileGame.info_col_size, 2 * EileMitWeileGame.fieldHeight);
+      game.dices_gfx[0].changeParent(game.world);
+    }
+    if (game.thrown_dices.length > 1) {
+      game.dices_gfx[1].size = Vector2(300, 300);
+
+      game.dices_gfx[1].position = Vector2(EileMitWeileGame.info_col_size,
+          3 * EileMitWeileGame.fieldHeight + 300);
+      game.dices_gfx[1].changeParent(game.world);
+    }
+    if (game.thrown_dices.length > 2) {
+      game.dices_gfx[2].size = Vector2(300, 300);
+
+      game.dices_gfx[2].position = Vector2(EileMitWeileGame.info_col_size,
+          4 * EileMitWeileGame.fieldHeight + 600);
+      game.dices_gfx[2].changeParent(game.world);
+    }
   }
 }
 
@@ -198,7 +221,11 @@ bool ThrowDice(EileMitWeileGame game) {
       start_next_player = true;
     } else {
       if (!game.current_player!.is_AI) {
-        game.state_text_left.text_content = "🔼 Move 🔼";
+        if (game.is_hotseat == true) {
+          game.state_text_left.text_content = "🔼 Move 🔼";
+        } else {
+          game.state_text_left.text_content = "Move";
+        }
         game.state_text_right.text_content = "🔼 Move 🔼";
       }
     }

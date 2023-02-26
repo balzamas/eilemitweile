@@ -21,6 +21,19 @@ class MainGame extends Component
     with TapCallbacks, HasGameRef<EileMitWeileGame> {
   @override
   Future<void> onLoad() async {
+    int humans = 0;
+    for (Player player in gameRef.players) {
+      if (!player.is_AI) {
+        humans++;
+      }
+    }
+
+    if (humans > 1) {
+      gameRef.is_hotseat = true;
+    } else {
+      gameRef.is_hotseat = false;
+    }
+
     Sprite movebuttonSprite1 = emwSprite(1150, 0, 332, 332);
 
     for (var i = 0; i < 4; i++) {
@@ -37,17 +50,19 @@ class MainGame extends Component
       gameRef.move_buttons.add(button);
     }
 
-    for (var i = 0; i < 4; i++) {
-      ButtonComponent button = ButtonComponent(
-        position: Vector2(EileMitWeileGame.info_col_size,
-            EileMitWeileGame.fieldHeight + i * 350),
-        sprite: movebuttonSprite1,
-      );
+    if (gameRef.is_hotseat == true) {
+      for (var i = 0; i < 4; i++) {
+        ButtonComponent button = ButtonComponent(
+          position: Vector2(EileMitWeileGame.info_col_size,
+              EileMitWeileGame.fieldHeight + i * 350),
+          sprite: movebuttonSprite1,
+        );
 
-      button.button_number = i;
+        button.button_number = i;
 
-      //button.size = Vector2(350, 350);
-      gameRef.move_buttons.add(button);
+        //button.size = Vector2(350, 350);
+        gameRef.move_buttons.add(button);
+      }
     }
 
     gameRef.fields = CreateFields();
@@ -199,8 +214,9 @@ class MainGame extends Component
       borderColor: Color.fromARGB(255, 0, 0, 0),
     );
 
-    infoButton.position =
-        Vector2(EileMitWeileGame.info_col_size, gameRef.screenHeight - 100);
+    infoButton.position = Vector2(
+        EileMitWeileGame.console + 1400 + EileMitWeileGame.fieldHeight,
+        gameRef.screenHeight - 100);
 
     gameRef.heaven.size = Vector2(600, 600);
 
@@ -223,7 +239,7 @@ class MainGame extends Component
     box.addAll(gameRef.players);
     box.addAll(gameRef.fields);
 
-    box.add(gameRef.kill_text_left = KillInfo.killInfo());
+    box.add(gameRef.kill_text = KillInfo.killInfo());
     box.add(gameRef.state_text_left = State.stateInfo());
     box.add(gameRef.state_text_right = State.stateInfo());
     box.add(box_dice_left);
@@ -239,8 +255,16 @@ class MainGame extends Component
     box.addAll(tokens);
     box.add(infoButton);
 
-    gameRef.kill_text_left.position =
+    gameRef.kill_text.position =
         Vector2(EileMitWeileGame.console, gameRef.screenHeight - 100);
+
+    // if (gameRef.is_hotseat) {
+    //   gameRef.kill_text.position =
+    //       Vector2(EileMitWeileGame.console, gameRef.screenHeight - 100);
+    // } else {
+    //   gameRef.kill_text.position = Vector2(EileMitWeileGame.info_col_size,
+    //       4 * EileMitWeileGame.fieldHeight + 1200);
+    // }
 
     gameRef.state_text_left.position = Vector2(
         EileMitWeileGame.info_col_size / 2 - 20, gameRef.screenHeight / 2);
@@ -257,9 +281,11 @@ class MainGame extends Component
     gameRef.move_buttons[1].setPlayerColor(1);
     gameRef.move_buttons[2].setPlayerColor(2);
     gameRef.move_buttons[3].setPlayerColor(3);
-    gameRef.move_buttons[5].setPlayerColor(1);
-    gameRef.move_buttons[6].setPlayerColor(2);
-    gameRef.move_buttons[7].setPlayerColor(3);
+    if (gameRef.is_hotseat == true) {
+      gameRef.move_buttons[5].setPlayerColor(1);
+      gameRef.move_buttons[6].setPlayerColor(2);
+      gameRef.move_buttons[7].setPlayerColor(3);
+    }
     await add(gameRef.world);
 
     gameRef.current_player = gameRef.players[3];

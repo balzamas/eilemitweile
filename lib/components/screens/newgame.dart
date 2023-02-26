@@ -74,7 +74,7 @@ class NewGameScreen extends Component
     RoundedButton player1_btn = RoundedButton(
         text: '',
         action: () => gameRef.router.pushNamed('info'),
-        color: Color.fromARGB(255, 255, 0, 0),
+        color: Color.fromARGB(255, 245, 110, 110),
         borderColor: Color.fromARGB(255, 0, 0, 0),
         game: game,
         id: 0);
@@ -88,7 +88,7 @@ class NewGameScreen extends Component
     RoundedButton player2_btn = RoundedButton(
         text: '',
         action: () => gameRef.router.pushNamed('info'),
-        color: Color.fromARGB(255, 0, 17, 255),
+        color: Color.fromARGB(255, 155, 162, 250),
         borderColor: Color.fromARGB(255, 0, 0, 0),
         game: game,
         id: 1);
@@ -103,7 +103,7 @@ class NewGameScreen extends Component
     RoundedButton player3_btn = RoundedButton(
         text: '',
         action: () => gameRef.router.pushNamed('info'),
-        color: Color.fromARGB(255, 0, 187, 0),
+        color: Color.fromARGB(255, 160, 250, 160),
         borderColor: Color.fromARGB(255, 0, 0, 0),
         game: game,
         id: 2);
@@ -120,7 +120,7 @@ class NewGameScreen extends Component
     RoundedButton player4_btn = RoundedButton(
         text: '',
         action: () => gameRef.router.pushNamed('info'),
-        color: Color.fromARGB(255, 164, 1, 185),
+        color: Color.fromARGB(255, 241, 136, 255),
         borderColor: Color.fromARGB(255, 0, 0, 0),
         game: game,
         id: 3);

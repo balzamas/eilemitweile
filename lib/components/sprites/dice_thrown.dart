@@ -18,7 +18,7 @@ class DiceTComponent extends SpriteComponent with HasGameRef<EileMitWeileGame> {
       count = 6;
     }
 
-    Sprite the_sprite = emwSprite((count - 1) * 200, 2102, 200, 200);
+    Sprite the_sprite = emwSprite((count - 1) * 300, 2102, 300, 300);
     this.sprite = the_sprite;
   }
 }
