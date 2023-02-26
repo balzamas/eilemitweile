@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
-import 'package:flame/experimental.dart';
 
 import 'package:flutter/material.dart';
-
-import '../gamelogic.dart';
 
 class State extends TextComponent with HasGameRef<EileMitWeileGame> {
   late String text_content;

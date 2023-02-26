@@ -1,5 +1,4 @@
 import 'package:EileMitWeile/components/screens/infoscreen.dart';
-import 'package:EileMitWeile/components/sprites/dice.dart';
 import 'package:EileMitWeile/components/sprites/heaven.dart';
 import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/enums.dart';

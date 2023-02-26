@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:EileMitWeile/components/token.dart';
 import 'package:flame/components.dart';
 
@@ -7,7 +9,6 @@ import 'package:flame/palette.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../eilemitweile_game.dart';
-import '../box_victory.dart';
 import '../sprites/victory.dart';
 
 class VictoryScreen extends Component
@@ -243,5 +244,26 @@ class RoundedButton extends PositionComponent with TapCallbacks {
   @override
   void onTapCancel(TapCancelEvent event) {
     scale = Vector2.all(1.0);
+  }
+}
+
+class BoxVictory extends PositionComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  @override
+  FutureOr<void> onLoad() {
+    position.setValues(0, 50);
+    size = Vector2(2000, 1850);
+    anchor = Anchor.topLeft;
+
+    return super.onLoad();
+  }
+
+  @override
+  bool get debugMode => false;
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    gameRef.router.pop();
+    gameRef.router.pushNamed('newgame');
   }
 }

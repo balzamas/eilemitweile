@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:EileMitWeile/components/box_start.dart';
 import 'package:EileMitWeile/components/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/rendering.dart';
 
 import '../../eilemitweile_game.dart';
 import '../gamecreation.dart';
-import '../token.dart';
 
 final style_small = TextStyle(
     color: BasicPalette.black.color, fontSize: 40, fontFamily: 'Komika');
@@ -41,7 +39,7 @@ class NewGameScreen extends Component
         game.size.x / gameRef.screenWidth, game.size.x / gameRef.screenWidth);
 
     final style_large = TextStyle(
-        color: BasicPalette.black.color, fontSize: 70, fontFamily: 'Komika');
+        color: BasicPalette.black.color, fontSize: 60, fontFamily: 'Komika');
 
     TextPaint textPaint_large = TextPaint(style: style_large);
 
@@ -156,26 +154,6 @@ class NewGameScreen extends Component
   }
 }
 
-class BoxAIHuman extends PositionComponent
-    with TapCallbacks, HasGameRef<EileMitWeileGame> {
-  int player_id = 0;
-  @override
-  FutureOr<void> onLoad() {
-    anchor = Anchor.center;
-
-    return super.onLoad();
-  }
-
-  @override
-  bool get debugMode => false;
-
-  @override
-  late double opacity;
-
-  @override
-  void onTapUp(TapUpEvent event) {}
-}
-
 class RoundedButton extends PositionComponent with TapCallbacks {
   int? player_id;
   EileMitWeileGame? mygame;
@@ -281,5 +259,40 @@ class RoundedButton extends PositionComponent with TapCallbacks {
   @override
   void onTapCancel(TapCancelEvent event) {
     scale = Vector2.all(1.0);
+  }
+}
+
+class BoxStart extends PositionComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  @override
+  FutureOr<void> onLoad() {
+    anchor = Anchor.topCenter;
+    return super.onLoad();
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    gameRef.router.pushNamed('game');
+  }
+}
+
+class BoxAIHuman extends PositionComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  int player_id = 0;
+  @override
+  FutureOr<void> onLoad() {
+    size = Vector2(400, 200);
+    anchor = Anchor.center;
+
+    return super.onLoad();
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    if (gameRef.players[player_id].is_AI) {
+      gameRef.players[player_id].is_AI = false;
+    } else {
+      gameRef.players[player_id].is_AI = true;
+    }
   }
 }

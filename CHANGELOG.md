@@ -1,5 +1,6 @@
 ## v0.0.17+6
 - Upgrade flutter and flame
+- Minor refactoring, hopefully fix iOS start screen bug
 
 ## v0.0.16+5
 - Clean up new game screen

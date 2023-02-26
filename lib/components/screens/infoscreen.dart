@@ -1,4 +1,5 @@
-import 'package:EileMitWeile/components/box_info.dart';
+import 'dart:async';
+
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
 import '../../eilemitweile_game.dart';
-import '../box_victory.dart';
 
 class InfoScreen extends Component
     with TapCallbacks, HasGameRef<EileMitWeileGame> {
@@ -75,5 +75,22 @@ class InfoScreen extends Component
     BoxInfo boxv = BoxInfo();
 
     add(boxv);
+  }
+}
+
+class BoxInfo extends PositionComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  @override
+  FutureOr<void> onLoad() {
+    position.setValues(0, 50);
+    size = Vector2(2000, 1850);
+    anchor = Anchor.topLeft;
+
+    return super.onLoad();
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    gameRef.router.pop();
   }
 }

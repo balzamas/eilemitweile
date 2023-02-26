@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import 'package:flame/experimental.dart';
 
 import '../eilemitweile_game.dart';
 
 class Box extends PositionComponent
-    with TapCallbacks, OpacityProvider, HasGameRef<EileMitWeileGame> {
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
   @override
   FutureOr<void> onLoad() {
     position.setValues(0, 50);
@@ -19,7 +18,4 @@ class Box extends PositionComponent
 
   @override
   bool get debugMode => false;
-
-  @override
-  late double opacity;
 }

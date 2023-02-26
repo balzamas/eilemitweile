@@ -1,7 +1,6 @@
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
-import 'package:flame/input.dart';
 
 import '../gamelogic.dart';
 import '../token.dart';
