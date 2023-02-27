@@ -1,3 +1,7 @@
+## v0.0.18+7
+- add info HUD (round + kills) for single player
+- replace font
+
 ## v0.0.17+6
 - Upgrade flutter and flame
 - Minor refactoring, hopefully fix iOS start screen bug

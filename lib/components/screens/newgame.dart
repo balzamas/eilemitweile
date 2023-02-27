@@ -10,7 +10,7 @@ import '../../eilemitweile_game.dart';
 import '../gamecreation.dart';
 
 final style_small = TextStyle(
-    color: BasicPalette.black.color, fontSize: 40, fontFamily: 'Komika');
+    color: BasicPalette.black.color, fontSize: 30, fontFamily: 'Poland');
 
 TextPaint textPaint_small = TextPaint(style: style_small);
 
@@ -39,7 +39,7 @@ class NewGameScreen extends Component
         game.size.x / gameRef.screenWidth, game.size.x / gameRef.screenWidth);
 
     final style_large = TextStyle(
-        color: BasicPalette.black.color, fontSize: 60, fontFamily: 'Komika');
+        color: BasicPalette.black.color, fontSize: 50, fontFamily: 'Poland');
 
     TextPaint textPaint_large = TextPaint(style: style_large);
 
@@ -56,7 +56,7 @@ class NewGameScreen extends Component
         SpriteComponent(sprite: fild_img, anchor: Anchor.center);
     field.anchor = Anchor.topCenter;
     field.size = Vector2(game.size.x / 3 - 80, game.size.x / 3 - 80);
-    field.position = Vector2(game.size.x / 2, 100);
+    field.position = Vector2(game.size.x / 2, 20);
     add(field);
 
     Player player1 = Player();
@@ -79,9 +79,9 @@ class NewGameScreen extends Component
         game: game,
         id: 0);
 
-    player1_btn.position = Vector2(20 + (game.size.x / 3 / 2), 100);
+    player1_btn.position = Vector2(20 + (game.size.x / 3 / 2), 20);
     player1_opt.position = Vector2(
-        20 + (game.size.x / 3 / 2), 100 + (game.size.x / 3 - 80) / 3 / 2);
+        20 + (game.size.x / 3 / 2), 30 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player1_btn);
 
@@ -94,9 +94,9 @@ class NewGameScreen extends Component
         id: 1);
 
     player2_btn.position = Vector2(
-        20 + (game.size.x / 3 / 2), (game.size.x / 3 - 80) / 3 * 2 + 100);
+        20 + (game.size.x / 3 / 2), (game.size.x / 3 - 80) / 3 * 2 + 20);
     player2_opt.position = Vector2(20 + (game.size.x / 3 / 2),
-        (game.size.x / 3 - 80) / 3 * 2 + 100 + (game.size.x / 3 - 80) / 3 / 2);
+        (game.size.x / 3 - 80) / 3 * 2 + 30 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player2_btn);
 
@@ -110,10 +110,10 @@ class NewGameScreen extends Component
 
     player3_btn.position = Vector2(
         (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
-        (game.size.x / 3 - 80) / 3 * 2 + 100);
+        (game.size.x / 3 - 80) / 3 * 2 + 20);
     player3_opt.position = Vector2(
         (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
-        (game.size.x / 3 - 80) / 3 * 2 + 100 + (game.size.x / 3 - 80) / 3 / 2);
+        (game.size.x / 3 - 80) / 3 * 2 + 30 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player3_btn);
 
@@ -126,23 +126,23 @@ class NewGameScreen extends Component
         id: 3);
 
     player4_btn.position =
-        Vector2((2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20, 100);
+        Vector2((2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20, 20);
     player4_opt.position = Vector2(
         (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
-        100 + (game.size.x / 3 - 80) / 3 / 2);
+        30 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player4_btn);
 
     BoxStart boxs = BoxStart();
     boxs.anchor = Anchor.topCenter;
-    boxs.position = Vector2(game.size.x / 2, 100 + (game.size.x / 3 - 80));
+    boxs.position = Vector2(game.size.x / 2, 20 + (game.size.x / 3 - 80));
     boxs.size = Vector2(game.size.x, 400);
     add(boxs);
 
     TextComponent start = TextComponent(
         text: "Start", textRenderer: textPaint_large, anchor: Anchor.center);
     start.anchor = Anchor.topCenter;
-    start.position = Vector2(game.size.x / 2, 100 + game.size.x / 3 - 80);
+    start.position = Vector2(game.size.x / 2, game.size.x / 3 - 40);
 
     add(start);
     add(player1_opt);
@@ -171,7 +171,7 @@ class RoundedButton extends PositionComponent with TapCallbacks {
             fontSize: 50,
             color: Color(0xFF000000),
             fontWeight: FontWeight.w800,
-            fontFamily: 'Komika',
+            fontFamily: 'Poland',
           ),
         ).toTextPainter(text) {
     size = Vector2(game.size.x / 3, (game.size.x / 3 - 80) / 3);

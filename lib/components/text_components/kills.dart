@@ -13,7 +13,7 @@ class KillInfo extends TextComponent with HasGameRef<EileMitWeileGame> {
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.ltr,
             style: TextStyle(
-                fontSize: 30, color: Colors.black, fontFamily: 'Komika'));
+                fontSize: 30, color: Colors.black, fontFamily: 'Poland'));
 
   late final TextPaint _textPaint;
 
@@ -21,11 +21,6 @@ class KillInfo extends TextComponent with HasGameRef<EileMitWeileGame> {
   FutureOr<void> onLoad() {
     text_content = "Turn 1 // Kills: Red 0 // Blue 0 // Green 0 // Purple 0";
 
-    // if (gameRef.is_hotseat) {
-    //   text_content = "Turn 1 // Kills: Red 0 // Blue 0 // Green 0 // Purple 0";
-    // } else {
-    //   text_content = "Turn 1\nKills:\nRed 0\nBlue 0\nGreen 0\nPurple 0";
-    // }
     anchor = Anchor.centerLeft;
     text = text_content;
 

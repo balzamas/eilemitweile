@@ -11,17 +11,17 @@ dependencies:
   flutter:
     sdk: flutter
   flame: ^1.6.0
-  yaml: ^3.1.0
+  yaml: ^3.1.1
 
 dev_dependencies:
-  flutter_launcher_icons: "^0.11.0"
+  flutter_launcher_icons: ^0.12.0
   build_runner: ^2.1.7
   canvas_test: ^0.2.0
-  drift_dev: ^1.3.0
-  flame_test: ^1.1.0
+  drift_dev: ^2.5.2
+  flame_test: ^1.9.2
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^2.4.0
+  very_good_analysis: ^4.0.0+1
 
 flutter:
   assets:
@@ -31,7 +31,18 @@ flutter:
     - family: Komika
       fonts:
         - asset: fonts/KOMIKAX_.ttf
-
+    - family: VT323
+      fonts:
+        - asset: fonts/VT323-Regular.ttf
+    - family: PressStart
+      fonts:
+        - asset: fonts/PressStart2P-vaV7.ttf
+    - family: Poland
+      fonts:
+        - asset: fonts/PolandCanIntoBigWritingsOutline.otf
+    - family: PolandFull
+      fonts:
+        - asset: fonts/PolandCanIntoBigWritings.otf
 flutter_icons:
   android: "launcher_icon"
   ios: true

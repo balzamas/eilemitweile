@@ -21,10 +21,12 @@ class InfoScreen extends Component
     Vector2 scale = Vector2.all(game.size.x / gameRef.screenWidth);
 
     final style = TextStyle(
-        color: BasicPalette.black.color, fontSize: 150, fontFamily: 'Komika');
+        color: BasicPalette.black.color, fontSize: 150, fontFamily: 'Poland');
 
     final style_small = TextStyle(
-        color: BasicPalette.black.color, fontSize: 30, fontFamily: 'Komika');
+        color: BasicPalette.black.color,
+        fontSize: 30,
+        fontFamily: 'PolandFull');
 
     TextPaint textPaint = TextPaint(style: style);
     TextPaint textPaint_small = TextPaint(style: style_small);
@@ -32,7 +34,7 @@ class InfoScreen extends Component
     TextComponent title = TextComponent(
         text: "Eile mit Weile", textRenderer: textPaint, anchor: Anchor.center);
 
-    title.position = Vector2(game.size.x / 2, scale.y * 100);
+    title.position = Vector2(game.size.x / 2, scale.y * 150);
     title.scale = scale;
 
     add(title);
@@ -47,7 +49,7 @@ class InfoScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    subtitle.position = Vector2(game.size.x / 2, scale.y * 250);
+    subtitle.position = Vector2(game.size.x / 2, scale.y * 300);
     subtitle.scale = scale;
     add(subtitle);
 
@@ -67,7 +69,7 @@ class InfoScreen extends Component
         size: Vector2(game.size.x - 100, game.size.y),
         anchor: Anchor.topCenter);
 
-    help.position = Vector2(game.size.x / 2, scale.y * 350);
+    help.position = Vector2(game.size.x / 2, scale.y * 400);
     help.scale = scale;
 
     add(help);

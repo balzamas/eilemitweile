@@ -19,9 +19,9 @@ import 'components/screens/newgame.dart';
 import 'components/screens/victoryscreen.dart';
 import 'components/sprites/dice_thrown.dart';
 import 'components/sprites/move_buttons.dart';
-import 'components/text_components/kills.dart';
 import 'components/gamelogic.dart';
 import 'components/player.dart';
+import 'components/text_components/kills.dart';
 import 'components/text_components/state.dart';
 
 class EileMitWeileGame extends FlameGame with HasTappableComponents {
@@ -56,6 +56,12 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   late final KillInfo kill_text;
   late final State state_text_left;
   late final State state_text_right;
+
+  late TextComponent round_num;
+  late TextComponent kill_red;
+  late TextComponent kill_blue;
+  late TextComponent kill_green;
+  late TextComponent kill_purple;
 
   List<Field> fields = [];
   List<Player> players = [];
@@ -118,40 +124,24 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       }
       //Show Kills
 
-      kill_text.text_content = "Turn " +
-          round.toString() +
-          " // Kills: Red " +
-          players[0].bodycount.toString() +
-          " // Blue " +
-          players[1].bodycount.toString() +
-          " // Green " +
-          players[2].bodycount.toString() +
-          " // Purple " +
-          players[3].bodycount.toString();
-
-      // if (is_hotseat) {
-      //   kill_text.text_content = "Turn " +
-      //       round.toString() +
-      //       " // Kills: Red " +
-      //       players[0].bodycount.toString() +
-      //       " // Blue " +
-      //       players[1].bodycount.toString() +
-      //       " // Green " +
-      //       players[2].bodycount.toString() +
-      //       " // Purple " +
-      //       players[3].bodycount.toString();
-      // } else {
-      //   kill_text.text_content = "Turn " +
-      //       round.toString() +
-      //       "\nKills:\nRed " +
-      //       players[0].bodycount.toString() +
-      //       "\nBlue " +
-      //       players[1].bodycount.toString() +
-      //       "\nGreen " +
-      //       players[2].bodycount.toString() +
-      //       "\nPurple " +
-      //       players[3].bodycount.toString();
-      // }
+      if (is_hotseat) {
+        kill_text.text_content = "Turn " +
+            round.toString() +
+            " // Kills: Red " +
+            players[0].bodycount.toString() +
+            " // Blue " +
+            players[1].bodycount.toString() +
+            " // Green " +
+            players[2].bodycount.toString() +
+            " // Purple " +
+            players[3].bodycount.toString();
+      } else {
+        round_num.text = round.toString();
+        kill_red.text = players[0].bodycount.toString();
+        kill_blue.text = players[1].bodycount.toString();
+        kill_green.text = players[2].bodycount.toString();
+        kill_purple.text = players[3].bodycount.toString();
+      }
 
       if (current_player!.is_AI) {
         state_text_left.text_content = "";

@@ -17,7 +17,7 @@ class State extends TextComponent with HasGameRef<EileMitWeileGame> {
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.ltr,
             style: TextStyle(
-                fontSize: 90, color: Colors.black, fontFamily: 'Komika'));
+                fontSize: 90, color: Colors.black, fontFamily: 'Poland'));
 
   late final TextPaint _textPaint;
 

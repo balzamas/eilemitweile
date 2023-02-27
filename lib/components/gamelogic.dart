@@ -144,8 +144,7 @@ void PaintDices(EileMitWeileGame game) {
               5,
           9 * EileMitWeileGame.fieldHeight +
               2 * EileMitWeileGame.fieldWidth +
-              EileMitWeileGame.fieldHeight +
-              5);
+              EileMitWeileGame.fieldHeight);
 
       game.dices_gfx[2].position = Vector2(
           EileMitWeileGame.console +
@@ -154,8 +153,7 @@ void PaintDices(EileMitWeileGame game) {
               5,
           9 * EileMitWeileGame.fieldHeight +
               2 * EileMitWeileGame.fieldWidth +
-              EileMitWeileGame.fieldHeight +
-              5);
+              EileMitWeileGame.fieldHeight);
       game.dices_gfx[2].changeParent(game.world);
     }
   } else {

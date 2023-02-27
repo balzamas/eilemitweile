@@ -6,6 +6,7 @@ import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
+import 'package:flame/palette.dart';
 
 import 'package:flutter/rendering.dart';
 
@@ -239,7 +240,6 @@ class MainGame extends Component
     box.addAll(gameRef.players);
     box.addAll(gameRef.fields);
 
-    box.add(gameRef.kill_text = KillInfo.killInfo());
     box.add(gameRef.state_text_left = State.stateInfo());
     box.add(gameRef.state_text_right = State.stateInfo());
     box.add(box_dice_left);
@@ -255,16 +255,65 @@ class MainGame extends Component
     box.addAll(tokens);
     box.add(infoButton);
 
-    gameRef.kill_text.position =
-        Vector2(EileMitWeileGame.console, gameRef.screenHeight - 100);
+    if (game.is_hotseat) {
+      box.add(gameRef.kill_text = KillInfo.killInfo());
+      gameRef.kill_text.position =
+          Vector2(EileMitWeileGame.console, gameRef.screenHeight - 100);
+    } else {
+      Sprite info_sprite = emwSprite(628, 841, 330, 330);
 
-    // if (gameRef.is_hotseat) {
-    //   gameRef.kill_text.position =
-    //       Vector2(EileMitWeileGame.console, gameRef.screenHeight - 100);
-    // } else {
-    //   gameRef.kill_text.position = Vector2(EileMitWeileGame.info_col_size,
-    //       4 * EileMitWeileGame.fieldHeight + 1200);
-    // }
+      SpriteComponent info_box =
+          SpriteComponent(sprite: info_sprite, anchor: Anchor.topLeft);
+      info_box.size = Vector2(400, 400);
+      info_box.position = Vector2(EileMitWeileGame.info_col_size - 25,
+          900 + 3 * EileMitWeileGame.fieldHeight + 25);
+      box.add(info_box);
+
+      final style_info = TextStyle(
+          color: BasicPalette.black.color,
+          fontSize: 35,
+          fontFamily: 'PolandFull');
+
+      TextPaint textPaint_info = TextPaint(style: style_info);
+
+      TextComponent round_text = TextComponent(
+          text: "Rnd", textRenderer: textPaint_info, anchor: Anchor.center);
+      round_text.position = Vector2(EileMitWeileGame.info_col_size + 80,
+          900 + 4 * EileMitWeileGame.fieldHeight + 55);
+      box.add(round_text);
+
+      gameRef.round_num = TextComponent(
+          text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+      gameRef.round_num.position = Vector2(EileMitWeileGame.info_col_size + 245,
+          900 + 4 * EileMitWeileGame.fieldHeight + 55);
+      box.add(gameRef.round_num);
+
+      gameRef.kill_red = TextComponent(
+          text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+      gameRef.kill_red.position = Vector2(EileMitWeileGame.info_col_size + 120,
+          900 + 4 * EileMitWeileGame.fieldHeight + 190);
+      box.add(gameRef.kill_red);
+
+      gameRef.kill_blue = TextComponent(
+          text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+      gameRef.kill_blue.position = Vector2(EileMitWeileGame.info_col_size + 120,
+          900 + 4 * EileMitWeileGame.fieldHeight + 290);
+      box.add(gameRef.kill_blue);
+
+      gameRef.kill_green = TextComponent(
+          text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+      gameRef.kill_green.position = Vector2(
+          EileMitWeileGame.info_col_size + 285,
+          900 + 4 * EileMitWeileGame.fieldHeight + 290);
+      box.add(gameRef.kill_green);
+
+      gameRef.kill_purple = TextComponent(
+          text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+      gameRef.kill_purple.position = Vector2(
+          EileMitWeileGame.info_col_size + 285,
+          900 + 4 * EileMitWeileGame.fieldHeight + 190);
+      box.add(gameRef.kill_purple);
+    }
 
     gameRef.state_text_left.position = Vector2(
         EileMitWeileGame.info_col_size / 2 - 20, gameRef.screenHeight / 2);
@@ -311,10 +360,10 @@ class RoundedButton extends PositionComponent with TapCallbacks {
     super.anchor = Anchor.centerLeft,
   }) : _textDrawable = TextPaint(
           style: const TextStyle(
-            fontSize: 50,
+            fontSize: 30,
             color: Color(0xFF000000),
             fontWeight: FontWeight.w800,
-            fontFamily: 'Komika',
+            fontFamily: 'PolandFull',
           ),
         ).toTextPainter(text) {
     size = Vector2(150, 70);
