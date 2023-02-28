@@ -7,6 +7,7 @@ import 'package:EileMitWeile/components/token.dart';
 import 'package:EileMitWeile/eilemitweile_game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame_audio/flame_audio.dart';
 import '../enums.dart';
 import 'field.dart';
 
@@ -14,6 +15,11 @@ const tau = 2 * pi;
 
 void Move(EileMitWeileGame game, Token token, int moves) {
   if (token.field!.number == 0) {
+    if (game.audio_enabled) {
+      int rnd = Random().nextInt(11) + 1;
+      FlameAudio.play('start/start_' + rnd.toString() + '.wav');
+    }
+
     token.field!.removeToken(token);
     SendHome(token.player.start_field, token.player.start_field + moves, game,
         token);
@@ -22,6 +28,10 @@ void Move(EileMitWeileGame game, Token token, int moves) {
 
     token.last_round_moved = game.round;
   } else {
+    if (game.audio_enabled) {
+      FlameAudio.play('move_1.wav');
+    }
+
     token.field!.removeToken(token);
     token.field!.rearrangeTokens();
 
@@ -90,6 +100,13 @@ void SendHome(start_field, end_field, EileMitWeileGame game, Token token) {
   for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].tokens.length > 0) {
       int sent_home = game.fields[i].sendHomeTokens(token.player);
+      if (game.audio_enabled) {
+        if (sent_home > 0) {
+          int rnd = Random().nextInt(18) + 1;
+          FlameAudio.play('kill/kill_' + rnd.toString() + '.wav');
+        }
+      }
+
       token.player.bodycount = token.player.bodycount + sent_home;
       token.bodycount = token.bodycount + sent_home;
     }
@@ -182,6 +199,9 @@ void PaintDices(EileMitWeileGame game) {
 
 bool ThrowDice(EileMitWeileGame game) {
   bool start_next_player = false;
+  if (game.audio_enabled) {
+    FlameAudio.play('dice.wav');
+  }
 
   int rand_num = Random().nextInt(6) + 1;
 
@@ -202,6 +222,10 @@ bool ThrowDice(EileMitWeileGame game) {
     for (Token token in game.current_player!.tokens) {
       if (token.field!.number != 0 && token.field!.number < 69) {
         token.SendMeHome();
+      }
+      if (game.audio_enabled) {
+        int rnd = Random().nextInt(3) + 1;
+        FlameAudio.play('triple6/triple6_' + rnd.toString() + '.wav');
       }
       ShowTripleSixMessage(game);
 
@@ -242,6 +266,41 @@ bool CheckTokensToMove(EileMitWeileGame game, int dice_number) {
   return has_moveable_token;
 }
 
+bool CheckIfKillerBehindMe(
+    EileMitWeileGame game, Token token, int thrown_number) {
+  int end_field = token.field!.number + thrown_number;
+  if (token.field!.number + thrown_number > 68) {
+    end_field = token.field!.number + thrown_number - 68;
+  }
+  if (end_field >= 1 && end_field < 5) {
+    bool is_in_danger = false;
+    if (CheckFieldForEnemyToken(game.fields[68], token)) {
+      is_in_danger = true;
+    }
+    return is_in_danger;
+  } else {
+    bool is_in_danger = false;
+    if (thrown_number < 5) {
+      if (CheckFieldForEnemyToken(token.field!, token)) {
+        is_in_danger = true;
+      }
+    }
+    if (game.fields[end_field - 1].current == FieldState.bench &&
+        CheckFieldForEnemyToken(game.fields[end_field - 1], token)) {
+      is_in_danger = true;
+    }
+    if (game.fields[end_field - 2].current == FieldState.bench &&
+        CheckFieldForEnemyToken(game.fields[end_field - 2], token)) {
+      is_in_danger = true;
+    }
+    if (game.fields[end_field - 3].current == FieldState.bench &&
+        CheckFieldForEnemyToken(game.fields[end_field - 3], token)) {
+      is_in_danger = true;
+    }
+    return is_in_danger;
+  }
+}
+
 bool CheckIfTokenBehindMe(
     EileMitWeileGame game, Token token, int thrown_number) {
   if (token.field!.current == FieldState.normal) {
@@ -270,7 +329,7 @@ bool CheckIfTokenBehindMe(
     if (CheckFieldForEnemyToken(game.fields[token.field!.number - 1], token)) {
       is_in_danger = true;
     }
-    if (CheckFieldForEnemyToken(game.fields[token.field!.number - 1], token)) {
+    if (CheckFieldForEnemyToken(game.fields[token.field!.number - 2], token)) {
       is_in_danger = true;
     }
     return is_in_danger;

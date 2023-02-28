@@ -9,6 +9,8 @@ import 'package:flame/flame.dart';
 
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:flame_audio/audio_pool.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -63,6 +65,10 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   late TextComponent kill_green;
   late TextComponent kill_purple;
 
+  bool audio_enabled = true;
+
+  late AudioPool pool;
+
   List<Field> fields = [];
   List<Player> players = [];
   List<ButtonComponent> move_buttons = [];
@@ -80,6 +86,9 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
 
   @override
   Future<void> onLoad() async {
+    await FlameAudio.audioCache
+        .loadAll(['kill/kill_1.wav', 'start/start_1.wav', 'start/start_2.wav']);
+
     await Flame.images.load('eilemitweile-sprites.png');
     add(
       router = RouterComponent(
@@ -220,6 +229,36 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       }
     }
 
+    //Can token move on ladder?
+    for (Token token in current_player!.tokens) {
+      if (token.can_move &&
+          token.field!.number <= token.player.heaven_start &&
+          token.field!.number + dice_number > token.player.heaven_start) {
+        Move(this, token, dice_number);
+        return;
+      }
+    }
+
+    //Move with tokens who are not on a bench/ladder and does not move into a danger zone
+    for (Token token in current_player!.tokens) {
+      if (token.can_move &&
+          token.field!.current == FieldState.normal &&
+          !CheckIfKillerBehindMe(this, token, dice_number)) {
+        Move(this, token, dice_number);
+        return;
+      }
+    }
+
+    //Move with any token not on the ladder and does not move into a danger zone
+    for (Token token in current_player!.tokens) {
+      if (token.can_move &&
+          token.field!.number < 69 &&
+          !CheckIfKillerBehindMe(this, token, dice_number)) {
+        Move(this, token, dice_number);
+        return;
+      }
+    }
+
     //Move with tokens who are not on a bench/ladder
     for (Token token in current_player!.tokens) {
       if (token.can_move && token.field!.current == FieldState.normal) {
@@ -228,8 +267,9 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       }
     }
 
+    //Move with tokens on ladder
     for (Token token in current_player!.tokens) {
-      if (token.can_move && token.field!.number < 69) {
+      if (token.can_move && token.field!.current == FieldState.ladder) {
         Move(this, token, dice_number);
         return;
       }

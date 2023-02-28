@@ -29,7 +29,9 @@ class VictoryScreen extends Component
         color: BasicPalette.black.color, fontSize: 100, fontFamily: 'Poland');
 
     final style_small = TextStyle(
-        color: BasicPalette.black.color, fontSize: 30, fontFamily: 'Poland');
+        color: BasicPalette.black.color,
+        fontSize: 30,
+        fontFamily: 'PolandFull');
 
     TextPaint textPaint = TextPaint(style: style);
     TextPaint textPaint_small = TextPaint(style: style_small);
@@ -49,7 +51,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    stats.position = Vector2(game.size.x / 2, scale.y * 690);
+    stats.position = Vector2(game.size.x / 2, scale.y * 680);
     stats.scale = scale;
 
     add(stats);

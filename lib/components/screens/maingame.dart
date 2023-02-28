@@ -208,16 +208,18 @@ class MainGame extends Component
 
     Box box = Box();
 
-    RoundedButton infoButton = RoundedButton(
-      text: 'Info',
-      action: () => gameRef.router.pushNamed('info'),
-      color: Color.fromARGB(255, 238, 255, 0),
-      borderColor: Color.fromARGB(255, 0, 0, 0),
-    );
+    InfoButton infoButton = InfoButton(
+        position: Vector2(
+            EileMitWeileGame.console + 1400 + EileMitWeileGame.fieldHeight,
+            gameRef.screenHeight - 100));
 
-    infoButton.position = Vector2(
-        EileMitWeileGame.console + 1400 + EileMitWeileGame.fieldHeight,
-        gameRef.screenHeight - 100);
+    AudioButton audioButton = AudioButton(
+        position: Vector2(
+            EileMitWeileGame.console +
+                1400 +
+                EileMitWeileGame.fieldHeight +
+                130,
+            gameRef.screenHeight - 100));
 
     gameRef.heaven.size = Vector2(600, 600);
 
@@ -254,6 +256,7 @@ class MainGame extends Component
     box.addAll(heaven_fields3);
     box.addAll(tokens);
     box.add(infoButton);
+    box.add(audioButton);
 
     if (game.is_hotseat) {
       box.add(gameRef.kill_text = KillInfo.killInfo());
@@ -348,6 +351,48 @@ class MainGame extends Component
       ..viewfinder.position = Vector2(1555, 0)
       ..viewfinder.anchor = Anchor.topCenter;
     add(camera);
+  }
+}
+
+class InfoButton extends SpriteComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  InfoButton({
+    required Vector2 position,
+  }) : super(position: position, size: Vector2(100, 100)) {}
+
+  @override
+  Future<void> onLoad() async {
+    Sprite the_sprite = emwSprite(640, 1183, 70, 70);
+    this.sprite = the_sprite;
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    gameRef.router.pushNamed('info');
+  }
+}
+
+class AudioButton extends SpriteComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  AudioButton({
+    required Vector2 position,
+  }) : super(position: position, size: Vector2(100, 100)) {}
+
+  @override
+  Future<void> onLoad() async {
+    Sprite the_sprite = emwSprite(724, 1183, 70, 70);
+    this.sprite = the_sprite;
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    if (gameRef.audio_enabled) {
+      gameRef.audio_enabled = false;
+      this.sprite = emwSprite(806, 1183, 70, 70);
+    } else {
+      gameRef.audio_enabled = true;
+      this.sprite = emwSprite(724, 1183, 70, 70);
+    }
   }
 }
 

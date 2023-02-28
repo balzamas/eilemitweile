@@ -1,6 +1,9 @@
 ## v0.0.18+7
 - add info HUD (round + kills) for single player
 - replace font
+- make AI more aware of danger zones
+- add audio and audio toggler
+- change info button
 
 ## v0.0.17+6
 - Upgrade flutter and flame
