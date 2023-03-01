@@ -66,7 +66,6 @@ void Move(EileMitWeileGame game, Token token, int moves) {
 
   if (CheckVictory(token.player)) {
     game.router.pushNamed('victory');
-    game.NewGame();
   }
 }
 

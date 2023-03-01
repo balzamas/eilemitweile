@@ -30,3 +30,5 @@ This is my first Flutter project, therefore the code also needs heavy refactorin
 Contact: d.berger@dontsniff.co.uk
 
 Thanks to the Eile-mit-Weile-WM-Team and my dear Madlaina
+
+Sound effects from Super Dialogue Audio Pack (https://bckr.itch.io/sdap) by Dillon Becker (https://dillonbecker.com/). This work is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)

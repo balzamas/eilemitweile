@@ -13,8 +13,8 @@ import 'package:flame_audio/audio_pool.dart';
 import 'package:flame_audio/flame_audio.dart';
 
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 
+import 'components/box.dart';
 import 'components/field.dart';
 import 'components/screens/maingame.dart';
 import 'components/screens/newgame.dart';
@@ -55,11 +55,13 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   double screenWidth = 2 * console + 1400;
   double screenHeight = 1600;
 
-  late final KillInfo kill_text;
+  KillInfo kill_text = KillInfo.killInfo();
   late final State state_text_left;
   late final State state_text_right;
 
   late TextComponent round_num;
+  late TextComponent round_text;
+
   late TextComponent kill_red;
   late TextComponent kill_blue;
   late TextComponent kill_green;
@@ -84,12 +86,17 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   Heaven heaven = Heaven();
   int round = 0;
 
+  Box box = Box();
+  late Sprite info_sprite;
+  late SpriteComponent info_box = SpriteComponent(anchor: Anchor.topLeft);
+
   @override
   Future<void> onLoad() async {
     await FlameAudio.audioCache
         .loadAll(['kill/kill_1.wav', 'start/start_1.wav', 'start/start_2.wav']);
 
     await Flame.images.load('eilemitweile-sprites.png');
+    info_sprite = emwSprite(628, 841, 330, 330);
     add(
       router = RouterComponent(
         routes: {
@@ -281,6 +288,121 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
         return;
       }
     }
+  }
+
+  void DrawUI() {
+    Sprite movebuttonSprite1 = emwSprite(1150, 0, 332, 332);
+
+    if (is_hotseat) {
+      if (move_buttons.length != 8) {
+        for (var i = 0; i < 4; i++) {
+          ButtonComponent button = ButtonComponent(
+            position: Vector2(EileMitWeileGame.info_col_size,
+                EileMitWeileGame.fieldHeight + i * 350),
+            sprite: movebuttonSprite1,
+          );
+
+          button.button_number = i;
+
+          //button.size = Vector2(350, 350);
+          move_buttons.add(button);
+        }
+
+        for (var i = 4; i < 8; i++) {
+          box.add(move_buttons[i]);
+        }
+      }
+    } else {
+      if (move_buttons.length == 8) {
+        for (var i = 4; i < 8; i++) {
+          if (box.contains(move_buttons[i])) {
+            box.remove(move_buttons[i]);
+          }
+        }
+      }
+    }
+
+    if (is_hotseat) {
+      if (box.contains(info_box)) {
+        box.remove(info_box);
+        box.remove(round_text);
+        box.remove(round_num);
+        box.remove(kill_red);
+        box.remove(kill_green);
+        box.remove(kill_blue);
+        box.remove(kill_purple);
+      }
+
+      if (!box.contains(kill_text)) {
+        box.add(kill_text);
+        kill_text.position =
+            Vector2(EileMitWeileGame.console, screenHeight - 100);
+      }
+    } else {
+      if (box.contains(kill_text)) {
+        box.remove(kill_text);
+      }
+
+      if (!box.contains(info_box)) {
+        info_box.sprite = info_sprite;
+        info_box.size = Vector2(400, 400);
+        info_box.position = Vector2(EileMitWeileGame.info_col_size - 25,
+            900 + 3 * EileMitWeileGame.fieldHeight + 25);
+        box.add(info_box);
+
+        final style_info = TextStyle(
+            color: BasicPalette.black.color,
+            fontSize: 35,
+            fontFamily: 'PolandFull');
+
+        TextPaint textPaint_info = TextPaint(style: style_info);
+
+        round_text = TextComponent(
+            text: "Rnd", textRenderer: textPaint_info, anchor: Anchor.center);
+        round_text.position = Vector2(EileMitWeileGame.info_col_size + 80,
+            900 + 4 * EileMitWeileGame.fieldHeight + 55);
+        box.add(round_text);
+
+        round_num = TextComponent(
+            text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+        round_num.position = Vector2(EileMitWeileGame.info_col_size + 245,
+            900 + 4 * EileMitWeileGame.fieldHeight + 55);
+        box.add(round_num);
+
+        kill_red = TextComponent(
+            text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+        kill_red.position = Vector2(EileMitWeileGame.info_col_size + 120,
+            900 + 4 * EileMitWeileGame.fieldHeight + 190);
+        box.add(kill_red);
+
+        kill_blue = TextComponent(
+            text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+        kill_blue.position = Vector2(EileMitWeileGame.info_col_size + 120,
+            900 + 4 * EileMitWeileGame.fieldHeight + 290);
+        box.add(kill_blue);
+
+        kill_green = TextComponent(
+            text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+        kill_green.position = Vector2(EileMitWeileGame.info_col_size + 285,
+            900 + 4 * EileMitWeileGame.fieldHeight + 290);
+        box.add(kill_green);
+
+        kill_purple = TextComponent(
+            text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
+        kill_purple.position = Vector2(EileMitWeileGame.info_col_size + 285,
+            900 + 4 * EileMitWeileGame.fieldHeight + 190);
+        box.add(kill_purple);
+      }
+    }
+
+    // move_buttons[1].setPlayerColor(1);
+    // move_buttons[2].setPlayerColor(2);
+    // move_buttons[3].setPlayerColor(3);
+    // if (is_hotseat == true) {
+    //   move_buttons[5].setPlayerColor(1);
+    //   move_buttons[6].setPlayerColor(2);
+    //   move_buttons[7].setPlayerColor(3);
+    // }
   }
 
   void NewGame() {

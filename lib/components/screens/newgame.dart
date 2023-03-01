@@ -35,20 +35,10 @@ class NewGameScreen extends Component
   Future<void> onLoad() async {
     gameRef.players = CreatePlayers();
 
-    Vector2 scale = Vector2(
-        game.size.x / gameRef.screenWidth, game.size.x / gameRef.screenWidth);
-
     final style_large = TextStyle(
         color: BasicPalette.black.color, fontSize: 50, fontFamily: 'Poland');
 
     TextPaint textPaint_large = TextPaint(style: style_large);
-
-    TextComponent title = TextComponent(
-        text: "New game", textRenderer: textPaint_large, anchor: Anchor.center);
-    title.position = Vector2(game.size.x / 2, scale.x * 125);
-    title.scale = scale;
-
-    //add(title);
 
     Sprite fild_img = emwSprite(624, 326, 500, 500);
 
@@ -56,7 +46,7 @@ class NewGameScreen extends Component
         SpriteComponent(sprite: fild_img, anchor: Anchor.center);
     field.anchor = Anchor.topCenter;
     field.size = Vector2(game.size.x / 3 - 80, game.size.x / 3 - 80);
-    field.position = Vector2(game.size.x / 2, 20);
+    field.position = Vector2(game.size.x / 2, 40);
     add(field);
 
     Player player1 = Player();
@@ -79,9 +69,9 @@ class NewGameScreen extends Component
         game: game,
         id: 0);
 
-    player1_btn.position = Vector2(20 + (game.size.x / 3 / 2), 20);
+    player1_btn.position = Vector2(20 + (game.size.x / 3 / 2), 40);
     player1_opt.position = Vector2(
-        20 + (game.size.x / 3 / 2), 30 + (game.size.x / 3 - 80) / 3 / 2);
+        20 + (game.size.x / 3 / 2), 50 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player1_btn);
 
@@ -94,9 +84,9 @@ class NewGameScreen extends Component
         id: 1);
 
     player2_btn.position = Vector2(
-        20 + (game.size.x / 3 / 2), (game.size.x / 3 - 80) / 3 * 2 + 20);
+        20 + (game.size.x / 3 / 2), (game.size.x / 3 - 80) / 3 * 2 + 40);
     player2_opt.position = Vector2(20 + (game.size.x / 3 / 2),
-        (game.size.x / 3 - 80) / 3 * 2 + 30 + (game.size.x / 3 - 80) / 3 / 2);
+        (game.size.x / 3 - 80) / 3 * 2 + 50 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player2_btn);
 
@@ -110,10 +100,10 @@ class NewGameScreen extends Component
 
     player3_btn.position = Vector2(
         (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
-        (game.size.x / 3 - 80) / 3 * 2 + 20);
+        (game.size.x / 3 - 80) / 3 * 2 + 40);
     player3_opt.position = Vector2(
-        (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
-        (game.size.x / 3 - 80) / 3 * 2 + 30 + (game.size.x / 3 - 80) / 3 / 2);
+        (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 40,
+        (game.size.x / 3 - 80) / 3 * 2 + 50 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player3_btn);
 
@@ -126,23 +116,23 @@ class NewGameScreen extends Component
         id: 3);
 
     player4_btn.position =
-        Vector2((2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20, 20);
+        Vector2((2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20, 40);
     player4_opt.position = Vector2(
         (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
-        30 + (game.size.x / 3 - 80) / 3 / 2);
+        50 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player4_btn);
 
     BoxStart boxs = BoxStart();
     boxs.anchor = Anchor.topCenter;
-    boxs.position = Vector2(game.size.x / 2, 20 + (game.size.x / 3 - 80));
+    boxs.position = Vector2(game.size.x / 2, 40 + (game.size.x / 3 - 80));
     boxs.size = Vector2(game.size.x, 400);
     add(boxs);
 
     TextComponent start = TextComponent(
         text: "Start", textRenderer: textPaint_large, anchor: Anchor.center);
     start.anchor = Anchor.topCenter;
-    start.position = Vector2(game.size.x / 2, game.size.x / 3 - 40);
+    start.position = Vector2(game.size.x / 2, game.size.x / 3 - 20);
 
     add(start);
     add(player1_opt);
@@ -174,7 +164,7 @@ class RoundedButton extends PositionComponent with TapCallbacks {
             fontFamily: 'Poland',
           ),
         ).toTextPainter(text) {
-    size = Vector2(game.size.x / 3, (game.size.x / 3 - 80) / 3);
+    size = Vector2(game.size.x / 3 - 60, (game.size.x / 3 - 80) / 3);
     player_id = id;
     mygame = game;
 
@@ -272,7 +262,21 @@ class BoxStart extends PositionComponent
 
   @override
   void onTapUp(TapUpEvent event) {
+    game.NewGame();
+    int humans = 0;
+    for (Player player in gameRef.players) {
+      if (!player.is_AI) {
+        humans++;
+      }
+    }
+
+    if (humans > 1) {
+      gameRef.is_hotseat = true;
+    } else {
+      gameRef.is_hotseat = false;
+    }
     gameRef.router.pushNamed('game');
+    game.DrawUI();
   }
 }
 

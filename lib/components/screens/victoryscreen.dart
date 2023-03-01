@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
 import 'package:flame/palette.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import 'package:flutter/rendering.dart';
 
@@ -40,8 +41,15 @@ class VictoryScreen extends Component
         text: gameRef.current_player!.name,
         textRenderer: textPaint,
         anchor: Anchor.center);
+    if (game.audio_enabled) {
+      if (gameRef.current_player!.is_AI) {
+        FlameAudio.play('gameover.wav');
+      } else {
+        FlameAudio.play('wow.wav');
+      }
+    }
 
-    winner.position = Vector2(game.size.x / 2, scale.y * 550);
+    winner.position = Vector2(game.size.x / 2, scale.y * 600);
     winner.scale = scale;
 
     add(winner);
@@ -51,7 +59,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    stats.position = Vector2(game.size.x / 2, scale.y * 680);
+    stats.position = Vector2(game.size.x / 2, scale.y * 730);
     stats.scale = scale;
 
     add(stats);
@@ -61,7 +69,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    killstitle.position = Vector2(game.size.x / 2, scale.y * 750);
+    killstitle.position = Vector2(game.size.x / 2, scale.y * 800);
     killstitle.scale = scale;
 
     add(killstitle);
@@ -78,7 +86,7 @@ class VictoryScreen extends Component
     topkiller_1_x.token_number = topkiller_1.token_number;
 
     topkiller_1_x.position =
-        Vector2(3 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
+        Vector2(3 * (game.size.x / 9) - (scale.x * 25), scale.y * 850);
     topkiller_1_x.scale = scale;
     topkiller_1_x.anchor = Anchor.center;
     add(topkiller_1_x);
@@ -95,7 +103,7 @@ class VictoryScreen extends Component
     topkiller_2_x.token_number = topkiller_2.token_number;
 
     topkiller_2_x.position =
-        Vector2(4 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
+        Vector2(4 * (game.size.x / 9) - (scale.x * 25), scale.y * 850);
     topkiller_2_x.scale = scale;
     topkiller_2_x.anchor = Anchor.center;
     add(topkiller_2_x);
@@ -112,7 +120,7 @@ class VictoryScreen extends Component
     topkiller_3_x.token_number = topkiller_3.token_number;
 
     topkiller_3_x.position =
-        Vector2(5 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
+        Vector2(5 * (game.size.x / 9) - (scale.x * 25), scale.y * 850);
     topkiller_3_x.scale = scale;
     topkiller_3_x.anchor = Anchor.center;
     add(topkiller_3_x);
@@ -129,7 +137,7 @@ class VictoryScreen extends Component
     topkiller_4_x.token_number = topkiller_4.token_number;
 
     topkiller_4_x.position =
-        Vector2(6 * (game.size.x / 9) - (scale.x * 25), scale.y * 800);
+        Vector2(6 * (game.size.x / 9) - (scale.x * 25), scale.y * 850);
     topkiller_4_x.scale = scale;
     topkiller_4_x.anchor = Anchor.center;
     add(topkiller_4_x);
@@ -139,7 +147,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    kills1.position = Vector2(3 * (game.size.x / 9), scale.y * 900);
+    kills1.position = Vector2(3 * (game.size.x / 9), scale.y * 950);
     kills1.scale = scale;
 
     TextComponent kills2 = TextComponent(
@@ -147,7 +155,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    kills2.position = Vector2(4 * (game.size.x / 9), scale.y * 900);
+    kills2.position = Vector2(4 * (game.size.x / 9), scale.y * 950);
     kills2.scale = scale;
 
     TextComponent kills3 = TextComponent(
@@ -155,7 +163,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    kills3.position = Vector2(5 * (game.size.x / 9), scale.y * 900);
+    kills3.position = Vector2(5 * (game.size.x / 9), scale.y * 950);
     kills3.scale = scale;
 
     TextComponent kills4 = TextComponent(
@@ -163,7 +171,7 @@ class VictoryScreen extends Component
         textRenderer: textPaint_small,
         anchor: Anchor.center);
 
-    kills4.position = Vector2(6 * (game.size.x / 9), scale.y * 900);
+    kills4.position = Vector2(6 * (game.size.x / 9), scale.y * 950);
     kills4.scale = scale;
 
     add(kills1);

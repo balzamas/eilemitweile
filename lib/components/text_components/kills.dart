@@ -13,7 +13,7 @@ class KillInfo extends TextComponent with HasGameRef<EileMitWeileGame> {
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.ltr,
             style: TextStyle(
-                fontSize: 30, color: Colors.black, fontFamily: 'Poland'));
+                fontSize: 30, color: Colors.black, fontFamily: 'PolandFull'));
 
   late final TextPaint _textPaint;
 

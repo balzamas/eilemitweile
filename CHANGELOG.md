@@ -1,3 +1,9 @@
+## v.0.0.20+7
+- add button to get back to start screen (start new game)/Fix: new game #55 
+- fix: Info/Audio button cut off on IPhone (hopefully...) #56 
+- fix: Placement Info/Intro/Winner #52 
+- fix: repaint multi/single player #57 
+
 ## v0.0.19+7
 - hotfix info/audio button positioning
 
