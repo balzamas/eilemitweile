@@ -1,3 +1,6 @@
+## v0.0.19+7
+- hotfix info/audio button positioning
+
 ## v0.0.18+7
 - add info HUD (round + kills) for single player
 - replace font
