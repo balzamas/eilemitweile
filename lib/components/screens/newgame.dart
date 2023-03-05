@@ -4,6 +4,7 @@ import 'package:EileMitWeile/components/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/palette.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../eilemitweile_game.dart';
@@ -102,7 +103,7 @@ class NewGameScreen extends Component
         (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
         (game.size.x / 3 - 80) / 3 * 2 + 40);
     player3_opt.position = Vector2(
-        (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 40,
+        (2 * (game.size.x / 3)) + (game.size.x / 3 / 2) - 20,
         (game.size.x / 3 - 80) / 3 * 2 + 50 + (game.size.x / 3 - 80) / 3 / 2);
 
     add(player3_btn);
@@ -214,6 +215,7 @@ class RoundedButton extends PositionComponent with TapCallbacks {
   @override
   void onTapUp(TapUpEvent event) {
     scale = Vector2.all(1.0);
+    FlameAudio.play('menu.wav');
 
     if (mygame!.players[this.player_id!].is_AI) {
       mygame!.players[player_id!].is_AI = false;
@@ -275,6 +277,8 @@ class BoxStart extends PositionComponent
     } else {
       gameRef.is_hotseat = false;
     }
+    FlameAudio.play('go.wav');
+
     gameRef.router.pushNamed('game');
     game.DrawUI();
   }

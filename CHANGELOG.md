@@ -1,4 +1,10 @@
-## v.0.0.20+7
+## v0.0.21+8
+- fix: positioning in green new game button
+- audio in start menu
+- replace menu icon
+- preload all audio
+
+## v0.0.20+7
 - add button to get back to start screen (start new game)/Fix: new game #55 
 - fix: Info/Audio button cut off on IPhone (hopefully...) #56 
 - fix: Placement Info/Intro/Winner #52 

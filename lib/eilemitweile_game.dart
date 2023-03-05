@@ -92,8 +92,45 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
 
   @override
   Future<void> onLoad() async {
-    await FlameAudio.audioCache
-        .loadAll(['kill/kill_1.wav', 'start/start_1.wav', 'start/start_2.wav']);
+    await FlameAudio.audioCache.loadAll([
+      'kill/kill_1.wav',
+      'kill/kill_2.wav',
+      'kill/kill_3.wav',
+      'kill/kill_4.wav',
+      'kill/kill_5.wav',
+      'kill/kill_6.wav',
+      'kill/kill_7.wav',
+      'kill/kill_8.wav',
+      'kill/kill_9.wav',
+      'kill/kill_10.wav',
+      'kill/kill_11.wav',
+      'kill/kill_12.wav',
+      'kill/kill_13.wav',
+      'kill/kill_14.wav',
+      'kill/kill_15.wav',
+      'kill/kill_16.wav',
+      'kill/kill_17.wav',
+      'kill/kill_18.wav',
+      'start/start_1.wav',
+      'start/start_2.wav',
+      'start/start_3.wav',
+      'start/start_4.wav',
+      'start/start_5.wav',
+      'start/start_6.wav',
+      'start/start_7.wav',
+      'start/start_8.wav',
+      'start/start_9.wav',
+      'start/start_10.wav',
+      'start/start_11.wav',
+      'triple6/triple6_1.wav',
+      'triple6/triple6_2.wav',
+      'triple6/triple6_3.wav',
+      'dice.wav',
+      'gameover.wav',
+      'move_1.wav',
+      'wow.wav',
+      'menu.wav'
+    ]);
 
     await Flame.images.load('eilemitweile-sprites.png');
     info_sprite = emwSprite(628, 841, 330, 330);
