@@ -5,6 +5,7 @@ import 'package:EileMitWeile/components/gamecreation.dart';
 import 'package:flame/components.dart';
 
 import 'package:flame/experimental.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../eilemitweile_game.dart';
 import '../../enums.dart';
@@ -271,15 +272,25 @@ class AudioButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     Sprite the_sprite = emwSprite(724, 1183, 70, 70);
+
+    if (!gameRef.audio_enabled) {
+      the_sprite = emwSprite(806, 1183, 70, 70);
+    }
+
     this.sprite = the_sprite;
   }
 
   @override
-  void onTapUp(TapUpEvent event) {
+  void onTapUp(TapUpEvent event) async {
     if (gameRef.audio_enabled) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('audio', false);
+
       gameRef.audio_enabled = false;
       this.sprite = emwSprite(806, 1183, 70, 70);
     } else {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('audio', true);
       gameRef.audio_enabled = true;
       this.sprite = emwSprite(724, 1183, 70, 70);
     }

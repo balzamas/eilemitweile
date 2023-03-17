@@ -6,6 +6,7 @@ import 'package:flame/experimental.dart';
 import 'package:flame/palette.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../eilemitweile_game.dart';
 import '../gamecreation.dart';
@@ -263,7 +264,19 @@ class BoxStart extends PositionComponent
   }
 
   @override
-  void onTapUp(TapUpEvent event) {
+  void onTapUp(TapUpEvent event) async {
+    //Set Audio settings
+    final prefs = await SharedPreferences.getInstance();
+
+    // Try reading data from the counter key. If it doesn't exist, return 0.
+    final audio_pref = prefs.getBool('audio') ?? true;
+
+    if (audio_pref) {
+      gameRef.audio_enabled = true;
+    } else {
+      gameRef.audio_enabled = false;
+    }
+
     game.NewGame();
     int humans = 0;
     for (Player player in gameRef.players) {
@@ -277,7 +290,9 @@ class BoxStart extends PositionComponent
     } else {
       gameRef.is_hotseat = false;
     }
-    FlameAudio.play('go.wav');
+    if (gameRef.audio_enabled) {
+      FlameAudio.play('go.wav');
+    }
 
     gameRef.router.pushNamed('game');
     game.DrawUI();
