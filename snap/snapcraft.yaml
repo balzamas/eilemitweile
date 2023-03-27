@@ -1,0 +1,28 @@
+name: eile-mit-weile
+version: 0.0.22
+summary: Eile mit Weile
+description: Eie mit Weile, the Swiss Ludo
+
+confinement: strict
+base: core18
+grade: stable
+
+slots:
+  dbus-eile-mit-weile: # adjust accordingly to your app name
+    interface: dbus
+    bus: session
+    name: ch.atomikzopht.eilemitweile # adjust accordingly to your app name and
+    
+apps:
+  eile-mit-weile:
+    command: eile-mit-weile
+    extensions: [flutter-master] # Where "master" defines which Flutter channel to use for the build
+    plugs:
+    - network
+    slots:
+      - dbus-eile-mit-weile
+parts:
+  eile-mit-weile:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart # The main entry-point file of the application

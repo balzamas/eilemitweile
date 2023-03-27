@@ -5,14 +5,14 @@ import 'package:flame/components.dart';
 
 import 'package:flutter/material.dart';
 
-class State extends TextComponent with HasGameRef<EileMitWeileGame> {
+class StateButton extends TextComponent with HasGameRef<EileMitWeileGame> {
   late String text_content;
   late bool is_right = false;
 
   @override
   bool get debugMode => false;
 
-  State.stateInfo({
+  StateButton.stateInfo({
     this.text_content = "",
   }) : _textPaint = TextPaint(
             textDirection: TextDirection.ltr,

@@ -1,6 +1,6 @@
 name: EileMitWeile
 description: EileMitWeile Flame game
-version: 0.0.21+8
+version: 0.0.22+9
 publish_to: none
 
 environment:
@@ -14,6 +14,8 @@ dependencies:
   yaml: ^3.1.1
   flame_audio: ^1.4.0
   shared_preferences: ^2.0.18
+  path_provider_android: ^2.0.24
+  path_provider_ios: ^2.0.11
 
 dev_dependencies:
   flutter_launcher_icons: ^0.12.0

@@ -13,4 +13,5 @@ class Player extends PositionComponent {
   List<Token> tokens = [];
   List<Field> ladder_fields = [];
   int bodycount = 0;
+  int score = 0;
 }

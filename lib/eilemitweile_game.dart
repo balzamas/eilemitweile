@@ -56,8 +56,8 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   double screenHeight = 1600;
 
   KillInfo kill_text = KillInfo.killInfo();
-  late final State state_text_left;
-  late final State state_text_right;
+  late final StateButton state_text_left;
+  late final StateButton state_text_right;
 
   late TextComponent round_num;
   late TextComponent round_text;
@@ -156,6 +156,21 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       can_throw_dice = true;
       thrown_dices = [];
 
+      //calculate score
+      int score = 0;
+      for (Token token in current_player!.tokens) {
+        if (token.field!.number > 0) {
+          score = score + 5;
+        }
+        if (token.field!.number > 68) {
+          score = score + 20;
+        }
+        if (token.field!.number > 75) {
+          score = score + 10;
+        }
+      }
+      current_player!.score = score;
+
       final index = players
           .indexWhere((element) => element.color == current_player!.color);
       if (index == 3) {
@@ -236,6 +251,16 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   }
 
   void Move_KI(int dice_number) {
+    //Can token kill leading player?
+    for (Token token in current_player!.tokens) {
+      if (token.can_move &&
+          token.field!.number < 69 &&
+          CheckForPrey(this, token, dice_number, true)) {
+        Move(this, token, dice_number);
+        return;
+      }
+    }
+
     //is there a token right behind me?
     for (Token token in current_player!.tokens) {
       if (token.can_move &&
@@ -267,7 +292,7 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
     for (Token token in current_player!.tokens) {
       if (token.can_move &&
           token.field!.number < 69 &&
-          CheckForPrey(this, token, dice_number)) {
+          CheckForPrey(this, token, dice_number, false)) {
         Move(this, token, dice_number);
         return;
       }

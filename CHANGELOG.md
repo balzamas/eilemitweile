@@ -1,3 +1,8 @@
+## v0.0.22+9
+- fix: store audio settings #65
+- KI first attacks players which are close to victory
+- Play sound when reaching ladder
+
 ## v0.0.21+8
 - fix: positioning in green new game button
 - audio in start menu

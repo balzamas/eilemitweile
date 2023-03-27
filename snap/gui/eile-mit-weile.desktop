@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Eile mit Weile
+Comment=Eile mit Weile, the Swiss Ludo
+Exec=eile-mitweile 
+Icon=${SNAP}/meta/gui/eile-mit-weile.png # replace name to your app name
+Terminal=false
+Type=Application
+Categories=Game;

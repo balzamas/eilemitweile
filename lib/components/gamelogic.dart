@@ -28,10 +28,6 @@ void Move(EileMitWeileGame game, Token token, int moves) {
 
     token.last_round_moved = game.round;
   } else {
-    if (game.audio_enabled) {
-      FlameAudio.play('move_1.wav');
-    }
-
     token.field!.removeToken(token);
     token.field!.rearrangeTokens();
 
@@ -43,14 +39,23 @@ void Move(EileMitWeileGame game, Token token, int moves) {
       int steps_in_heaven = moves - (token.player.heaven_start - start_field);
       SendHome(start_field, token.player.heaven_start, game, token);
       end_field = 68 + steps_in_heaven;
+      if (game.audio_enabled) {
+        FlameAudio.play('ladder.wav');
+      }
     } else if (start_field < 69 && (start_field + moves > 68)) {
       end_field = start_field + moves - 68;
 
       SendHome(start_field, 68, game, token);
       SendHome(0, end_field, game, token);
+      if (game.audio_enabled) {
+        FlameAudio.play('move_1.wav');
+      }
     } else {
       end_field = start_field + moves;
       SendHome(start_field, end_field, game, token);
+      if (game.audio_enabled) {
+        FlameAudio.play('move_1.wav');
+      }
     }
     token.field = game.fields[end_field];
     token.field!.tokens.add(token);
@@ -452,30 +457,40 @@ bool CheckBenchBlock(EileMitWeileGame game, Token token) {
   return false;
 }
 
-bool CheckForPrey(EileMitWeileGame game, Token token, int moves) {
+bool CheckForPrey(
+    EileMitWeileGame game, Token token, int moves, bool check_for_leader) {
   int start_field = token.field!.number;
   int end_field = 0;
 
   if (start_field <= token.player.heaven_start &&
       start_field + moves > token.player.heaven_start) {
-    return FieldPrey(game, start_field, token.player.heaven_start, token);
+    return FieldPrey(
+        game, start_field, token.player.heaven_start, token, check_for_leader);
   } else if (start_field < 69 && (start_field + moves > 68)) {
     end_field = start_field + moves - 68;
 
-    return FieldPrey(game, start_field, 68, token);
+    return FieldPrey(game, start_field, 68, token, check_for_leader);
   } else {
-    return FieldPrey(game, start_field, (start_field + moves), token);
+    return FieldPrey(
+        game, start_field, (start_field + moves), token, check_for_leader);
   }
 }
 
-bool FieldPrey(EileMitWeileGame game, start_field, end_field, moving_token) {
+bool FieldPrey(EileMitWeileGame game, start_field, end_field, moving_token,
+    bool check_for_leader) {
   bool has_prey = false;
   for (var i = start_field + 1; i < end_field; i++) {
     if (game.fields[i].current == FieldState.normal &&
         game.fields[i].tokens.length > 0) {
       for (Token token in game.fields[i].tokens) {
         if (token.player != game.current_player) {
-          has_prey = true;
+          if (check_for_leader) {
+            if (token.player.score > 75) {
+              has_prey = true;
+            }
+          } else {
+            has_prey = true;
+          }
         }
       }
     }

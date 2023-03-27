@@ -15,7 +15,7 @@ import '../player.dart';
 import '../text_components/state.dart';
 
 class MainGame extends Component
-    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+    with KeyboardHandler, TapCallbacks, HasGameRef<EileMitWeileGame> {
   @override
   Future<void> onLoad() async {
     Sprite movebuttonSprite1 = emwSprite(1150, 0, 332, 332);
@@ -205,8 +205,8 @@ class MainGame extends Component
     gameRef.box.addAll(gameRef.players);
     gameRef.box.addAll(gameRef.fields);
 
-    gameRef.box.add(gameRef.state_text_left = State.stateInfo());
-    gameRef.box.add(gameRef.state_text_right = State.stateInfo());
+    gameRef.box.add(gameRef.state_text_left = StateButton.stateInfo());
+    gameRef.box.add(gameRef.state_text_right = StateButton.stateInfo());
     gameRef.box.add(box_dice_left);
     gameRef.box.add(box_dice_right);
 
