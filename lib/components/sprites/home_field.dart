@@ -21,15 +21,23 @@ class HomeField extends PositionComponent with HasGameRef<EileMitWeileGame> {
   void render(Canvas canvas) {
     if (player.color == 1)
       homefield_red.render(canvas,
-          position: Vector2(0, 0), anchor: Anchor.topLeft);
+          position: Vector2(0, 0),
+          anchor: Anchor.topLeft,
+          size: Vector2(130, 130));
     else if (player.color == 2)
       homefield_blue.render(canvas,
-          position: Vector2(0, 0), anchor: Anchor.topLeft);
+          position: Vector2(0, 0),
+          anchor: Anchor.topLeft,
+          size: Vector2(130, 130));
     else if (player.color == 3)
       homefield_green.render(canvas,
-          position: Vector2(0, 0), anchor: Anchor.topLeft);
+          position: Vector2(0, 0),
+          anchor: Anchor.topLeft,
+          size: Vector2(130, 130));
     else
       homefield_yellow.render(canvas,
-          position: Vector2(0, 0), anchor: Anchor.topLeft);
+          position: Vector2(0, 0),
+          anchor: Anchor.topLeft,
+          size: Vector2(130, 130));
   }
 }

@@ -13,6 +13,7 @@ import 'package:flame_audio/audio_pool.dart';
 import 'package:flame_audio/flame_audio.dart';
 
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/box.dart';
 import 'components/field.dart';
@@ -58,6 +59,15 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   KillInfo kill_text = KillInfo.killInfo();
   late final StateButton state_text_left;
   late final StateButton state_text_right;
+
+  late InfoButton infoButton = InfoButton(
+      position: Vector2(EileMitWeileGame.info_col_size, screenHeight - 140));
+  late AudioButton audioButton = AudioButton(
+      position:
+          Vector2(EileMitWeileGame.info_col_size + 130, screenHeight - 140));
+  late MenuButton menuButton = MenuButton(
+      position:
+          Vector2(EileMitWeileGame.info_col_size + 260, screenHeight - 140));
 
   late TextComponent round_num;
   late TextComponent round_text;
@@ -389,10 +399,6 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
         box.remove(info_box);
         box.remove(round_text);
         box.remove(round_num);
-        box.remove(kill_red);
-        box.remove(kill_green);
-        box.remove(kill_blue);
-        box.remove(kill_purple);
       }
 
       if (!box.contains(kill_text)) {
@@ -404,6 +410,50 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       if (box.contains(kill_text)) {
         box.remove(kill_text);
       }
+
+      SpriteComponent kill_icon_red = SpriteComponent();
+      Sprite kill_icon_red_sprite = emwSprite(512, 325, 58, 58);
+      kill_icon_red.anchor = Anchor.center;
+      kill_icon_red.sprite = kill_icon_red_sprite;
+      kill_icon_red.size = Vector2(58, 58);
+      kill_icon_red.position = Vector2(
+          EileMitWeileGame.console + 3 * EileMitWeileGame.fieldHeight,
+          5 * EileMitWeileGame.fieldHeight);
+      box.add(kill_icon_red);
+
+      SpriteComponent kill_icon_blue = SpriteComponent();
+      Sprite kill_icon_blue_sprite = emwSprite(512, 447, 58, 58);
+      kill_icon_blue.anchor = Anchor.center;
+      kill_icon_blue.sprite = kill_icon_blue_sprite;
+      kill_icon_blue.size = Vector2(58, 58);
+      kill_icon_blue.position = Vector2(
+          EileMitWeileGame.console + 3 * EileMitWeileGame.fieldHeight,
+          13 * EileMitWeileGame.fieldHeight + 3 * EileMitWeileGame.fieldWidth);
+      box.add(kill_icon_blue);
+
+      SpriteComponent kill_icon_green = SpriteComponent();
+      Sprite kill_icon_green_sprite = emwSprite(512, 509, 58, 58);
+      kill_icon_green.anchor = Anchor.center;
+      kill_icon_green.sprite = kill_icon_green_sprite;
+      kill_icon_green.size = Vector2(58, 58);
+      kill_icon_green.position = Vector2(
+          EileMitWeileGame.console +
+              11 * EileMitWeileGame.fieldHeight +
+              3 * EileMitWeileGame.fieldWidth,
+          13 * EileMitWeileGame.fieldHeight + 3 * EileMitWeileGame.fieldWidth);
+      box.add(kill_icon_green);
+
+      SpriteComponent kill_icon_purple = SpriteComponent();
+      Sprite kill_icon_purple_sprite = emwSprite(512, 386, 58, 58);
+      kill_icon_purple.anchor = Anchor.center;
+      kill_icon_purple.sprite = kill_icon_purple_sprite;
+      kill_icon_purple.size = Vector2(58, 58);
+      kill_icon_purple.position = Vector2(
+          EileMitWeileGame.console +
+              11 * EileMitWeileGame.fieldHeight +
+              3 * EileMitWeileGame.fieldWidth,
+          5 * EileMitWeileGame.fieldHeight);
+      box.add(kill_icon_purple);
 
       if (!box.contains(info_box)) {
         info_box.sprite = info_sprite;
@@ -433,28 +483,66 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
 
         kill_red = TextComponent(
             text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
-        kill_red.position = Vector2(EileMitWeileGame.info_col_size + 120,
-            900 + 4 * EileMitWeileGame.fieldHeight + 190);
+        kill_red.position = Vector2(
+            EileMitWeileGame.console + 5 * EileMitWeileGame.fieldHeight,
+            5 * EileMitWeileGame.fieldHeight + 10);
         box.add(kill_red);
 
         kill_blue = TextComponent(
             text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
-        kill_blue.position = Vector2(EileMitWeileGame.info_col_size + 120,
-            900 + 4 * EileMitWeileGame.fieldHeight + 290);
+        kill_blue.position = Vector2(
+            EileMitWeileGame.console + 5 * EileMitWeileGame.fieldHeight,
+            13 * EileMitWeileGame.fieldHeight +
+                3 * EileMitWeileGame.fieldWidth +
+                10);
         box.add(kill_blue);
 
         kill_green = TextComponent(
             text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
-        kill_green.position = Vector2(EileMitWeileGame.info_col_size + 285,
-            900 + 4 * EileMitWeileGame.fieldHeight + 290);
+        kill_green.position = Vector2(
+            EileMitWeileGame.console +
+                13 * EileMitWeileGame.fieldHeight +
+                3 * EileMitWeileGame.fieldWidth,
+            13 * EileMitWeileGame.fieldHeight +
+                3 * EileMitWeileGame.fieldWidth +
+                10);
         box.add(kill_green);
 
         kill_purple = TextComponent(
             text: "0", textRenderer: textPaint_info, anchor: Anchor.center);
-        kill_purple.position = Vector2(EileMitWeileGame.info_col_size + 285,
-            900 + 4 * EileMitWeileGame.fieldHeight + 190);
+        kill_purple.position = Vector2(
+            EileMitWeileGame.console +
+                13 * EileMitWeileGame.fieldHeight +
+                3 * EileMitWeileGame.fieldWidth,
+            5 * EileMitWeileGame.fieldHeight + 10);
         box.add(kill_purple);
       }
+    }
+
+    if (is_hotseat) {
+      infoButton.position =
+          Vector2(EileMitWeileGame.info_col_size, screenHeight - 140);
+
+      audioButton.position =
+          Vector2(EileMitWeileGame.info_col_size + 130, screenHeight - 140);
+
+      menuButton.position =
+          Vector2(EileMitWeileGame.info_col_size + 260, screenHeight - 140);
+    } else {
+      infoButton.position =
+          Vector2(EileMitWeileGame.info_col_size, screenHeight - 320);
+
+      audioButton.position =
+          Vector2(EileMitWeileGame.info_col_size + 120, screenHeight - 320);
+
+      menuButton.position =
+          Vector2(EileMitWeileGame.info_col_size + 240, screenHeight - 320);
+    }
+
+    if (!box.contains(infoButton)) {
+      box.add(infoButton);
+      box.add(menuButton);
+      box.add(audioButton);
     }
 
     // move_buttons[1].setPlayerColor(1);
@@ -491,4 +579,74 @@ Sprite emwSprite(double x, double y, double width, double height) {
     srcPosition: Vector2(x, y),
     srcSize: Vector2(width, height),
   );
+}
+
+class InfoButton extends SpriteComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  InfoButton({
+    required Vector2 position,
+  }) : super(position: position, size: Vector2(85, 85)) {}
+
+  @override
+  Future<void> onLoad() async {
+    Sprite the_sprite = emwSprite(640, 1183, 70, 70);
+    this.sprite = the_sprite;
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    gameRef.router.pushNamed('info');
+  }
+}
+
+class AudioButton extends SpriteComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  AudioButton({
+    required Vector2 position,
+  }) : super(position: position, size: Vector2(85, 85)) {}
+
+  @override
+  Future<void> onLoad() async {
+    Sprite the_sprite = emwSprite(724, 1183, 70, 70);
+
+    if (!gameRef.audio_enabled) {
+      the_sprite = emwSprite(806, 1183, 70, 75);
+    }
+
+    this.sprite = the_sprite;
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) async {
+    if (gameRef.audio_enabled) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('audio', false);
+
+      gameRef.audio_enabled = false;
+      this.sprite = emwSprite(806, 1183, 70, 75);
+    } else {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('audio', true);
+      gameRef.audio_enabled = true;
+      this.sprite = emwSprite(724, 1183, 70, 70);
+    }
+  }
+}
+
+class MenuButton extends SpriteComponent
+    with TapCallbacks, HasGameRef<EileMitWeileGame> {
+  MenuButton({
+    required Vector2 position,
+  }) : super(position: position, size: Vector2(85, 85)) {}
+
+  @override
+  Future<void> onLoad() async {
+    Sprite the_sprite = emwSprite(881, 1183, 70, 70);
+    this.sprite = the_sprite;
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    gameRef.router.pushNamed('newgame');
+  }
 }

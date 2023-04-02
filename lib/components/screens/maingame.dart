@@ -111,26 +111,26 @@ class MainGame extends Component
     for (Player player in gameRef.players) {
       HomeField home_field1 = HomeField();
       home_field1.player = player;
-      home_field1.position =
-          Vector2(player.home_x, player.home_y + EileMitWeileGame.fieldHeight);
+      home_field1.position = Vector2(player.home_x + 35,
+          player.home_y + EileMitWeileGame.fieldHeight + 35);
       home_fields.add(home_field1);
 
       HomeField home_field2 = HomeField();
       home_field2.player = player;
-      home_field2.position = Vector2(
-          player.home_x + 200, player.home_y + EileMitWeileGame.fieldHeight);
+      home_field2.position = Vector2(player.home_x + 200 + 35,
+          player.home_y + EileMitWeileGame.fieldHeight + 35);
       home_fields.add(home_field2);
 
       HomeField home_field3 = HomeField();
       home_field3.player = player;
-      home_field3.position = Vector2(
-          player.home_x, player.home_y + 200 + EileMitWeileGame.fieldHeight);
+      home_field3.position = Vector2(player.home_x + 35,
+          player.home_y + 200 + EileMitWeileGame.fieldHeight + 35);
       home_fields.add(home_field3);
 
       HomeField home_field4 = HomeField();
       home_field4.player = player;
-      home_field4.position = Vector2(player.home_x + 200,
-          player.home_y + 200 + EileMitWeileGame.fieldHeight);
+      home_field4.position = Vector2(player.home_x + 200 + 35,
+          player.home_y + 200 + EileMitWeileGame.fieldHeight + 35);
       home_fields.add(home_field4);
 
       for (var i = 0; i < 4; i++) {
@@ -172,18 +172,6 @@ class MainGame extends Component
       }
     }
 
-    InfoButton infoButton = InfoButton(
-        position: Vector2(
-            EileMitWeileGame.info_col_size, gameRef.screenHeight - 140));
-
-    AudioButton audioButton = AudioButton(
-        position: Vector2(
-            EileMitWeileGame.info_col_size + 130, gameRef.screenHeight - 140));
-
-    MenuButton menuButton = MenuButton(
-        position: Vector2(
-            EileMitWeileGame.info_col_size + 260, gameRef.screenHeight - 140));
-
     gameRef.heaven.size = Vector2(600, 600);
 
     BoxDice box_dice_left = BoxDice();
@@ -218,9 +206,6 @@ class MainGame extends Component
     gameRef.box.addAll(heaven_fields2);
     gameRef.box.addAll(heaven_fields3);
     gameRef.box.addAll(tokens);
-    gameRef.box.add(infoButton);
-    gameRef.box.add(audioButton);
-    gameRef.box.add(menuButton);
 
     gameRef.state_text_left.position = Vector2(
         EileMitWeileGame.info_col_size / 2 - 20, gameRef.screenHeight / 2);
@@ -242,75 +227,5 @@ class MainGame extends Component
       ..viewfinder.position = Vector2(1555, 0)
       ..viewfinder.anchor = Anchor.topCenter;
     add(camera);
-  }
-}
-
-class InfoButton extends SpriteComponent
-    with TapCallbacks, HasGameRef<EileMitWeileGame> {
-  InfoButton({
-    required Vector2 position,
-  }) : super(position: position, size: Vector2(85, 85)) {}
-
-  @override
-  Future<void> onLoad() async {
-    Sprite the_sprite = emwSprite(640, 1183, 70, 70);
-    this.sprite = the_sprite;
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    gameRef.router.pushNamed('info');
-  }
-}
-
-class AudioButton extends SpriteComponent
-    with TapCallbacks, HasGameRef<EileMitWeileGame> {
-  AudioButton({
-    required Vector2 position,
-  }) : super(position: position, size: Vector2(85, 85)) {}
-
-  @override
-  Future<void> onLoad() async {
-    Sprite the_sprite = emwSprite(724, 1183, 70, 70);
-
-    if (!gameRef.audio_enabled) {
-      the_sprite = emwSprite(806, 1183, 70, 70);
-    }
-
-    this.sprite = the_sprite;
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) async {
-    if (gameRef.audio_enabled) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('audio', false);
-
-      gameRef.audio_enabled = false;
-      this.sprite = emwSprite(806, 1183, 70, 70);
-    } else {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('audio', true);
-      gameRef.audio_enabled = true;
-      this.sprite = emwSprite(724, 1183, 70, 70);
-    }
-  }
-}
-
-class MenuButton extends SpriteComponent
-    with TapCallbacks, HasGameRef<EileMitWeileGame> {
-  MenuButton({
-    required Vector2 position,
-  }) : super(position: position, size: Vector2(85, 85)) {}
-
-  @override
-  Future<void> onLoad() async {
-    Sprite the_sprite = emwSprite(881, 1183, 70, 70);
-    this.sprite = the_sprite;
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    gameRef.router.pushNamed('newgame');
   }
 }
