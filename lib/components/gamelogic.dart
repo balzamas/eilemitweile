@@ -66,12 +66,46 @@ void Move(EileMitWeileGame game, Token token, int moves) {
   game.thrown_dices.removeAt(0);
   game.dices_gfx[0].removeFromParent();
   game.dices_gfx.removeAt(0);
+  CalculateScores(game);
+  UpdateStatusBar(game);
 
   PaintDices(game);
 
   if (CheckVictory(token.player)) {
     game.router.pushNamed('victory');
   }
+}
+
+void CalculateScores(EileMitWeileGame game) {
+  for (Player player in game.players) {
+    //calculate score
+    int score = 0;
+    for (Token token in player!.tokens) {
+      if (token.field!.number > 0) {
+        score = score + 5;
+      }
+      if (token.field!.number > 68) {
+        score = score + 20;
+      }
+      if (token.field!.number > 75) {
+        score = score + 10;
+      }
+    }
+    player!.score = score;
+  }
+}
+
+void UpdateStatusBar(EileMitWeileGame game) {
+//MaxScore: 140
+
+  game.status_bar_red.length =
+      game.players[0].score * (8 * EileMitWeileGame.fieldHeight) / 140;
+  game.status_bar_blue.length =
+      game.players[1].score * (8 * EileMitWeileGame.fieldHeight) / 140;
+  game.status_bar_green.length =
+      game.players[2].score * (8 * EileMitWeileGame.fieldHeight) / 140;
+  game.status_bar_purple.length =
+      game.players[3].score * (8 * EileMitWeileGame.fieldHeight) / 140;
 }
 
 bool CheckVictory(Player player) {

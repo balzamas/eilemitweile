@@ -2,6 +2,8 @@
 - fix: store audio settings #65
 - KI first attacks players which are close to victory
 - Play sound when reaching ladder
+- Rearrange kills, menu/option buttons
+- Show progress bars
 
 ## v0.0.21+8
 - fix: positioning in green new game button

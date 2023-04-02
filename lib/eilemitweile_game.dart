@@ -56,6 +56,11 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   double screenWidth = 2 * console + 1400;
   double screenHeight = 1600;
 
+  late Rectangle status_bar_red;
+  late Rectangle status_bar_blue;
+  late Rectangle status_bar_green;
+  late Rectangle status_bar_purple;
+
   KillInfo kill_text = KillInfo.killInfo();
   late final StateButton state_text_left;
   late final StateButton state_text_right;
@@ -165,21 +170,6 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       dices_gfx = [];
       can_throw_dice = true;
       thrown_dices = [];
-
-      //calculate score
-      int score = 0;
-      for (Token token in current_player!.tokens) {
-        if (token.field!.number > 0) {
-          score = score + 5;
-        }
-        if (token.field!.number > 68) {
-          score = score + 20;
-        }
-        if (token.field!.number > 75) {
-          score = score + 10;
-        }
-      }
-      current_player!.score = score;
 
       final index = players
           .indexWhere((element) => element.color == current_player!.color);
@@ -545,6 +535,53 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       box.add(audioButton);
     }
 
+    Paint red = Paint()..color = Color.fromARGB(255, 255, 0, 0);
+    status_bar_red = Rectangle(
+        red, EileMitWeileGame.console, 1 * EileMitWeileGame.fieldHeight, 140);
+
+    Paint blue = Paint()..color = Color.fromARGB(255, 17, 0, 255);
+    status_bar_blue = Rectangle(
+        blue,
+        EileMitWeileGame.console,
+        16 * EileMitWeileGame.fieldHeight +
+            3 * EileMitWeileGame.fieldWidth +
+            30,
+        140);
+
+    Paint green = Paint()..color = Color.fromARGB(255, 0, 146, 0);
+    status_bar_green = Rectangle(
+        green,
+        EileMitWeileGame.console +
+            8 * EileMitWeileGame.fieldHeight +
+            3 * EileMitWeileGame.fieldWidth,
+        16 * EileMitWeileGame.fieldHeight +
+            3 * EileMitWeileGame.fieldWidth +
+            30,
+        140);
+
+    Paint purple = Paint()..color = Color.fromARGB(255, 155, 0, 142);
+    status_bar_purple = Rectangle(
+        purple,
+        EileMitWeileGame.console +
+            8 * EileMitWeileGame.fieldHeight +
+            3 * EileMitWeileGame.fieldWidth,
+        1 * EileMitWeileGame.fieldHeight,
+        140);
+
+    if (!box.contains(status_bar_red)) {
+      box.add(status_bar_red);
+
+      box.add(status_bar_blue);
+
+      box.add(status_bar_green);
+      box.add(status_bar_purple);
+    }
+
+    status_bar_red.length = 0;
+    status_bar_blue.length = 0;
+    status_bar_purple.length = 0;
+    status_bar_green.length = 0;
+
     // move_buttons[1].setPlayerColor(1);
     // move_buttons[2].setPlayerColor(2);
     // move_buttons[3].setPlayerColor(3);
@@ -648,5 +685,19 @@ class MenuButton extends SpriteComponent
   @override
   void onTapUp(TapUpEvent event) {
     gameRef.router.pushNamed('newgame');
+  }
+}
+
+class Rectangle extends PositionComponent {
+  Paint color;
+  double left;
+  double top;
+  double length;
+
+  Rectangle(this.color, this.left, this.top, this.length);
+
+  @override
+  void render(Canvas canvas) {
+    canvas.drawRect(Rect.fromLTWH(left, top, length, 20), color);
   }
 }
