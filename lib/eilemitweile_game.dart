@@ -56,10 +56,33 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
   double screenWidth = 2 * console + 1400;
   double screenHeight = 1600;
 
-  late Rectangle status_bar_red;
-  late Rectangle status_bar_blue;
-  late Rectangle status_bar_green;
-  late Rectangle status_bar_purple;
+  Rectangle status_bar_red = Rectangle(
+      Paint()..color = Color.fromARGB(255, 255, 0, 0),
+      EileMitWeileGame.console,
+      1 * EileMitWeileGame.fieldHeight,
+      140);
+
+  Rectangle status_bar_blue = Rectangle(
+      Paint()..color = Color.fromARGB(255, 17, 0, 255),
+      EileMitWeileGame.console,
+      16 * EileMitWeileGame.fieldHeight + 3 * EileMitWeileGame.fieldWidth + 30,
+      140);
+
+  Rectangle status_bar_green = Rectangle(
+      Paint()..color = Color.fromARGB(255, 0, 146, 0),
+      EileMitWeileGame.console +
+          8 * EileMitWeileGame.fieldHeight +
+          3 * EileMitWeileGame.fieldWidth,
+      16 * EileMitWeileGame.fieldHeight + 3 * EileMitWeileGame.fieldWidth + 30,
+      140);
+
+  Rectangle status_bar_purple = Rectangle(
+      Paint()..color = Color.fromARGB(255, 155, 0, 142),
+      EileMitWeileGame.console +
+          8 * EileMitWeileGame.fieldHeight +
+          3 * EileMitWeileGame.fieldWidth,
+      1 * EileMitWeileGame.fieldHeight,
+      140);
 
   KillInfo kill_text = KillInfo.killInfo();
   late final StateButton state_text_left;
@@ -535,6 +558,13 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       box.add(audioButton);
     }
 
+    if (box.contains(status_bar_red)) {
+      box.remove(status_bar_red);
+      box.remove(status_bar_blue);
+      box.remove(status_bar_green);
+      box.remove(status_bar_purple);
+    }
+
     Paint red = Paint()..color = Color.fromARGB(255, 255, 0, 0);
     status_bar_red = Rectangle(
         red, EileMitWeileGame.console, 1 * EileMitWeileGame.fieldHeight, 140);
@@ -597,6 +627,7 @@ class EileMitWeileGame extends FlameGame with HasTappableComponents {
       round = 0;
       for (Player player in players) {
         player.bodycount = 0;
+        player.score = 0;
         for (Token token in player.tokens) {
           token.SendMeHome();
           token.bodycount = 0;
