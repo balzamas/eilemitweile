@@ -1,3 +1,6 @@
+## v0.0.23+9
+- add podfile for iOS
+
 ## v0.0.22+9
 - fix: store audio settings #65
 - KI first attacks players which are close to victory
