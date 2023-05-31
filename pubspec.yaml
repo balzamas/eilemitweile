@@ -12,20 +12,20 @@ dependencies:
     sdk: flutter
   flame: ^1.6.0
   yaml: ^3.1.1
-  flame_audio: ^1.4.0
+  flame_audio: ^2.0.3
   shared_preferences: ^2.0.18
   path_provider_android: ^2.0.24
   path_provider_ios: ^2.0.11
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.13.1
   build_runner: ^2.1.7
   canvas_test: ^0.2.0
   drift_dev: ^2.5.2
   flame_test: ^1.9.2
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^4.0.0+1
+  very_good_analysis: ^5.0.0+1
 
 flutter:
   assets:
